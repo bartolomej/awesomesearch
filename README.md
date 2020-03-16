@@ -1,9 +1,9 @@
-# Node.js starter
+# Awesome server
 
-A minimalistic Node.js starter configuration. Includes Babel ES6 support with Jest testing library.
+Awesome web service that parses and queries [awesome](https://github.com/sindresorhus/awesome) list collections.
 
 ## Scripts
-- `npm test` - run all tests
-- `npm build` - transpile es6 files under `/src` to `/build` folder
-- 
 
+- `npm run build` - outputs transpiled code to `/build`
+- `npm test` - runs all jest tests (aka. stage 1 tests)
+- `npm run test:s2` - runs stage 2 tests on real world data
