@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "test:s1": "npm test",
-    "test:s2": "npm run build && node build/cli",
+    "rw-test:config": "npm run build && node build/test/cli.js rw-test --config",
+    "rw-test:all": "npm run build && node build/test/cli.js rw-test",
+    "rw-test:failed": "npm run build && node build/test/cli.js rw-test --failed",
     "build": "npx babel src --out-dir build --ignore \"src/**/*.test.js\""
   },
   "repository": {
@@ -27,11 +28,13 @@
     "jest": "25.1.0"
   },
   "dependencies": {
+    "chalk": "3.0.0",
     "meow": "6.0.1",
     "node-fetch": "2.6.0",
     "remark-parse": "7.0.2",
     "unified": "8.4.2",
     "unist-util-inspect": "5.0.1",
+    "unist-util-remove-position": "2.0.1",
     "unist-util-select": "3.0.1"
   }
 }

@@ -1,12 +1,6 @@
 import fs from 'fs';
-import unified from "unified";
-import markdown from 'remark-parse';
 import fetch from "node-fetch";
 
-
-export function getMarkdownTree (data) {
-  return unified().use(markdown).parse(data);
-}
 
 export async function fetchText (url) {
   const response = await fetch(url);
