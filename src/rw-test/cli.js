@@ -18,10 +18,12 @@ const cli = meow(`
     Options
       --config, -c  Read awesome-list urls from test.config.json file.
       --failed, -f  Run only failed tests from results.json file.
+      --break, -b  Stop execution on error;
  
     Examples
       $ node build/cli test:s2 --config
       $ node build/cli test:s2 --failed
+      $ node build/cli test:s2 --failed --break
 
 `, {
   flags: {
@@ -32,6 +34,10 @@ const cli = meow(`
     failed: {
       type: 'boolean',
       alias: 'f'
+    },
+    break: {
+      type: 'boolean',
+      alias: 'b'
     },
   }
 });
@@ -47,7 +53,7 @@ function parseCliArguments () {
   }
   switch (cli.input[0]) {
     case 'rw-test': {
-      runRealWorldTests(cli.flags.config, cli.flags.failed);
+      runRealWorldTests(cli.flags.config, cli.flags.failed, cli.flags.break);
       break;
     }
     default: {
@@ -56,8 +62,9 @@ function parseCliArguments () {
   }
 }
 
-async function runRealWorldTests (readConfig = false, onlyFailed = false) {
+async function runRealWorldTests (readConfig = false, onlyFailed = false, breakOnError = false) {
   const outDir = join(rootDir, 'out');
+  const onError = breakOnError ? error : warn;
   let testCases;
   if (readConfig) {
     testCases = await getConfig();
@@ -82,37 +89,35 @@ async function runRealWorldTests (readConfig = false, onlyFailed = false) {
     const documentPath = join(outputDir, 'document.json');
     const reportPath = join(outputDir, 'report.txt');
 
+    try {
+      await fetch();
+      await parse();
+    } catch (e) {
+      onError(e.message);
+    }
+
     console.log(''); // print empty line for readability
 
-    if (!await fileExists(outputDir)) {
-      fs.mkdirSync(outputDir);
+
+    async function fetch () {
+      info(`Fetching ${testCase.getRawUrl()}`);
+      await testCase.fetchRepo();
+      if (!await fileExists(outputDir)) {
+        fs.mkdirSync(outputDir);
+      }
+      info(`Writing output files to ${outputDir}`);
+      await writeFile(markdownPath, testCase.readme);
+      await writeFile(jsonTreePath, JSON.stringify(testCase.getJsonTree(), null, 4));
+      await writeFile(txtTreePath, testCase.getTxtTree());
     }
-
-    if (
-      await fileExists(markdownPath) &&
-      await fileExists(jsonTreePath) &&
-      await fileExists(txtTreePath)
-    ) {
-      info(`${testCase.getRepoName()} already downloaded`);
-      await parse();
-      continue;
-    }
-
-    await testCase.fetchRepo();
-
-    info(`Writing output files to ${outputDir}`);
-    await writeFile(markdownPath, testCase.readme);
-    await writeFile(jsonTreePath, JSON.stringify(testCase.getJsonTree(), null, 4));
-    await writeFile(txtTreePath, testCase.getTxtTree());
-    await parse();
 
     async function parse () {
       if (!testCase.readme) {
-        await testCase.fetchRepo();
+        await fetch();
       }
       if (!testCase.parse()) {
-        info(`Parsing failed, generated report: ${reportPath}`);
-        await writeFile(reportPath, testCase.parseError.stack);
+        await writeFile(reportPath, testCase.parseError.toString());
+        onError(`Parsing failed, generated report: ${reportPath}`);
       } else {
         info(`Parsing success!`);
         await writeFile(documentPath, JSON.stringify(testCase.getParsed(), null, 4));
@@ -143,6 +148,10 @@ export async function getResults (onlyFailed = false) {
   for (let key of Object.keys(results)) {
     let item = results[key];
     let testCase = new TestCase(key, item.readmePath);
+    const readmePath = join(rootDir, testCase.getRepoName(), 'markdown.md');
+    if (await fileExists(readmePath)) {
+      testCase.readme = await readFile(readmePath);
+    }
     if (onlyFailed && item.success === false) {
       items.push(testCase);
     } else if (!onlyFailed) {
@@ -163,6 +172,10 @@ export async function mergeResults (testCases) {
     results[testCase.uid] = testCase.getJson();
   }
   await writeFile(resultsPath, JSON.stringify(results, null, 4));
+}
+
+function warn (message) {
+  console.error(chalk.yellow('WARN: ' + message));
 }
 
 function error (message) {

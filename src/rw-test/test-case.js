@@ -1,5 +1,5 @@
 import { fetchText } from "./utils";
-import parseMarkdown from "../github/markdown";
+import parseMarkdown from "../github/parser";
 import unified from "unified";
 import markdown from "remark-parse";
 import inspect from 'unist-util-inspect';
@@ -61,7 +61,15 @@ export default class TestCase {
   }
 
   async fetchRepo () {
-    this.readme = await fetchText(this.getRawUrl());
+    try {
+      this.readme = await fetchText(this.getRawUrl());
+    } catch (e) {
+      if (e.message === 'Resource not found') {
+        throw new Error('Invalid url');
+      } else {
+        throw e;
+      }
+    }
   }
 
   parse () {

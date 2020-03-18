@@ -4,6 +4,13 @@ import fetch from "node-fetch";
 
 export async function fetchText (url) {
   const response = await fetch(url);
+  if (response.status >= 400) {
+    if (response.status === 404) {
+      throw new Error(`Resource not found`);
+    } else {
+      throw new Error(`Fetch error`);
+    }
+  }
   return await response.text();
 }
 

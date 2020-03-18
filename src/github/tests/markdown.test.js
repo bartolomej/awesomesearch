@@ -1,4 +1,4 @@
-import parse from "../markdown";
+import parse from "../parser";
 import { sectionWithNestedLists, titleWithSectionAndSubsections } from "./markdown.data";
 
 
@@ -22,12 +22,12 @@ describe('Awesome header parsing', function () {
     expect(document.children[0].children[0]).toEqual({
       title: 'Babel',
       url: 'https://github.com/babel/babel',
-      description: ' - Turn ES6+ code into vanilla ES5 with no runtime',
+      description: 'Babel - Turn ES6+ code into vanilla ES5 with no runtime',
       children: []
     });
     expect(document.children[1].children[0].children[0]).toEqual({
       title: 'gulp-babel',
-      description: 'Babel: ',
+      description: 'Babel: gulp-babel',
       url: 'https://github.com/babel/gulp-babel',
       children: []
     });
@@ -42,31 +42,31 @@ describe('Awesome header parsing', function () {
         children: [{
           title: 'Node.js',
           url: 'https://github.com/sindresorhus/awesome-nodejs#readme',
-          description: ' - Async non-blocking event-driven JavaScript runtime.',
+          description: 'Node.js - Async non-blocking event-driven JavaScript runtime.',
           children: [{
             title: 'Cross-Platform',
             url: 'https://github.com/bcoe/awesome-cross-platform-nodejs#readme',
-            description: '- ',
+            description: '- Cross-Platform',
             children: []
           },{
             title: 'Depth 2',
             url: 'https://example.com/depth-2',
-            description: '-  - Example of 3 depth list',
+            description: '- Depth 2 - Example of 3 depth list',
             children: []
           }]
         },{
           title: 'Xamarin',
           url: 'https://github.com/XamSome/awesome-xamarin#readme',
-          description: ' - Mobile app development IDE, testing, and distribution.',
+          description: 'Xamarin - Mobile app development IDE, testing, and distribution.',
           children: []
         },{
           title: 'Linux',
           url: 'https://github.com/aleksandar-todorovic/awesome-linux#readme',
-          description: '',
+          description: 'Linux',
           children: [{
             title: 'Containers',
             url: 'https://github.com/Friz-zy/awesome-linux-containers#readme',
-            description: '- ',
+            description: '- Containers',
             children: []
           }]
         }]
