@@ -1,62 +1,77 @@
 const service = require('../services/github');
-const repo = require('../repositories/github');
-require('node-fetch');
+const githubRepo = require('../repositories/github');
+const websiteRepo = require('../repositories/website');
+const Awesome = require('../models/awesome');
 const fetchMock = require('fetch-mock');
 const { readFile } = require('./utils');
 
+
+describe('Github repository tests', function () {
+
+  beforeEach(async () => await githubRepo.removeAll());
+
+  it('should save object to repo given awesome object', async function () {
+    const awesome = new Awesome('https://example.com');
+    awesome.urls = [
+      'https://example-2.com',
+      'https://example-3.com',
+    ];
+    const saved = await githubRepo.saveAwesome(awesome);
+    expect(saved).toEqual(awesome);
+  });
+
+});
+
+
 describe('GitHub service tests', function () {
+
+  beforeEach(async () => {
+    fetchMock.reset();
+    await githubRepo.removeAll();
+    await websiteRepo.removeAll();
+  });
 
   it('should scrape awesome root', async function () {
     fetchMock.get(
       'https://api.github.com/repos/sindresorhus/awesome/contents/readme',
-      async () => await readFile('./data/awesome-root.md')
+      readFile('./data/awesome-root.md')
     );
     fetchMock.get(
       'https://api.github.com/repos/sindresorhus/awesome-nodejs/contents/readme',
-      async () => await readFile('./data/awesome-nodejs.md')
+      readFile('./data/awesome-nodejs.md')
     );
     fetchMock.get(
       'https://github.com/sindresorhus/awesome-nodejs#readme',
-      async () => await readFile('./data/node-js.html')
+      readFile('./data/node-js.html')
     );
     fetchMock.get(
       'https://reactnative.dev',
-      async () => await readFile('./data/react-native.html')
+      readFile('./data/react-native.html')
     );
 
     await service.scrapeAwesomeRoot();
 
-    const awesomeNodeJs = await repo.getAwesome('sindresorhus/awesome-nodejs');
+    const awesomeNodeJs = await githubRepo.getAwesome('sindresorhus/awesome-nodejs');
     expect(awesomeNodeJs).toMatchObject({
-      url: 'https://github.com/sindresorhus/awesome-nodejs#readme', // TODO: normalize urls
+      url: 'https://github.com/sindresorhus/awesome-nodejs#readme',
       uid: 'sindresorhus/awesome-nodejs',
-      links: [{
-        url: 'https://reactnative.dev',
-        created: expect.any(Date)
-      }],
-      website: {
-        author: null,
-        name: null,
-        type: 'website',
-        url: 'https://glitch.com',
-        title: 'Glitch',
-        image: 'https://glitch.com/edit/images/logos/glitch/social-card@2x.png',
-        keywords: ['developer', 'javascript', 'nodejs', 'editor', 'ide', 'development', 'online', 'web', 'code editor', 'html', 'css'],
-        description: 'Combining automated deployment, instant hosting & collaborative editing, Glitch gets you straight to coding so you can build full-stack web apps, fast',
-      }
+      urls: [
+        'https://reactnative.dev'
+      ],
     });
 
-    const reactNativeWebsite = await repo.getWebsite('https://reactnative.dev/'); // TODO: generate uuid for website object
+    const reactNativeWebsite = await websiteRepo.getWebsiteByUrl('https://reactnative.dev'); // TODO: generate uuid for website object
     expect(reactNativeWebsite).toEqual({
+      uid: expect.any(String),
       author: null,
       name: null,
       type: 'website',
-      url: 'https://reactnative.dev/',
+      url: 'https://reactnative.dev',
       title: 'React Native · A framework for building native apps using React',
       image: 'https://reactnative.dev/img/favicon.ico',
       keywords: [],
       description: 'A framework for building native apps using React',
-      updatedDate: expect.any(Date)
+      updated: expect.any(Date)
     });
   });
 

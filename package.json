@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "rw-test:config": "npm run build && node build/rw-test/cli.js rw-test --config",
-    "rw-test:config:break": "npm run build && node build/rw-test/cli.js rw-test --config --break",
-    "rw-test:all": "npm run build && node build/rw-test/cli.js rw-test",
-    "rw-test:failed": "npm run build && node build/rw-test/cli.js rw-test --failed",
+    "coverage": "jest --coverage",
+    "coverage:web": "npm run coverage && open coverage/lcov-report/index.html",
+    "repo-graph-ddot": "depcruise --exclude \"^node_modules\" --output-type ddot src | dot -T svg > graph.ddot.svg",
+    "repo-graph-dot": "depcruise --exclude \"^node_modules\" --output-type dot src | dot -T svg > graph.dot.svg",
     "build": "npx babel src --out-dir build --ignore \"src/**/*.test.js\""
   },
   "repository": {
@@ -30,6 +30,7 @@
     "fetch-mock": "9.2.1",
     "meow": "6.0.1",
     "node-fetch": "2.6.0",
+    "normalize-url": "5.0.0",
     "remark-parse": "7.0.2",
     "unified": "8.4.2",
     "unist-util-select": "3.0.1",

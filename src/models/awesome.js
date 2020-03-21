@@ -1,16 +1,16 @@
 const unified = require('unified');
 const markdown = require('remark-parse');
+const normalizeUrl = require('normalize-url');
 const { select, selectAll } = require("unist-util-select");
 const Website = require('./website');
-const Link = require('./awesome-link');
 
 class Awesome {
 
   constructor (url) {
-    this.url = url;
+    this.url = normalizeUrl(url);
     this.uid = `${this.getUser()}/${this.getRepository()}`;
     this.website = new Website(url);
-    this.links = [];
+    this.urls = [];
   }
 
   getUser () {
@@ -21,20 +21,20 @@ class Awesome {
     return Awesome.parseUrl(this.url).repo;
   }
 
-  updateLinks (markdown) {
+  updateUrls (markdown) {
     const newLinks = [];
     const urls = Awesome.parseReadme(markdown);
     for (let url of urls) {
-      if (!this.containsLink(url)) {
-        newLinks.push(new Link(url));
+      if (!this.containsUrl(url)) {
+        newLinks.push(url);
       }
     }
-    this.links.push(...newLinks);
+    this.urls.push(...newLinks);
     return newLinks;
   }
 
-  containsLink (url) {
-    for (let link of this.links) {
+  containsUrl (url) {
+    for (let link of this.urls) {
       if (link.url === url) {
         return true;
       }
@@ -61,7 +61,7 @@ class Awesome {
     for (let link of links) {
       const title = select('link > text', link);
       if (title && /http/.test(link.url)) {
-        urls.push(link.url);
+        urls.push(normalizeUrl(link.url));
       }
     }
     return urls;

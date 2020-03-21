@@ -1,7 +1,3 @@
-const { parseReadme } = require("../models/awesome");
-
-
-const titleWithSectionAndSubsections = `
 # <img src="http://i.imgur.com/yy1sACZ.png" width="100px"/> ECMAScript 6 Tools [![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/sindresorhus/awesome)
 
 ## Contents
@@ -24,21 +20,4 @@ const titleWithSectionAndSubsections = `
 ### Platforms
 
 - [Node.js](https://github.com/sindresorhus/awesome-nodejs#readme) - Async non-blocking event-driven JavaScript runtime.
-\t- [Cross-Platform](https://github.com/bcoe/awesome-cross-platform-nodejs#readme)
-
-`;
-
-describe('Should parse readme', function () {
-
-  it('should parse awesome-ecmascript-tools', function () {
-    const links = parseReadme(titleWithSectionAndSubsections);
-    expect(links).toEqual([
-      'https://github.com/babel/babel',
-      'https://github.com/google/traceur-compiler',
-      'https://github.com/babel/gulp-babel',
-      'https://github.com/sindresorhus/awesome-nodejs#readme',
-      'https://github.com/bcoe/awesome-cross-platform-nodejs#readme',
-    ]);
-  });
-
-});
+	- [Cross-Platform](https://github.com/bcoe/awesome-cross-platform-nodejs#readme)

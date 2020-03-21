@@ -1,10 +1,12 @@
 const cheerio = require('cheerio');
+const normalizeUrl = require('normalize-url');
 const uuid = require('uuid').v4;
 
 class Website {
 
-  constructor (link) {
-    this.url = link.url;
+  constructor (url) {
+    this.uid = uuid();
+    this.url = normalizeUrl(url);
     this.title = null;
     this.type = null;
     this.name = null;
@@ -12,7 +14,7 @@ class Website {
     this.description = null;
     this.image = null;
     this.keywords = [];
-    this.updatedDate = null;
+    this.updated = null;
   }
 
   scrape (html) {
@@ -24,8 +26,8 @@ class Website {
     this.image = metadata.image;
     this.keywords = metadata.keywords;
     this.name = metadata.name;
-    this.url = metadata.url;
-    this.updatedDate = new Date();
+    this.url = normalizeUrl(metadata.url) || this.url;
+    this.updated = new Date();
   }
 
   static extractMetadata (html) {
