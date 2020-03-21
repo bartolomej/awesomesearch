@@ -11,6 +11,11 @@ async function removeUser (uid) {
   users[uid] = null;
 }
 
+async function getAllUsers () {
+  const keys = Object.keys(users);
+  return keys.map(k => users[k]);
+}
+
 async function getUser (uid) {
   const object = users[uid];
   if (object) {
@@ -58,6 +63,7 @@ async function getBookmarks (userUid, url = null) {
 module.exports = {
   saveUser,
   getUser,
+  getAllUsers,
   getByEmail,
   removeUser,
   removeAllUsers,

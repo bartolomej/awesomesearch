@@ -25,7 +25,11 @@ async function getMatchedWebsites (regex) {
       rgx.test(o.description) ||
       rgx.test(o.url) ||
       rgx.test(o.name) ||
-      o.keywords && o.keywords.map(e => rgx.test(e)).reduce((p, c) => p || c)
+      (
+        o.keywords &&
+        o.keywords.length > 0 &&
+        o.keywords.map(e => rgx.test(e)).reduce((p, c) => p || c)
+      )
     ) {
       results.push(o);
     }
@@ -47,10 +51,16 @@ async function removeAll () {
   websites = {};
 }
 
+async function getAll () {
+  const keys = Object.keys(websites);
+  return keys.map(k => websites[k]);
+}
+
 module.exports = {
   saveWebsite,
   getWebsite,
   getWebsiteByUrl,
   removeAll,
+  getAll,
   getMatchedWebsites
 };

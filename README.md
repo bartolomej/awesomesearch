@@ -1,6 +1,6 @@
 # Awesome server
 
-Awesome web service that parses and queries [awesome](https://github.com/sindresorhus/awesome) list collections.
+Awesome web service that parses and queries [awesome](https://awesome.com/sindresorhus/awesome) list collections.
 
 ## Scripts
 

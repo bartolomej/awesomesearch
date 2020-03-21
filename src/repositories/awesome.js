@@ -14,6 +14,11 @@ async function getAwesome (uid) {
   }
 }
 
+async function getAll () {
+  const keys = Object.keys(awesome);
+  return keys.map(k => awesome[k]);
+}
+
 async function removeAll () {
   awesome = {};
 }
@@ -21,5 +26,6 @@ async function removeAll () {
 module.exports = {
   saveAwesome,
   getAwesome,
-  removeAll
+  removeAll,
+  getAll
 };

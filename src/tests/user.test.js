@@ -2,7 +2,7 @@ const User = require('../models/user');
 const service = require('../services/user');
 const repo = require('../repositories/user');
 const fetchMock = require('fetch-mock');
-const { readFile } = require("./utils");
+const data = require('./mock-data');
 
 const email = 'joe.doe@gmail.com';
 const username = 'joe';
@@ -102,7 +102,7 @@ describe('User service tests', function () {
   it('should save bookmark given valid website url', async function () {
     fetchMock.get(
       'https://invalid-website.com',
-      readFile('./data/react-native.html')
+      data.reactNativeHtml
     );
 
     const user = await repo.saveUser(new User(username, email));
@@ -132,7 +132,7 @@ describe('User service tests', function () {
   it('should reject bookmark given it already exists', async function () {
     fetchMock.get(
       'https://invalid-website.com',
-      readFile('./data/react-native.html')
+      data.reactNativeHtml
     );
 
     const user = await repo.saveUser(new User(username, email));

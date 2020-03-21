@@ -1,15 +1,13 @@
 const unified = require('unified');
 const markdown = require('remark-parse');
 const normalizeUrl = require('normalize-url');
-const { select, selectAll } = require("unist-util-select");
-const Website = require('./website');
+const { selectAll } = require("unist-util-select");
 
 class Awesome {
 
   constructor (url) {
     this.url = normalizeUrl(url);
     this.uid = `${this.getUser()}/${this.getRepository()}`;
-    this.website = new Website(url);
     this.urls = [];
   }
 
@@ -59,8 +57,7 @@ class Awesome {
     let urls = [];
     const links = selectAll('link', tree);
     for (let link of links) {
-      const title = select('link > text', link);
-      if (title && /http/.test(link.url)) {
+      if (/http/.test(link.url)) {
         urls.push(normalizeUrl(link.url));
       }
     }

@@ -1,4 +1,4 @@
-require('node-fetch');
+global.fetch = require('node-fetch');
 
 async function getRepositoryInfo (id) {
   const url = `https://api.github.com/repos/${id}`;
@@ -15,6 +15,11 @@ async function getRepositoryTopics (id) {
 async function getRepositoryContents (id) {
   const url = `https://api.github.com/repos/${id}/contents`;
   return await request('GET', url);
+}
+
+async function getReadme (id) {
+  const url = `https://api.github.com/repos/${id}/readme`;
+  return await request('GET', url, 'raw');
 }
 
 async function getRepositoryFile (id, path) {
@@ -45,6 +50,7 @@ async function request (method = 'GET', url, type = 'json', body = undefined) {
 module.exports = {
   getRepositoryContents,
   getRepositoryFile,
+  getReadme,
   getRepositoryInfo,
   getRepositoryTopics
 };

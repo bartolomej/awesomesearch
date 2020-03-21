@@ -1,8 +1,8 @@
 const Website = require('../models/website');
 const service = require('../services/website');
 const repo = require('../repositories/website');
-const { readFile } = require('./utils');
 const fetchMock = require('fetch-mock');
+const data = require('./mock-data');
 
 
 describe('Website repository tests', function () {
@@ -40,8 +40,8 @@ describe('Website repository tests', function () {
   });
 
   it('should fetch websites by any attribute given regex', async function () {
-    const website1 = await repo.saveWebsite(getExampleWebsite());
-    const website2 = await repo.saveWebsite(getExampleWebsite());
+    await repo.saveWebsite(getExampleWebsite());
+    await repo.saveWebsite(getExampleWebsite());
     const fetched = await repo.getMatchedWebsites(/te/);
 
     expect(fetched.length).toBe(2);
@@ -52,9 +52,8 @@ describe('Website repository tests', function () {
 
 describe('Website metadata parsing tests', function () {
 
-  it('should parse node-js.html file', async function () {
-    const html = await readFile('./data/node-js.html');
-    const metadata = Website.extractMetadata(html);
+  it('should parse node-js website html file', async function () {
+    const metadata = Website.extractMetadata(data.nodejsHtml);
     expect(metadata).toEqual({
       author: null,
       name: null,
@@ -67,9 +66,8 @@ describe('Website metadata parsing tests', function () {
     })
   });
 
-  it('should parse react-native.html file', async function () {
-    const html = await readFile('./data/react-native.html');
-    const metadata = Website.extractMetadata(html);
+  it('should parse react-native website html', async function () {
+    const metadata = Website.extractMetadata(data.reactNativeHtml);
     expect(metadata).toEqual({
       author: null,
       name: null,
@@ -79,21 +77,6 @@ describe('Website metadata parsing tests', function () {
       image: 'https://reactnative.dev/img/favicon.ico',
       keywords: [],
       description: 'A framework for building native apps using React',
-    })
-  });
-
-  it('should parse carbon-github.html file', async function () {
-    const html = await readFile('./data/carbon-github.html');
-    const metadata = Website.extractMetadata(html);
-    expect(metadata).toEqual({
-      author: null,
-      name: 'GitHub',
-      type: 'object',
-      url: 'https://github.com/carbon-app/carbon',
-      title: 'carbon-app/carbon',
-      image: 'https://repository-images.githubusercontent.com/94498635/cb156000-7d42-11e9-8e99-4dcd0e123b28',
-      keywords: [],
-      description: '🎨 Create and share beautiful images of your source code - carbon-app/carbon',
     })
   });
 
@@ -107,7 +90,7 @@ describe('Website service tests', function () {
   it('should scrape website given url', async function () {
     fetchMock.get(
       'https://reactnative.dev',
-      readFile('./data/react-native.html')
+      data.reactNativeHtml
     );
 
     const website = await service.scrapeUrl('https://reactnative.dev/');
@@ -136,7 +119,7 @@ describe('Website service tests', function () {
     );
     fetchMock.get(
       'https://some-website-2.com',
-      readFile('./data/react-native.html')
+      data.reactNativeHtml
     );
 
     const websites = await service.scrapeUrls(['https://some-website-1.com', 'https://some-website-2.com']);

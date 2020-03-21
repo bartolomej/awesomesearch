@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
+    "start": "node ./src/index.js",
+    "start:dev": "NODE_ENV=development nodemon ./src/index.js",
     "coverage": "jest --coverage",
     "coverage:web": "npm run coverage && open coverage/lcov-report/index.html",
     "repo-graph-ddot": "depcruise --exclude \"^node_modules\" --output-type ddot src | dot -T svg > graph.ddot.svg",
@@ -27,13 +29,19 @@
   "dependencies": {
     "chalk": "3.0.0",
     "cheerio": "1.0.0-rc.3",
+    "cors": "2.8.5",
+    "envalid": "6.0.1",
+    "express": "4.17.1",
     "fetch-mock": "9.2.1",
     "meow": "6.0.1",
+    "morgan": "1.10.0",
     "node-fetch": "2.6.0",
     "normalize-url": "5.0.0",
     "remark-parse": "7.0.2",
     "unified": "8.4.2",
     "unist-util-select": "3.0.1",
-    "uuid": "latest"
+    "uuid": "latest",
+    "winston": "3.2.1",
+    "colors": "latest"
   }
 }
