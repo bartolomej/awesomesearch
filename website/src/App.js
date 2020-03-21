@@ -1,26 +1,88 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from 'react';
+import styled from 'styled-components';
+import SearchBar from "./components/SearchBar";
+import ResultItem from "./components/ResultItem";
 
-function App() {
+
+const suggestions = [
+  { text: 'Linked list...' },
+  { text: 'Awesome list...' },
+  { text: 'Some list...' },
+];
+
+const results = [
+  { title: 'Awesome Node.js', description: 'All about node js development...' },
+  { title: 'Awesome Android', description: 'All about Android....' },
+  { title: 'Awesome IOS', description: 'All about IOS...' },
+  { title: 'Awesome React', description: 'All about React.js' },
+];
+
+export default function App () {
+  const [selectedItem, setSelectedItem] = useState(null);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container>
+      <Header>
+        <Wrapper>
+          <Title>Awesome Search</Title>
+          <SearchBar
+            value={selectedItem && selectedItem.text}
+            suggestions={suggestions}
+            onSuggestionClick={setSelectedItem}
+            placeholder={"Enter search term..."}
+            onChange={console.log}
+          />
+        </Wrapper>
+      </Header>
+      <Body>
+        {results.map((r, i) => (
+          <ResultItem
+            key={i}
+            title={r.title}
+            description={r.description}
+          />
+        ))}
+      </Body>
+    </Container>
   );
 }
 
-export default App;
+const Container = styled.div`
+  height: 100vh;
+  flex: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const Header = styled.header`
+  flex: 1;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: cornflowerblue;
+`;
+
+const Body = styled.div`
+  flex: 3;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 20px 0;
+  width: 60vw;
+`;
+
+const Wrapper = styled.div`
+  width: 60%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const Title = styled.h1`
+  color: white;
+  font-size: 25px;
+`;
