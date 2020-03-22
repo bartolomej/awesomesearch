@@ -35,6 +35,14 @@ describe('Awesome service tests', function () {
       data.awesomeRootMarkdown
     );
     fetchMock.get(
+      'https://api.github.com/repos/sindresorhus/awesome-nodejs',
+      data.nodeJsInfo
+    );
+    fetchMock.get(
+      'https://api.github.com/repos/sindresorhus/awesome-nodejs/topics',
+      data.nodeJsTopics
+    );
+    fetchMock.get(
       'https://api.github.com/repos/sindresorhus/awesome-nodejs/readme',
       data.awesomeNodejsMarkdown
     );
@@ -59,9 +67,18 @@ describe('Awesome service tests', function () {
     ]);
 
     const awesomeNodeJs = await githubRepo.getAwesome('sindresorhus/awesome-nodejs');
-    expect(awesomeNodeJs).toMatchObject({
+    expect(awesomeNodeJs).toEqual({
       url: 'https://github.com/sindresorhus/awesome-nodejs#readme',
       uid: 'sindresorhus/awesome-nodejs',
+      description: ":zap: Delightful Node.js packages and resources",
+      avatar: "https://avatars1.githubusercontent.com/u/170270?v=4",
+      forks: 4281,
+      homepage: "https://node.cool",
+      stars: 34961,
+      topics: [
+        "awesome-list",
+        "nodejs",
+      ],
       urls: [
         'https://reactnative.dev',
         "https://reactjs.org",

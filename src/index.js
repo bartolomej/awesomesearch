@@ -32,6 +32,14 @@ function setupDevEnvironment () {
     data.awesomeRootMarkdown
   );
   fetchMock.get(
+    'https://api.github.com/repos/sindresorhus/awesome-nodejs',
+    data.nodeJsInfo
+  );
+  fetchMock.get(
+    'https://api.github.com/repos/sindresorhus/awesome-nodejs/topics',
+    data.nodeJsTopics
+  );
+  fetchMock.get(
     'https://api.github.com/repos/sindresorhus/awesome-nodejs/readme',
     data.awesomeNodejsMarkdown
   );
@@ -43,4 +51,5 @@ function setupDevEnvironment () {
   fetchMock.get('https://reactjs.org/', data.react);
   fetchMock.get('https://flutter.dev/', data.flutterHtml);
   fetchMock.get('https://kotlinlang.org/', data.kotlinHtml);
+  fetchMock.mock('*', 404);
 }

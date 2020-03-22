@@ -14,7 +14,7 @@ async function getWebsite (uid) {
   }
 }
 
-async function getMatchedWebsites (regex) {
+async function getMatched (regex) {
   const results = [];
   const keys = Object.keys(websites);
   for (const k of keys) {
@@ -62,5 +62,5 @@ module.exports = {
   getWebsiteByUrl,
   removeAll,
   getAll,
-  getMatchedWebsites
+  getMatched
 };

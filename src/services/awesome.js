@@ -15,10 +15,15 @@ async function scrapeAwesomeRoot () {
 }
 
 async function updateAwesome (uid) {
-  // TODO: fetch more repo metadata (topics,...)
+  // fetch repo info via GitHub API
+  const info = await Promise.all([
+    github.getRepositoryTopics(uid),
+    github.getRepositoryInfo(uid),
+    github.getReadme(uid)
+  ]);
   const awesome = await repo.getAwesome(uid);
-  const readme = await github.getReadme(awesome.uid);
-  const newUrls = awesome.updateUrls(readme);
+  awesome.setInfo({ topics: info[0], ...info[1] });
+  const newUrls = awesome.updateUrls(info[2]);
   await repo.saveAwesome(awesome);
   return await website.scrapeUrls(newUrls);
 }

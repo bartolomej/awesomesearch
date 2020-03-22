@@ -14,6 +14,27 @@ async function getAwesome (uid) {
   }
 }
 
+async function getMatched (regex) {
+  const results = [];
+  const keys = Object.keys(awesome);
+  for (const k of keys) {
+    const o = awesome[k];
+    const rgx = new RegExp(regex);
+    if (
+      rgx.test(o.url) ||
+      rgx.test(o.description) ||
+      (
+        o.topics &&
+        o.topics.length > 0 &&
+        o.topics.map(e => rgx.test(e)).reduce((p, c) => p || c)
+      )
+    ) {
+      results.push(o);
+    }
+  }
+  return results;
+}
+
 async function getAll () {
   const keys = Object.keys(awesome);
   return keys.map(k => awesome[k]);
@@ -27,5 +48,6 @@ module.exports = {
   saveAwesome,
   getAwesome,
   removeAll,
+  getMatched,
   getAll
 };

@@ -7,8 +7,23 @@ class Awesome {
 
   constructor (url) {
     this.url = normalizeUrl(url);
+    this.avatar = null;
+    this.homepage = null;
+    this.description = null;
+    this.stars = null;
+    this.forks = null;
+    this.topics = null;
     this.uid = `${this.getUser()}/${this.getRepository()}`;
     this.urls = [];
+  }
+
+  setInfo (attributes) {
+    this.description = attributes.description || null;
+    this.avatar = attributes.avatar || null;
+    this.stars = attributes.stars || null;
+    this.topics = attributes.topics || null;
+    this.forks = attributes.forks || null;
+    this.homepage = attributes.homepage || null;
   }
 
   getUser () {

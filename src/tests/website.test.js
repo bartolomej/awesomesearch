@@ -42,7 +42,7 @@ describe('Website repository tests', function () {
   it('should fetch websites by any attribute given regex', async function () {
     await repo.saveWebsite(getExampleWebsite());
     await repo.saveWebsite(getExampleWebsite());
-    const fetched = await repo.getMatchedWebsites(/te/);
+    const fetched = await repo.getMatched(/te/);
 
     expect(fetched.length).toBe(2);
   });
