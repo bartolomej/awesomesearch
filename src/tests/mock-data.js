@@ -179,7 +179,7 @@ module.exports.nodejsHtml = `
         <meta name="description"
               content="Combining automated deployment, instant hosting &amp; collaborative editing, Glitch gets you straight to coding so you can build full-stack web apps, fast">
         <meta name="keywords"
-              content="developer, javascript, nodejs, editor, ide, development, online, web, code editor, html, css">
+              content="developer, javascript, nodejs,  editor, ide , development, online, web, code editor, html, css">
         <meta name="og:type" content="website">
         <meta name="og:url" content="https://glitch.com">
         <meta name="og:title" content="Glitch">

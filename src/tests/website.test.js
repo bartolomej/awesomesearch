@@ -52,7 +52,21 @@ describe('Website repository tests', function () {
 
 describe('Website metadata parsing tests', function () {
 
-  it('should parse node-js website html file', async function () {
+  it('should parse flutter website html', function () {
+    const metadata = Website.extractMetadata(data.flutterHtml);
+    expect(metadata).toEqual({
+      author: null,
+      description: "Flutter is Google's UI toolkit for crafting beautiful, natively compiled applications for mobile, web, and desktop from a single codebase.  Flutter works with existing code, is used by developers and organizations around the world, and is free and open source.",
+      image: "https://flutter.dev/images/flutter-logo-sharing.png",
+      keywords: [],
+      name: null,
+      title: "Flutter - Beautiful native apps in record time",
+      type: null,
+      url: "https://flutter.dev/"
+    })
+  });
+
+  it('should parse node-js website html', async function () {
     const metadata = Website.extractMetadata(data.nodejsHtml);
     expect(metadata).toEqual({
       author: null,

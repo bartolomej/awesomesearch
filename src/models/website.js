@@ -50,13 +50,18 @@ class Website {
     let name = getMetaTag('site_name');
     let description = getMetaTag('description');
     let author = getMetaTag('author');
-    let keywords = getMetaTag('keywords') ? getMetaTag('keywords').split(',').map(k => k.trim()) : [];
     let image =
       getMetaTag('image') ||
       $('link[rel=icon]').attr('href') ||
       $('link[rel="shortcut icon"]').attr('href') ||
       $('link[rel=shortcut-icon]').attr('href') ||
       $('link[rel=mack-icon]').attr('href');
+    let keywords = getMetaTag('keywords')
+      ? getMetaTag('keywords')
+        .split(',')
+        .map(k => k.trim())
+        .filter(value => value.length > 0)
+      : [];
 
     if (isRelativeUrl(image)) {
       image = parseRelativeUrl(url, image);
