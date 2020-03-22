@@ -1,24 +1,25 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import SearchBar from "./components/SearchBar";
 import ResultItem from "./components/ResultItem";
 
 
-const suggestions = [
-  { text: 'Linked list...' },
-  { text: 'Awesome list...' },
-  { text: 'Some list...' },
-];
-
-const results = [
-  { title: 'Awesome Node.js', description: 'All about node js development...' },
-  { title: 'Awesome Android', description: 'All about Android....' },
-  { title: 'Awesome IOS', description: 'All about IOS...' },
-  { title: 'Awesome React', description: 'All about React.js' },
-];
-
 export default function App () {
+  const [loading, setLoading] = useState(false);
+  const [results, setResults] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
+
+  async function fetchResults (searchTerm) {
+    setLoading(true);
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_HOST}/search?q=${searchTerm}`);
+      const results = await response.json();
+      setResults([...results, ...results, ...results ]);
+    } catch (e) {
+      console.log(e);
+    }
+    setLoading(false);
+  }
 
   return (
     <Container>
@@ -27,10 +28,10 @@ export default function App () {
           <Title>Awesome Search</Title>
           <SearchBar
             value={selectedItem && selectedItem.text}
-            suggestions={suggestions}
+            suggestions={[]}
             onSuggestionClick={setSelectedItem}
             placeholder={"Enter search term..."}
-            onChange={console.log}
+            onChange={fetchResults}
           />
         </Wrapper>
       </Header>
@@ -38,7 +39,11 @@ export default function App () {
         {results.map((r, i) => (
           <ResultItem
             key={i}
+            type={r.type}
+            url={r.url}
+            image={r.image}
             title={r.title}
+            tags={r.tags}
             description={r.description}
           />
         ))}
@@ -49,29 +54,31 @@ export default function App () {
 
 const Container = styled.div`
   height: 100vh;
-  flex: 5;
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
 
 const Header = styled.header`
-  flex: 1;
+  height: 30vh;
   width: 100vw;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   background: cornflowerblue;
+  position: fixed;
 `;
 
 const Body = styled.div`
-  flex: 3;
   display: flex;
   align-items: center;
   flex-direction: column;
-  padding: 20px 0;
-  width: 60vw;
+  height: 70vh;
+  width: 100vw;
+  position: fixed;
+  bottom: 0;
+  overflow-y: scroll;
 `;
 
 const Wrapper = styled.div`
