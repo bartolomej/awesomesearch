@@ -4,11 +4,11 @@ import Tag from "./Tag";
 import { LIGHTEST, PRIMARY } from "../colors";
 
 
-export default function ResultItem ({ type, title, description, tags, url, image }) {
+export default function ResultItem ({ styles, type, title, description, tags, url, image }) {
   const maxDescriptionLength = 70;
 
   return (
-    <Container href={url} target="_blank">
+    <Container styles={styles} href={url} target="_blank">
       <LeftWrapper>
         <ImageWrapper>
           <Image src={image}/>
@@ -46,7 +46,9 @@ const Container = styled.a`
   }
   @media (max-width: 500px) {
     flex-direction: column;
+    margin: 20px 0;
   }
+  ${props => props.styles}
 `;
 
 const LeftWrapper = styled.div`
@@ -57,6 +59,7 @@ const LeftWrapper = styled.div`
   @media (max-width: 500px) {
     flex-direction: column;
     align-items: center;
+    margin-bottom: 10px;
   }
 `;
 
@@ -89,6 +92,9 @@ const ImageWrapper = styled.div`
   width: 100px;
   display: flex;
   justify-content: center;
+  @media (max-width: 500px) {
+    margin-bottom: 10px;
+  }
 `;
 
 const TextWrapper = styled.div`

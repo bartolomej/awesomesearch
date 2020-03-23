@@ -8,27 +8,28 @@ import { ReactComponent as unicornIcon } from "./assets/unicorn.svg";
 import { ReactComponent as errorIcon } from "./assets/cancel.svg";
 import { PRIMARY, SECONDARY, TEXT_LIGHT } from "./colors";
 import Loader from "react-spinners/BeatLoader";
+import Search from "./search";
 
 
+const search = new Search();
 
 export default function App () {
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  async function fetchResults (searchTerm) {
+  async function fetchResults (query) {
     try {
       setLoading(true);
-      setError(null);
-      const response = await fetch(`${process.env.REACT_APP_API_HOST}/search?q=${searchTerm}`);
-      const results = await response.json();
-      setResults(results);
-      setLoading(false);
+      const results = await search.run(query);
+      if (results !== null) {
+        setResults(results);
+      }
     } catch (e) {
       setError(e);
-      setLoading(false);
       console.log(e);
     }
+    setLoading(false);
   }
 
   return (
@@ -43,8 +44,9 @@ export default function App () {
           </AwesomeLink>
           <Title>Awesome Search</Title>
           <SearchBar
+            results={results.length}
             placeholder={"Enter search term..."}
-            onChange={fetchResults}
+            onChange={query => fetchResults(query)}
           />
         </HeaderWrapper>
       </Header>
@@ -81,6 +83,7 @@ export default function App () {
             title={r.title}
             tags={r.tags}
             description={r.description}
+            styles={i === 0 ? 'margin-top: 50px !important;' : ''}
           />
         ))}
       </Body>
@@ -89,30 +92,32 @@ export default function App () {
 }
 
 const Container = styled.div`
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   background: rgb(255,255,255);
-  background: linear-gradient(180deg, rgba(255,255,255,1) 20%, rgba(252,96,168,0.25) 100%);
+  background: linear-gradient(180deg, rgba(255,255,255,1) 40%, rgba(252,96,168,0.25) 100%);
 `;
 
 const Header = styled.header`
-  height: 30vh;
+  height: 30%;
   width: 100vw;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   position: fixed;
+  box-shadow: 0 0 20px 40px #FFFF;
+  z-index: 10;
 `;
 
 const Body = styled.div`
+  height: 70%;
   display: flex;
   align-items: center;
   flex-direction: column;
   margin-top: 10px;
-  height: 70vh;
   width: 100vw;
   position: fixed;
   bottom: 0;
@@ -128,12 +133,12 @@ const HeaderWrapper = styled.div`
   align-items: center;
   justify-content: space-evenly;
   @media (max-width: 1400px) {
-    width: 50%;
+    width: 40%;
   }
-  @media (max-width: 800px) {
-    width: 80%;
+  @media (max-width: 1000px) {
+    width: 70%;
   }
-  @media (max-width: 500px) {
+  @media (max-width: 600px) {
     width: 90%;
   }
 `;
@@ -178,18 +183,10 @@ const GitHubLink = styled.a`
 `;
 
 const AwesomeLink = styled.a`
-  animation: wiggle 1s infinite;
-  animation-play-state: paused; 
+  transition: all 1s ease-in-out;
   &:hover {
-    animation-play-state: running;
+    transform: scale(1.2);
   }
-  @keyframes wiggle {
-    0% { transform: rotate(0deg); }
-   50% { transform: rotate(0deg); }
-   55% { transform: rotate(5deg) scale(1.1) }
-   65% { transform: rotate(-5deg) scale(1.2); }
-  70% { transform: rotate(0deg); }
-}
 `;
 
 
@@ -197,7 +194,7 @@ const AwesomeLink = styled.a`
 
 // https://codesandbox.io/s/v303jqkyk7?from-embed
 const AwesomeLogo = styled(awesomeIcon)`
-  height: 5rem;
+  height: 6rem;
   display: inline-block;
   margin: 0 auto;
   stroke: ${PRIMARY};
