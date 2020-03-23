@@ -20,9 +20,9 @@ class Awesome {
   setInfo (attributes) {
     this.description = attributes.description || null;
     this.avatar = attributes.avatar || null;
-    this.stars = attributes.stars || null;
+    this.stars = attributes.stars;
     this.topics = attributes.topics || null;
-    this.forks = attributes.forks || null;
+    this.forks = attributes.forks;
     this.homepage = attributes.homepage || null;
   }
 
@@ -67,16 +67,30 @@ class Awesome {
     }
   }
 
-  static parseReadme (text) {
+  static getUidFromUrl (url) {
+    const parsed = this.parseUrl(url);
+    return `${parsed.user}/${parsed.repo}`;
+  }
+
+  static parseReadme (text, isRoot = false) {
     const tree = unified().use(markdown).parse(text);
     let urls = [];
     const links = selectAll('link', tree);
     for (let link of links) {
-      if (/http/.test(link.url)) {
+      if (this.isValidUrl(link.url, isRoot)) {
         urls.push(normalizeUrl(link.url));
       }
     }
     return urls;
+  }
+
+  // https://stackoverflow.com/questions/2219830/regular-expression-to-find-two-strings-anywhere-in-input
+  static isValidUrl (url, isRoot = false) {
+    return (
+      /http/.test(url) &&
+      (!/^.*?\bgithub\b.*?\bawesome\b.*?$/m.test(url) || isRoot) &&
+      !/creativecommons.org/.test(url)
+    )
   }
 
 }

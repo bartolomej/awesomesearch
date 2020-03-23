@@ -125,19 +125,19 @@ describe('Website service tests', function () {
     });
   });
 
-  it('should scrape 1 website and return 1 error given array of urls', async function () {
+  it('should throw error given invalid url', async function () {
     fetchMock.get(
       'https://some-website-1.com', {
         throws: new Error('request to https://some-website.com failed, reason: getaddrinfo ENOTFOUND some-website.com')
       }
     );
-    fetchMock.get(
-      'https://some-website-2.com',
-      data.reactNativeHtml
-    );
 
-    const websites = await service.scrapeUrls(['https://some-website-1.com', 'https://some-website-2.com']);
-    expect(websites).toEqual([new Error('Website not found'),  expect.any(Object)])
+    try {
+      await service.scrapeUrl('https://some-website-1.com');
+      expect(1).toBe(2);
+    } catch (e) {
+      expect(e).toEqual(new Error('Website not found'));
+    }
   });
 
 });

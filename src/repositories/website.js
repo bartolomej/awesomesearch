@@ -1,3 +1,5 @@
+const normalizeUrl = require('normalize-url');
+
 let websites = {};
 
 async function saveWebsite (website) {
@@ -38,13 +40,14 @@ async function getMatched (regex) {
 }
 
 async function getWebsiteByUrl (url) {
+  const normalizedUrl = normalizeUrl(url);
   const keys = Object.keys(websites);
   for (const k of keys) {
-    if (websites[k].url === url) {
+    if (websites[k].url === normalizedUrl) {
       return websites[k];
     }
   }
-  throw new Error('Website not found');
+  throw new Error('Entity not found');
 }
 
 async function removeAll () {

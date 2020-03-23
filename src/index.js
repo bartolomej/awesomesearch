@@ -9,7 +9,7 @@ const routes = [
 
 async function init () {
   require('./server')(routes);
-  if (!env.isProduction) {
+  if (!env.isProduction && env.TEST_DATA) {
     setupDevEnvironment();
   }
 }

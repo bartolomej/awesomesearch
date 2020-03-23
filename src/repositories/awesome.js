@@ -10,7 +10,7 @@ async function getAwesome (uid) {
   if (object) {
     return object;
   } else {
-    throw new Error('Awesome not found');
+    throw new Error('Entity not found');
   }
 }
 

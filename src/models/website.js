@@ -5,6 +5,9 @@ const uuid = require('uuid').v4;
 class Website {
 
   constructor (url) {
+    if (typeof url !== 'string') {
+      throw new Error(`Website url is not string`);
+    }
     this.uid = uuid();
     this.url = normalizeUrl(url);
     this.title = null;
@@ -26,7 +29,7 @@ class Website {
     this.image = metadata.image;
     this.keywords = metadata.keywords;
     this.name = metadata.name;
-    this.url = normalizeUrl(metadata.url) || this.url;
+    this.url = metadata.url ? normalizeUrl(metadata.url) : this.url;
     this.updated = new Date();
   }
 

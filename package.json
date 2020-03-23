@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "start": "node ./src/index.js",
-    "start:dev": "NODE_ENV=development nodemon ./src/index.js",
+    "start": "NODE_ENV=production node ./src/index.js",
+    "start:dev": "NODE_ENV=development  nodemon ./src/index.js",
+    "start:dev:test": "NODE_ENV=development TEST_DATA=true nodemon ./src/index.js",
     "coverage": "jest --coverage",
     "coverage:web": "npm run coverage && open coverage/lcov-report/index.html",
     "repo-graph-ddot": "depcruise --exclude \"^node_modules\" --output-type ddot src | dot -T svg > graph.ddot.svg",

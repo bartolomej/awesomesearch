@@ -121,6 +121,14 @@ describe('Awesome model tests', function () {
     expect(awesome.url).toEqual('https://github.com/jthegedus/awesome-firebase#readme');
   });
 
+  it('should validate url on child awesome repo', function () {
+    expect(Awesome.isValidUrl('https://creativecommons.org/publicdomain/zero/1.0 ', true)).not.toBeTruthy();
+    expect(Awesome.isValidUrl('https://creativecommons.org/publicdomain/zero/1.0 ', false)).not.toBeTruthy();
+    expect(Awesome.isValidUrl('https://github.com/jthegedus/awesome-firebase/#readme', false)).not.toBeTruthy();
+    expect(Awesome.isValidUrl('https://github.com/someuser/firebase/#readme', false)).toBeTruthy();
+    expect(Awesome.isValidUrl('https://github.com/jthegedus/awesome-firebase/#readme', true)).toBeTruthy();
+  });
+
   it('should parse awesome-ecmascript-tools', async function () {
     const readme = require('./mock-data').awesomeNodejsMarkdown;
     const links = Awesome.parseReadme(readme);

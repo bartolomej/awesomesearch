@@ -12,14 +12,14 @@ module.exports = function (service) {
 
 function developmentLogger (service) {
   return {
-    error: function (message, error) {
-      console.log(colors.red(message, error));
+    error: function (message) {
+      console.log(colors.red(message));
     },
-    debug: function (message, error) {
-      console.log(colors.green(message, error));
+    debug: function (message) {
+      console.log(colors.green(message));
     },
-    info: function (message, error) {
-      console.log(message, error);
+    info: function (message) {
+      console.log(message);
     }
   }
 }
