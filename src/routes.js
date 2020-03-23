@@ -31,8 +31,8 @@ router.post('/awesome', async (req, res, next) => {
     }
     awesomeService.updateAwesome(req.query.url)
       .then(() => console.log('Awesome updated!'))
-      .catch(() => console.log('Awesome update failed!'));
-    res.send('Started awesome job ...');
+      .catch((e) => console.log('Awesome update failed!', e));
+    res.send({ status: 'Job started' });
   } catch (e) {
     next(e);
   }

@@ -28,18 +28,24 @@ async function updateAwesome (url) {
     }
   }
   // fetch repo info via GitHub API
-  const info = await execute(
-    `GitHub API call to ${uid}`,
-    [
-      github.getRepositoryTopics(uid),
-      github.getRepositoryInfo(uid),
-      github.getReadme(uid)
-    ]
-  );
-  awesome.setInfo({ topics: info[0], ...info[1] });
-  await repo.saveAwesome(awesome);
+  let githubMeta;
+  try {
+    githubMeta = await execute(
+      `GitHub API call to ${uid}`, [
+        github.getRepositoryTopics(uid),
+        github.getRepositoryInfo(uid),
+        github.getReadme(uid)
+      ]
+    );
+  } catch (e) {
+    logger.info(`GitHub API calls failed`, e);
+    throw e;
+  }
+  awesome.setInfo({ topics: githubMeta[0], ...githubMeta[1] });
   // scrape website urls found in readme
-  const urls = awesome.updateUrls(info[2]);
+  const urls = awesome.updateUrls(githubMeta[2]);
+  logger.info(`Found ${urls.length} urls in ${uid}`);
+  await repo.saveAwesome(awesome);
   // returns failed websites error
   return await execute(
     `Website scraping for ${uid}`,

@@ -2,6 +2,7 @@ const unified = require('unified');
 const markdown = require('remark-parse');
 const normalizeUrl = require('normalize-url');
 const { selectAll } = require("unist-util-select");
+const logger = require('../logger')('awesome-model');
 
 class Awesome {
 
@@ -35,24 +36,8 @@ class Awesome {
   }
 
   updateUrls (markdown) {
-    const newLinks = [];
-    const urls = Awesome.parseReadme(markdown);
-    for (let url of urls) {
-      if (!this.containsUrl(url)) {
-        newLinks.push(url);
-      }
-    }
-    this.urls.push(...newLinks);
-    return newLinks;
-  }
-
-  containsUrl (url) {
-    for (let link of this.urls) {
-      if (link.url === url) {
-        return true;
-      }
-    }
-    return false;
+    this.urls = Awesome.parseReadme(markdown);
+    return this.urls;
   }
 
   static parseUrl (url) {
@@ -78,7 +63,11 @@ class Awesome {
     const links = selectAll('link', tree);
     for (let link of links) {
       if (this.isValidUrl(link.url, isRoot)) {
-        urls.push(normalizeUrl(link.url));
+        try {
+          urls.push(normalizeUrl(link.url));
+        } catch (e) {
+          logger.info(`Invalid url ${link.url} on normalization`);
+        }
       }
     }
     return urls;
@@ -87,7 +76,7 @@ class Awesome {
   // https://stackoverflow.com/questions/2219830/regular-expression-to-find-two-strings-anywhere-in-input
   static isValidUrl (url, isRoot = false) {
     return (
-      /http/.test(url) &&
+      /^http/.test(url) &&
       (!/^.*?\bgithub\b.*?\bawesome\b.*?$/m.test(url) || isRoot) &&
       !/creativecommons.org/.test(url)
     )

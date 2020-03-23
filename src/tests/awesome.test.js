@@ -122,6 +122,7 @@ describe('Awesome model tests', function () {
   });
 
   it('should validate url on child awesome repo', function () {
+    expect(Awesome.isValidUrl('#http')).not.toBeTruthy();
     expect(Awesome.isValidUrl('https://creativecommons.org/publicdomain/zero/1.0 ', true)).not.toBeTruthy();
     expect(Awesome.isValidUrl('https://creativecommons.org/publicdomain/zero/1.0 ', false)).not.toBeTruthy();
     expect(Awesome.isValidUrl('https://github.com/jthegedus/awesome-firebase/#readme', false)).not.toBeTruthy();

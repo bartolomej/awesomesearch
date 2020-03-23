@@ -12,7 +12,8 @@ async function scrapeUrl (url) {
     if (e.message === 'Entity not found') {
       website = new Website(url);
     } else {
-      throw new Error('Unexpected error');
+      logger.error(`Unexpected database error`, e);
+      throw new Error('Unexpected database error');
     }
   }
   const html = await getHtml(url);
@@ -28,7 +29,7 @@ async function getHtml (url) {
     if (/getaddrinfo ENOTFOUND/.test(e.message)) {
       throw new Error('Website not found');
     } else {
-      logger.info(`Unexpected website fetch error`, e);
+      logger.info(`Website ${url} fetch failed`, e);
       throw e;
     }
   }
