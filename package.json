@@ -2,7 +2,10 @@
   "name": "awesome-server",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
+  "engines": {
+    "node": ">=13.11"
+  },
   "scripts": {
     "test": "jest",
     "start": "NODE_ENV=production node ./src/index.js",
@@ -12,8 +15,7 @@
     "coverage:web": "npm run coverage && open coverage/lcov-report/index.html",
     "repo-graph-ddot": "depcruise --exclude \"^node_modules\" --output-type ddot src | dot -T svg > graph.ddot.svg",
     "repo-graph-dot": "depcruise --exclude \"^node_modules\" --output-type dot src | dot -T svg > graph.dot.svg",
-    "count-lines": "find ./src -name '*.js' -not -path \"./src/tests*\" | xargs wc -l | sort -nr",
-    "build": "npx babel src --out-dir build --ignore \"src/**/*.test.js\""
+    "count-lines": "find ./src -name '*.js' -not -path \"./src/tests*\" | xargs wc -l | sort -nr"
   },
   "repository": {
     "type": "git",
