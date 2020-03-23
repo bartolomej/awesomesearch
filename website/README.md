@@ -4,6 +4,8 @@ Search awesome list collection to discover new resources.
 
 
 ## Scripts
+Define API gateway address of [awesome-service](https://github.com/bartolomej/awesome-service) in
+`REACT_APP_API_HOST` variable in `.env` file before running.
 - `npm start` - start development build
 - `npm run build` - build for production
 

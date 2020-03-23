@@ -25,7 +25,7 @@ export default function ResultItem ({ type, title, description, tags, url, image
         </TextWrapper>
       </LeftWrapper>
       <RightWrapper>
-        {tags.slice(0, 6).map(t => <Tag key={t} text={t}/>)}
+        {tags.slice(0, window.isMobile() ? 2 : 6).map(t => <Tag key={t} text={t}/>)}
       </RightWrapper>
     </Container>
   )
@@ -38,14 +38,15 @@ const Container = styled.a`
   padding: 10px;
   width: 80%;
   outline: none;
-  background: white;
   text-decoration: none;
   transition: all 0.2s ease-out;
   &:hover {
     background: ${LIGHTEST};
     transform: scale(1.01);
   }
-  ${props => props.styles}
+  @media (max-width: 500px) {
+    flex-direction: column;
+  }
 `;
 
 const LeftWrapper = styled.div`
@@ -53,6 +54,10 @@ const LeftWrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
+  @media (max-width: 500px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 const RightWrapper = styled.div`
@@ -63,6 +68,9 @@ const RightWrapper = styled.div`
   align-items: center;
   padding-right: 10px;
   flex-wrap: wrap;
+  @media (max-width: 500px) {
+    justify-content: center;
+  }
 `;
 
 const Title = styled.span`
@@ -87,6 +95,9 @@ const TextWrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 40px;
+  @media (max-width: 500px) {
+    margin: 0;
+  }
 `;
 
 const Image = styled.img`

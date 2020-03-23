@@ -33,12 +33,12 @@ export default function App () {
 
   return (
     <Container>
-      <GitHubLink href="https://github.com/bartolomej/awesome-api">
+      <GitHubLink target="_blank" href="https://github.com/bartolomej/awesome-api">
         <GitHubLogo/>
       </GitHubLink>
       <Header>
-        <Wrapper>
-          <AwesomeLink href="https://github.com/sindresorhus/awesome#readme">
+        <HeaderWrapper>
+          <AwesomeLink target="_blank" href="https://github.com/sindresorhus/awesome#readme">
             <AwesomeLogo/>
           </AwesomeLink>
           <Title>Awesome Search</Title>
@@ -46,7 +46,7 @@ export default function App () {
             placeholder={"Enter search term..."}
             onChange={fetchResults}
           />
-        </Wrapper>
+        </HeaderWrapper>
       </Header>
       <Body>
         {loading && (
@@ -93,6 +93,8 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  background: rgb(255,255,255);
+  background: linear-gradient(180deg, rgba(255,255,255,1) 20%, rgba(252,96,168,0.25) 100%);
 `;
 
 const Header = styled.header`
@@ -103,8 +105,6 @@ const Header = styled.header`
   align-items: center;
   justify-content: center;
   position: fixed;
-  background: rgb(255,255,255);
-  background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(252,96,168,0.5732668067226891) 100%);
 `;
 
 const Body = styled.div`
@@ -119,14 +119,23 @@ const Body = styled.div`
   overflow-y: scroll;
 `;
 
-const Wrapper = styled.div`
-  width: 40%;
+const HeaderWrapper = styled.div`
+  width: 30%;
   height: 100%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
+  @media (max-width: 1400px) {
+    width: 50%;
+  }
+  @media (max-width: 800px) {
+    width: 80%;
+  }
+  @media (max-width: 500px) {
+    width: 90%;
+  }
 `;
 
 const MessageWrapper = styled.div`
@@ -135,6 +144,7 @@ const MessageWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  text-align: center;
 `;
 
 const MessageText = styled.span`
@@ -146,6 +156,9 @@ const MessageText = styled.span`
 const Title = styled.h1`
   color: ${PRIMARY};
   font-size: 40px;
+  @media (max-width: 500px) {
+    font-size: 25px;
+  }
 `;
 
 
@@ -203,14 +216,18 @@ const UnicornLogo = styled(unicornIcon)`
   height: 10rem;
   width: 10rem;
   display: inline-block;
-  opacity: 0.4;
+  opacity: 0.7;
   margin: 0 auto 20px;
+  @media (max-width: 500px) {
+    height: 6rem;
+    width: 6rem;
+  }
 `;
 
 const ErrorLogo = styled(errorIcon)`
   height: 10rem;
   width: 10rem;
   display: inline-block;
-  opacity: 0.4;
+  opacity: 0.7;
   margin: 0 auto 20px;
 `;
