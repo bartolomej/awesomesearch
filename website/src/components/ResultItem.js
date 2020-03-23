@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from "styled-components";
 import Tag from "./Tag";
+import { LIGHTEST, PRIMARY } from "../colors";
 
 
 export default function ResultItem ({ type, title, description, tags, url, image }) {
@@ -10,7 +11,7 @@ export default function ResultItem ({ type, title, description, tags, url, image
     <Container href={url} target="_blank">
       <LeftWrapper>
         <ImageWrapper>
-          <Image src={image} />
+          <Image src={image}/>
         </ImageWrapper>
         <TextWrapper>
           <Title>{title}</Title>
@@ -24,7 +25,7 @@ export default function ResultItem ({ type, title, description, tags, url, image
         </TextWrapper>
       </LeftWrapper>
       <RightWrapper>
-        {tags.map(t => <Tag text={t} />)}
+        {tags.slice(0, 6).map(t => <Tag key={t} text={t}/>)}
       </RightWrapper>
     </Container>
   )
@@ -34,37 +35,44 @@ const Container = styled.a`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 10px 0;
-  width: 90%;
+  padding: 10px;
+  width: 80%;
   outline: none;
   background: white;
   text-decoration: none;
+  transition: all 0.2s ease-out;
   &:hover {
-    background: lightgrey;
+    background: ${LIGHTEST};
+    transform: scale(1.01);
   }
   ${props => props.styles}
 `;
 
 const LeftWrapper = styled.div`
+  flex: 2;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
 `;
 
 const RightWrapper = styled.div`
+  flex: 1;
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
+  align-items: center;
+  padding-right: 10px;
+  flex-wrap: wrap;
 `;
 
 const Title = styled.span`
-  font-size: 15px;
+  font-size: 18px;
   font-weight: bold;
-  color: black;
+  color: ${PRIMARY};
 `;
 
 const Description = styled.span`
-  font-size: 11px;
+  font-size: 14px;
   font-weight: lighter;
   color: grey;
 `;
@@ -78,9 +86,10 @@ const ImageWrapper = styled.div`
 const TextWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  margin-left: 40px;
 `;
 
 const Image = styled.img`
-  height: 40px;
+  height: 60px;
   border-radius: 8px;
 `;

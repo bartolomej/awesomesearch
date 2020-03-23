@@ -1,44 +1,19 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from "styled-components";
+import { ReactComponent as Icon } from "../assets/search.svg";
+import { PRIMARY, TEXT_LIGHT, TEXT_LIGHTEST } from "../colors";
 
 
-export default function SearchBar ({ onChange, placeholder, suggestions, onSuggestionClick }) {
-  const [selected, setSelected] = useState(true);
-  const [value, setValue] = useState('');
-
-  useEffect(() => {
-    if (suggestions.length > 0) {
-      setSelected(false);
-    }
-  }, [suggestions]);
-
-  function onSelect (s) {
-    setSelected(true);
-    setValue(s.text);
-    onSuggestionClick(s)
-  }
-
-  function onChangeText (e) {
-    const value = e.target.value;
-    setValue(value);
-    onChange(value);
-  }
+export default function SearchBar ({ onChange, placeholder }) {
 
   return (
     <Container>
+      <SearchIcon/>
       <Input
-        value={value}
         placeholder={placeholder}
-        onChange={onChangeText}
+        onChange={e => onChange(e.target.value)}
         type="text"
       />
-      <SuggestionContainer>
-        {!selected && suggestions.map((s, i) => (
-          <SuggestionItem key={i} onClick={() => onSelect(s)}>
-            {s.text}
-          </SuggestionItem>
-        ))}
-      </SuggestionContainer>
     </Container>
   )
 }
@@ -48,31 +23,31 @@ const Container = styled.div`
   flex-direction: row;
   position: relative;
   width: 100%;
+  border-radius: 20px;
+  background: white;
+  padding: 10px;
+  border: 2px solid rgba(252, 96, 168, 0.5);
 `;
 
 const Input = styled.input`
   display: flex;
   outline: none;
-  border-radius: 10px;
-  padding: 15px 30px;
+  border: none;
+  padding: 0 10px;
   font-size: 16px;
   width: 100%;
-`;
-
-const SuggestionContainer = styled.div`
-  position: absolute;
-  top: 100%;
-  width: 100%;
-`;
-
-const SuggestionItem = styled.button`
-  width: 100%;
-  border: 1px solid black;
-  padding: 5px;
-  outline: none;
-  background: white;
-  cursor: pointer;
-  &:hover {
-    background: lightgrey;
+  border-radius: 10px;
+  color: ${PRIMARY};
+  font-weight: bold;
+  ::placeholder {
+    color: ${TEXT_LIGHT};
   }
+  font-family: 'Libre Franklin', sans-serif;
+`;
+
+const SearchIcon = styled(Icon)`
+  height: 1.5rem;
+  display: inline-block;
+  margin: auto auto;
+  fill: ${TEXT_LIGHT};
 `;
