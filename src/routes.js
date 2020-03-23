@@ -44,7 +44,8 @@ router.get('/search', async (req, res, next) => {
     const website = serializeLinks(await websiteRepo.getMatched(req.query.q));
     res.send([...awesome, ...website]);
   } else {
-    res.send('Welcome to awesome search API');
+    // send some recommendations ?
+    res.send([]);
   }
 });
 

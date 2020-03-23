@@ -1,4 +1,4 @@
-# Awesome API [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
+# Awesome Service [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
 
 Awesome web service indexes [awesome](https://awesome.com/sindresorhus/awesome) list collections and exposes external search REST API.
 
