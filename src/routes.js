@@ -4,6 +4,30 @@ const websiteService = require('./services/website');
 const awesomeRepo = require('./repositories/awesome');
 const websiteRepo = require('./repositories/website');
 
+router.get('/meta', async (req, res, next) => {
+  try {
+    if (req.query.url) {
+      const metadata = await websiteService.scrapeUrl(req.query.url);
+      if (req.headers.contentType === 'application/json') {
+        res.send(metadata);
+      } else {
+        res.set('Content-Type', 'text/html');
+        res.send(new Buffer(`
+            <img alt="${metadata.title}" src="${metadata.image}"/>
+            <h1>${metadata.title}</h1>
+            <a href="${metadata.url}">${metadata.url}</a>
+            <p>${metadata.description}</p>
+            <p>${metadata.keywords.join(', ')}</p>
+        `))
+      }
+    } else {
+      res.send('Provide website url as a query parameter !');
+    }
+  } catch (e) {
+    next(e);
+  }
+});
+
 router.get('/website', async (req, res, next) => {
   try {
     if (req.query.url) {

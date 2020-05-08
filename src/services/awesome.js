@@ -5,9 +5,10 @@ const Awesome = require('../models/awesome');
 const { performance } = require('perf_hooks');
 const logger = require('../logger')('awesome-service');
 
+const AWESOME_README_ROOT_ID = 'sindresorhus/awesome';
 
 async function scrapeAwesomeRoot () {
-  const readme = await github.getReadme('sindresorhus/awesome');
+  const readme = await github.getReadme(AWESOME_README_ROOT_ID);
   const urls = Awesome.parseReadme(readme, true);
   return await Promise.all(urls.map(async url => (
     updateAwesome(url).catch(error => {
@@ -30,8 +31,7 @@ async function updateAwesome (url) {
   // fetch repo info via GitHub API
   let githubMeta;
   try {
-    githubMeta = await execute(
-      `GitHub API call to ${uid}`, [
+    githubMeta = await execute(`GitHub API call to ${uid}`, [
         github.getRepositoryTopics(uid),
         github.getRepositoryInfo(uid),
         github.getReadme(uid)

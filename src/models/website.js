@@ -1,6 +1,7 @@
 const cheerio = require('cheerio');
 const normalizeUrl = require('normalize-url');
 const uuid = require('uuid').v4;
+const fetch = require('node-fetch');
 
 class Website {
 
@@ -20,8 +21,7 @@ class Website {
     this.updated = null;
   }
 
-  scrape (html) {
-    const metadata = Website.extractMetadata(html);
+  setMetadata (metadata) {
     this.title = metadata.title;
     this.type = metadata.type;
     this.author = metadata.author;
@@ -33,32 +33,44 @@ class Website {
     this.updated = new Date();
   }
 
-  static extractMetadata (html) {
+  static async extractMetadata (html, websiteUrl) {
     const $ = cheerio.load(html);
 
-    const getMetaTag = name => (
-      $(`meta[name="${name}"]`).attr('content') ||
-      $(`meta[name="og:${name}"]`).attr('content') ||
-      $(`meta[name="twitter:${name}]"]`).attr('content') ||
-      $(`meta[name="twitter:${name}:src]"]`).attr('content') ||
-      $(`meta[property="${name}"]`).attr('content') ||
-      $(`meta[property="og:${name}"]`).attr('content') ||
-      $(`meta[property="twitter:${name}]"]`).attr('content') ||
-      $(`meta[property="twitter:${name}:src]"]`).attr('content') || null
-    );
+    const metaTagsList = [
+      name => $(`meta[name="${name}"]`).attr('content'),
+      name => $(`meta[name="og:${name}"]`).attr('content'),
+      name => $(`meta[name="twitter:${name}]"]`).attr('content'),
+      name => $(`meta[name="twitter:${name}:src]"]`).attr('content'),
+      name => $(`meta[property="${name}"]`).attr('content'),
+      name => $(`meta[property="og:${name}"]`).attr('content'),
+      name => $(`meta[property="twitter:${name}]"]`).attr('content'),
+      name => $(`meta[property="twitter:${name}:src]"]`).attr('content')
+    ];
 
+    const imageMetaTagsList = [
+      ...metaTagsList,
+      () => $('link[rel=icon]').attr('href'),
+      () => $('link[rel="shortcut icon"]').attr('href'),
+      () => $('link[rel=shortcut-icon]').attr('href'),
+      () => $('link[rel=mack-icon]').attr('href')
+    ];
+
+    const getMetaTag = name => {
+      for (let tag of metaTagsList) {
+        if (tag(name)) {
+          return tag(name);
+        }
+      }
+      return null;
+    }
+
+    let image = null;
     let title = getMetaTag('title') || $('title').first().text();
-    let url = getMetaTag('url');
+    let url = websiteUrl || getMetaTag('url');
     let type = getMetaTag('type');
     let name = getMetaTag('site_name');
     let description = getMetaTag('description');
     let author = getMetaTag('author');
-    let image =
-      getMetaTag('image') ||
-      $('link[rel=icon]').attr('href') ||
-      $('link[rel="shortcut icon"]').attr('href') ||
-      $('link[rel=shortcut-icon]').attr('href') ||
-      $('link[rel=mack-icon]').attr('href');
     let keywords = getMetaTag('keywords')
       ? getMetaTag('keywords')
         .split(',')
@@ -66,8 +78,26 @@ class Website {
         .filter(value => value.length > 0)
       : [];
 
-    if (isRelativeUrl(image)) {
-      image = parseRelativeUrl(url, image);
+    // generate image url candidates
+    const imageUrlCandidates = imageMetaTagsList.map(tagCb => {
+      let imageUrl = tagCb('image');
+      if (isRelativeUrl(imageUrl)) {
+        imageUrl = parseRelativeUrl(url, imageUrl);
+      }
+      return imageUrl;
+    });
+
+    // test urls by fetching resources with http
+    const imageUrlResults = await Promise.all(
+      imageUrlCandidates.map(isResourceAvailable)
+    );
+
+    // select first ok candidate
+    for (let i = 0; i < imageUrlResults.length; i++) {
+      if (imageUrlResults[i] === true) {
+        image = imageUrlCandidates[i];
+        break;
+      }
     }
 
     return { title, type, name, description, author, image, url, keywords };
@@ -80,6 +110,15 @@ const isRelativeUrl = url => (
   url !== null &&
   !/http/.test(url)
 );
+
+const isResourceAvailable = async url => {
+  if (url !== undefined) {
+    const response = await fetch(url);
+    return response.ok;
+  } else {
+    return false;
+  }
+}
 
 const parseRelativeUrl = (indexUrl, url) => {
   let urlEndIndex = indexUrl.indexOf('/', 8);

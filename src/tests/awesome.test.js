@@ -112,7 +112,7 @@ describe('Awesome model tests', function () {
     expect(parsed).toEqual({
       user: 'jthegedus',
       repo: 'awesome-firebase'
-    })
+    });
   });
 
   it('should normalize url on init', function () {

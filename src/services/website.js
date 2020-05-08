@@ -17,7 +17,9 @@ async function scrapeUrl (url) {
     }
   }
   const html = await getHtml(url);
-  website.scrape(html);
+  // extract metadata from raw html
+  const metadata = await Website.extractMetadata(html, url);
+  await website.setMetadata(metadata);  // sets internal properties
   return await repo.saveWebsite(website);
 }
 

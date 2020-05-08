@@ -73,6 +73,37 @@ module.exports.nodeJsInfo = {
   subscribers_count: 1613
 };
 
+module.exports.imageUrlTest = `
+    <html>
+    <head>
+        <link rel="preload" href="https://unpkg.com/docsearch.js@2.4.1/dist/cdn/docsearch.min.js" as="script">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" href="/img/favicon.ico"> <!--   INVALID RESOURCE     -->
+        <link rel="icon" href="/favicon.ico">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="apple-touch-icon" href="/logo-180x180.png">
+        <meta name="apple-mobile-web-app-title" content="React">
+        <link rel="preconnect dns-prefetch" href="https://www.google-analytics.com">
+        <link rel="alternate" type="application/rss+xml" href="/feed.xml">
+        <title>React – A JavaScript library for building user interfaces</title>
+        <link data-react-helmet="true" rel="canonical" href="https://reactjs.org/">
+        <meta data-react-helmet="true" property="og:title"
+              content="React – A JavaScript library for building user interfaces">
+        <meta data-react-helmet="true" property="og:type" content="website">
+        <meta data-react-helmet="true" property="og:url" content="https://reactjs.org/">
+        <meta data-react-helmet="true" property="og:image" content="https://reactjs.org/logo-og.png">
+        <meta data-react-helmet="true" property="og:description"
+              content="A JavaScript library for building user interfaces">
+        <meta data-react-helmet="true" property="fb:app_id" content="623268441017527">
+        <link rel="icon" href="/icons/icon-48x48.png?v=a95b1cba85b449d3cf230505f32a3d42">
+        <link rel="manifest" href="/manifest.webmanifest">
+        <meta name="theme-color" content="#20232a">
+    </head>
+    </html>
+`;
+
 module.exports.react = `
     <html>
     <head>
@@ -110,6 +141,7 @@ module.exports.flutterHtml = `
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Flutter - Beautiful native apps in record time </title>
+        <link rel="icon" href="/images/offline-image.png">
         <link rel="shortcut icon" href="/images/favicon.png">
         <meta name="description"
               content="Flutter is Google's UI toolkit for crafting beautiful, natively compiled applications for mobile, web, and desktop from a single codebase.  Flutter works with existing code, is used by developers and organizations around the world, and is free and open source.">

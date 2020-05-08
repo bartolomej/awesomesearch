@@ -52,8 +52,8 @@ describe('Website repository tests', function () {
 
 describe('Website metadata parsing tests', function () {
 
-  it('should parse flutter website html', function () {
-    const metadata = Website.extractMetadata(data.flutterHtml);
+  it('should parse flutter website html', async function () {
+    const metadata = await Website.extractMetadata(data.flutterHtml, 'https://flutter.dev/');
     expect(metadata).toEqual({
       author: null,
       description: "Flutter is Google's UI toolkit for crafting beautiful, natively compiled applications for mobile, web, and desktop from a single codebase.  Flutter works with existing code, is used by developers and organizations around the world, and is free and open source.",
@@ -67,7 +67,7 @@ describe('Website metadata parsing tests', function () {
   });
 
   it('should parse node-js website html', async function () {
-    const metadata = Website.extractMetadata(data.nodejsHtml);
+    const metadata = await Website.extractMetadata(data.nodejsHtml);
     expect(metadata).toEqual({
       author: null,
       name: null,
@@ -81,7 +81,7 @@ describe('Website metadata parsing tests', function () {
   });
 
   it('should parse react-native website html', async function () {
-    const metadata = Website.extractMetadata(data.reactNativeHtml);
+    const metadata = await Website.extractMetadata(data.reactNativeHtml);
     expect(metadata).toEqual({
       author: null,
       name: null,
