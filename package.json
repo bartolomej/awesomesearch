@@ -32,6 +32,7 @@
   },
   "dependencies": {
     "bull": "3.14.0",
+    "bull-board": "0.7.0",
     "chalk": "3.0.0",
     "cheerio": "1.0.0-rc.3",
     "colors": "latest",
@@ -40,6 +41,7 @@
     "express": "4.17.1",
     "express-handlebars": "4.0.4",
     "fetch-mock": "9.2.1",
+    "flexsearch": "0.6.32",
     "foreman": "3.0.1",
     "meow": "6.0.1",
     "morgan": "1.10.0",

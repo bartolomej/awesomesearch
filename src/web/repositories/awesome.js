@@ -1,11 +1,11 @@
 let awesome = {};
 
-async function saveAwesome (object) {
+function saveAwesome (object) {
   awesome[object.uid] = object;
   return awesome[object.uid];
 }
 
-async function getAwesome (uid) {
+function getAwesome (uid) {
   const object = awesome[uid];
   if (object) {
     return object;
@@ -14,7 +14,7 @@ async function getAwesome (uid) {
   }
 }
 
-async function getMatched (regex) {
+function getMatched (regex) {
   const results = [];
   const keys = Object.keys(awesome);
   for (const k of keys) {
@@ -35,13 +35,13 @@ async function getMatched (regex) {
   return results;
 }
 
-async function getAll (limit = null) {
+function getAll (limit = null) {
   const keys = Object.keys(awesome);
   return keys.map(k => awesome[k])
     .slice(0, limit || keys.length - 1);
 }
 
-async function removeAll () {
+function removeAll () {
   awesome = {};
 }
 

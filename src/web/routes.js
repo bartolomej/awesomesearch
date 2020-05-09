@@ -38,12 +38,17 @@ router.get('/awesome', async (req, res, next) => {
 });
 
 router.get('/search', async (req, res, next) => {
-  if (req.query.q) {
-    const awesome = serializeLists(await awesomeRepo.getMatched(req.query.q));
-    const website = serializeLinks(await websiteRepo.getMatched(req.query.q));
-    res.send([...awesome, ...website]);
-  } else {
-    res.send([]);
+  try {
+    if (req.query.q) {
+      res.send(await service.search(
+        req.query.q,
+        req.query.p || true
+      ));
+    } else {
+      res.send('Provide query !');
+    }
+  } catch (e) {
+    next(e);
   }
 });
 

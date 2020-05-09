@@ -2,7 +2,8 @@ const { green, red } = require('colors');
 const { name } = require('../../package.json');
 const envalid = require('envalid');
 const { str, bool, num } = envalid;
-
+const { workQueue } = require('./service');
+const { setQueues } = require('bull-board')
 
 module.exports.env = envalid.cleanEnv(process.env, {
   PORT: num({ default: 3000 }),
@@ -16,6 +17,7 @@ const routes = [
 ];
 
 async function init () {
+  setQueues([workQueue]);
   require('./server')(routes);
   if (!process.env.isProduction && process.env.TEST_DATA) {
     setupDevEnvironment();

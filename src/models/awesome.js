@@ -3,15 +3,29 @@ const normalizeUrl = require('normalize-url');
 class Awesome {
 
   constructor (url, avatar, homepage, description, stars, forks, topics, urls) {
-    this.url = normalizeUrl(url);
+    this.url = url ? normalizeUrl(url) : null;
     this.avatar = avatar || null;
     this.homepage = homepage || null;
     this.description = description || null;
     this.stars = stars || null;
     this.forks = forks || null;
     this.topics = topics || null;
-    this.uid = `${this.getUser()}/${this.getRepository()}`;
+    this.uid = url ? `${this.getUser()}/${this.getRepository()}` : null;
     this.urls = urls || [];
+  }
+
+  assign (obj) {
+    obj && Object.assign(this, obj);
+  }
+
+  serializeToIndex () {
+    const postfix = ' ';
+    const serializeValue = v => v ? `${v}${postfix}` : '';
+    return (
+      serializeValue(this.homepage) +
+      serializeValue(this.description) +
+      serializeValue(this.url)
+    )
   }
 
   getUser () {

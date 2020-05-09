@@ -4,6 +4,7 @@ const cors = require('cors');
 const path = require('path');
 const logger = require('../logger')('root');
 const handlebars  = require('express-handlebars');
+const { UI } = require('bull-board');
 
 
 module.exports = async function (routes = []) {
@@ -12,6 +13,9 @@ module.exports = async function (routes = []) {
     // development logger
     app.use(require('morgan')('dev'));
   }
+
+  // https://github.com/vcapretz/bull-board
+  app.use('/queues', UI);
 
   // setup view engine
   app.engine('handlebars', handlebars());

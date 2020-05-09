@@ -12,11 +12,16 @@ async function getAwesomeListData (url) {
   const uid = Awesome.getUidFromUrl(url);
   // fetch repo info via GitHub API
   const [topics, repo, readme] = await execute(`GitHub API call to ${uid}`, [
-      github.getRepositoryTopics(uid),
-      github.getRepositoryInfo(uid),
-      github.getReadme(uid)
+      github.getRepositoryTopics(uid).catch(onGithubError),
+      github.getRepositoryInfo(uid).catch(onGithubError),
+      github.getReadme(uid).catch(onGithubError)
     ]
   );
+
+  function onGithubError (e) {
+    logger.error('Error while fetching from Github API: ' + e.message);
+  }
+
   // scrape website urls found in readme
   const urls = parseReadme(readme, false);
   logger.info(`Found ${urls.length} urls in ${uid}`);

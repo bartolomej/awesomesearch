@@ -22,20 +22,20 @@ function start () {
   logger.info('Worker started');
 
   workQueue.process('awesome', async job => {
-    const url = job.data.url;
-    logger.info(`Received job id:${job.id} data:${url} in awesome queue`);
-    const result = await awesomeService.getAwesomeListData(url);
+    const repo = job.data.repo;
+    logger.info(`Received job id:${job.id} uid:${repo.uid} in awesome queue`);
+    const result = await awesomeService.getAwesomeListData(repo.url);
     logger.info(`Finished job id:${job.id} in awesome queue`);
-    return result;
+    return { ...repo, ...result };
   });
 
   workQueue.process('website', async job => {
-    const url = job.data.url;
-    logger.info(`Received job id:${job.id} data:${url} in website queue`);
+    const { url } = job.data.website;
+    logger.info(`Received job id:${job.id} url:${url} in website queue`);
     const html = await websiteService.getHtml(url);
     const result = await websiteService.getMetadata(html, url);
     logger.info(`Finished job id:${job.id} in awesome queue`);
-    return result;
+    return { ...job.data.website, ...result };
   });
 }
 

@@ -9,6 +9,26 @@ describe('Website repository tests', function () {
 
   beforeEach(async () => await repo.removeAll());
 
+  it('should initialize website from object', function () {
+    const website = new Website();
+    const obj = {
+      "uid": "https://www.google.com",
+      "url": "https://google.com",
+      "title": "Google",
+      "type": null,
+      "name": null,
+      "author": null,
+      "description": null,
+      "image": "https://google.com/favicon.ico",
+      "keywords": [],
+      "source": null,
+      "updated": null
+    };
+    website.assign(obj);
+    expect(website instanceof Website).toBeTruthy();
+    expect(website).toEqual(obj);
+  });
+
   function getExampleWebsite () {
     const website = new Website('https://example.com');
     website.title = 'Title';
@@ -51,13 +71,6 @@ describe('Website repository tests', function () {
 
 
 describe('Website metadata parsing tests', function () {
-
-  // TODO: default icon
-  // TODO: test whitelisted urls
-  /**
-   *
-   * - http://storyswag.co/
-   */
 
   it('should parse flutter website html', async function () {
     const metadata = await service.getMetadata(data.flutterHtml, 'https://flutter.dev/');

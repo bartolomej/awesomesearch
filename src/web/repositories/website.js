@@ -2,12 +2,12 @@ const normalizeUrl = require('normalize-url');
 
 let websites = {};
 
-async function saveWebsite (website) {
+function saveWebsite (website) {
   websites[website.uid] = website;
   return websites[website.uid];
 }
 
-async function getWebsite (uid) {
+function getWebsite (uid) {
   const object = websites[uid];
   if (object) {
     return object;
@@ -16,7 +16,7 @@ async function getWebsite (uid) {
   }
 }
 
-async function getMatched (regex) {
+function getMatched (regex) {
   const results = [];
   const keys = Object.keys(websites);
   for (const k of keys) {
@@ -39,7 +39,7 @@ async function getMatched (regex) {
   return results;
 }
 
-async function getWebsiteByUrl (url) {
+function getWebsiteByUrl (url) {
   const normalizedUrl = normalizeUrl(url);
   const keys = Object.keys(websites);
   for (const k of keys) {
@@ -50,11 +50,11 @@ async function getWebsiteByUrl (url) {
   throw new Error('Entity not found');
 }
 
-async function removeAll () {
+function removeAll () {
   websites = {};
 }
 
-async function getAll () {
+function getAll () {
   const keys = Object.keys(websites);
   return keys.map(k => websites[k]);
 }
