@@ -1,7 +1,15 @@
 const { green, red } = require('colors');
-const { name } = require('../package');
-const { env } = require('./utils');
+const { name } = require('../../package.json');
+const envalid = require('envalid');
+const { str, bool, num } = envalid;
 
+
+module.exports.env = envalid.cleanEnv(process.env, {
+  PORT: num({ default: 3000 }),
+  NODE_ENV: str({ default: 'production' }),
+  TEST_DATA: bool({ default: false }),
+  REDIS_URL: str({ default: 'redis://127.0.0.1:6379' }),
+});
 
 const routes = [
   require('./routes')
@@ -9,7 +17,7 @@ const routes = [
 
 async function init () {
   require('./server')(routes);
-  if (!env.isProduction && env.TEST_DATA) {
+  if (!process.env.isProduction && process.env.TEST_DATA) {
     setupDevEnvironment();
   }
 }

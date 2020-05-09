@@ -2,15 +2,15 @@
   "name": "awesome-server",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.js",
+  "main": "src/worker.js",
   "engines": {
     "node": ">=13.11"
   },
   "scripts": {
     "test": "jest",
-    "start": "NODE_ENV=production node ./src/index.js",
-    "start:dev": "NODE_ENV=development  nodemon ./src/index.js",
-    "start:dev:test": "NODE_ENV=development TEST_DATA=true nodemon ./src/index.js",
+    "start": "NODE_ENV=production nf start",
+    "start:dev": "NODE_ENV=development  nodemon src/worker.js",
+    "start:dev:test": "NODE_ENV=development TEST_DATA=true nodemon src/worker.js",
     "coverage": "jest --coverage",
     "coverage:web": "npm run coverage && open coverage/lcov-report/index.html",
     "repo-graph-ddot": "depcruise --exclude \"^node_modules\" --output-type ddot src | dot -T svg > graph.ddot.svg",
@@ -31,21 +31,24 @@
     "jest": "25.1.0"
   },
   "dependencies": {
+    "bull": "3.14.0",
     "chalk": "3.0.0",
     "cheerio": "1.0.0-rc.3",
+    "colors": "latest",
     "cors": "2.8.5",
     "envalid": "6.0.1",
     "express": "4.17.1",
     "fetch-mock": "9.2.1",
+    "foreman": "3.0.1",
     "meow": "6.0.1",
     "morgan": "1.10.0",
     "node-fetch": "2.6.0",
     "normalize-url": "5.0.0",
     "remark-parse": "7.0.2",
+    "throng": "4.0.0",
     "unified": "8.4.2",
     "unist-util-select": "3.0.1",
     "uuid": "latest",
-    "winston": "3.2.1",
-    "colors": "latest"
+    "winston": "3.2.1"
   }
 }

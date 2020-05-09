@@ -15,7 +15,7 @@ it('should return error given invalid website url', async function () {
     await service.getHtml('https://some-website.com');
     expect(1).toBe(2);
   } catch (e) {
-    expect(e.message).toEqual('Website not found');
+    expect(e.message).toContain('failed');
   }
 });
 

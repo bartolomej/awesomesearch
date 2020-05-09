@@ -1,13 +1,12 @@
-const { env } = require("./utils");
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const logger = require('./logger')('root');
+const logger = require('../logger')('root');
 
 
 module.exports = async function (routes = []) {
 
-  if (!env.isProduction) {
+  if (!process.env.isProduction) {
     // development logger
     app.use(require('morgan')('dev'));
   }
@@ -45,16 +44,16 @@ module.exports = async function (routes = []) {
       name: err.name,
       message: err.message,
       description: err.description,
-      details: !env.isProduction ? details : undefined
+      details: !process.env.isProduction ? details : undefined
     };
     logger.debug('debug', 'Error in response', error);
     res.status(err.statusCode || 400).send(error);
   });
 
   // start the server on port <PORT> or 3000
-  app.listen(env.PORT, error => {
+  app.listen(process.env.PORT, error => {
     if (error) throw error;
-    logger.info(`Server listening on port ${env.PORT} 🙌`);
+    logger.info(`Server listening on port ${process.env.PORT} 🙌`);
   });
 
   process.on('unhandledRejection', (reason, promise) => {

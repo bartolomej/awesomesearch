@@ -1,8 +1,20 @@
-const envalid = require('envalid');
-const { str, bool, num } = envalid;
+const isRelativeUrl = url => (
+  url !== undefined &&
+  url !== null &&
+  !/http/.test(url)
+);
 
-module.exports.env = envalid.cleanEnv(process.env, {
-  PORT: num({ default: 3000 }),
-  NODE_ENV: str({ default: 'production' }),
-  TEST_DATA: bool({ default: false })
-});
+const joinUrls = (rootUrl, path) => {
+  if (!isRelativeUrl(path)) {
+    return path;
+  }
+  let urlEndIndex = rootUrl.indexOf('/', 8);
+  if (urlEndIndex > 0) {
+    return rootUrl.substring(0, urlEndIndex) + path;
+  } else {
+    let suffixUrl = path[0] === '/' ? path : '/' + path;
+    return rootUrl.substring(0, rootUrl.length) + suffixUrl;
+  }
+};
+
+module.exports.joinUrls = joinUrls;

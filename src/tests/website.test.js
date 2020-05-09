@@ -1,6 +1,6 @@
 const Website = require('../models/website');
 const service = require('../services/website');
-const repo = require('../repositories/website');
+const repo = require('../web/repositories/website');
 const fetchMock = require('fetch-mock');
 const data = require('./mock-data');
 
@@ -52,8 +52,15 @@ describe('Website repository tests', function () {
 
 describe('Website metadata parsing tests', function () {
 
+  // TODO: default icon
+  // TODO: test whitelisted urls
+  /**
+   *
+   * - http://storyswag.co/
+   */
+
   it('should parse flutter website html', async function () {
-    const metadata = await Website.extractMetadata(data.flutterHtml, 'https://flutter.dev/');
+    const metadata = await service.getMetadata(data.flutterHtml, 'https://flutter.dev/');
     expect(metadata).toEqual({
       author: null,
       description: "Flutter is Google's UI toolkit for crafting beautiful, natively compiled applications for mobile, web, and desktop from a single codebase.  Flutter works with existing code, is used by developers and organizations around the world, and is free and open source.",
@@ -62,12 +69,12 @@ describe('Website metadata parsing tests', function () {
       name: null,
       title: "Flutter - Beautiful native apps in record time",
       type: null,
-      url: "https://flutter.dev/"
+      url: "https://flutter.dev"
     })
   });
 
   it('should parse node-js website html', async function () {
-    const metadata = await Website.extractMetadata(data.nodejsHtml);
+    const metadata = await service.getMetadata(data.nodejsHtml);
     expect(metadata).toEqual({
       author: null,
       name: null,
@@ -81,12 +88,12 @@ describe('Website metadata parsing tests', function () {
   });
 
   it('should parse react-native website html', async function () {
-    const metadata = await Website.extractMetadata(data.reactNativeHtml);
+    const metadata = await service.getMetadata(data.reactNativeHtml);
     expect(metadata).toEqual({
       author: null,
       name: null,
       type: 'website',
-      url: 'https://reactnative.dev/',
+      url: 'https://reactnative.dev',
       title: 'React Native · A framework for building native apps using React',
       image: 'https://reactnative.dev/img/favicon.ico',
       keywords: [],
@@ -107,21 +114,18 @@ describe('Website service tests', function () {
       data.reactNativeHtml
     );
 
-    const website = await service.scrapeUrl('https://reactnative.dev/');
+    const html = await service.getHtml('https://reactnative.dev/');
+    const website = await service.getMetadata(html);
 
-    const reactNativeWebsite = await repo.getWebsiteByUrl('https://reactnative.dev');
-    expect(website).toEqual(reactNativeWebsite);
-    expect(reactNativeWebsite).toEqual({
-      uid: expect.any(String),
+    expect(website).toEqual({
       author: null,
       name: null,
       type: 'website',
       url: 'https://reactnative.dev',
       title: 'React Native · A framework for building native apps using React',
-      image: 'https://reactnative.dev/img/favicon.ico',
+      image: 'https://reactnative.dev/img/logo-og.png',
       keywords: [],
       description: 'A framework for building native apps using React',
-      updated: expect.any(Date)
     });
   });
 
@@ -133,10 +137,10 @@ describe('Website service tests', function () {
     );
 
     try {
-      await service.scrapeUrl('https://some-website-1.com');
+      await service.getHtml('https://some-website-1.com');
       expect(1).toBe(2);
     } catch (e) {
-      expect(e).toEqual(new Error('Website not found'));
+      expect(e).toBeInstanceOf(Error);
     }
   });
 

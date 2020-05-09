@@ -1,9 +1,7 @@
-const service = require('../services/awesome');
-const githubRepo = require('../repositories/awesome');
-const websiteRepo = require('../repositories/website');
+const service = require('../web/service');
+const awesomeService = require('../services/awesome');
+const githubRepo = require('../web/repositories/awesome');
 const Awesome = require('../models/awesome');
-const fetchMock = require('fetch-mock');
-const data = require('./mock-data');
 
 describe('Awesome repository tests', function () {
 
@@ -17,89 +15,6 @@ describe('Awesome repository tests', function () {
     ];
     const saved = await githubRepo.saveAwesome(awesome);
     expect(saved).toEqual(awesome);
-  });
-
-});
-
-describe('Awesome service tests', function () {
-
-  beforeEach(async () => {
-    fetchMock.reset();
-    await githubRepo.removeAll();
-    await websiteRepo.removeAll();
-  });
-
-  it('should scrape awesome root', async function () {
-    fetchMock.get(
-      'https://api.github.com/repos/sindresorhus/awesome/readme',
-      data.awesomeRootMarkdown
-    );
-    fetchMock.get(
-      'https://api.github.com/repos/sindresorhus/awesome-nodejs',
-      data.nodeJsInfo
-    );
-    fetchMock.get(
-      'https://api.github.com/repos/sindresorhus/awesome-nodejs/topics',
-      data.nodeJsTopics
-    );
-    fetchMock.get(
-      'https://api.github.com/repos/sindresorhus/awesome-nodejs/readme',
-      data.awesomeNodejsMarkdown
-    );
-    fetchMock.get(
-      'https://github.com/sindresorhus/awesome-nodejs#readme',
-      data.nodejsHtml
-    );
-    fetchMock.get(
-      'https://reactnative.dev',
-      data.reactNativeHtml
-    );
-    fetchMock.mock('*', 404);
-
-    const response = await service.scrapeAwesomeRoot();
-    expect(response).toEqual([
-      [
-        expect.any(Object),
-        expect.any(Error),
-        expect.any(Error),
-        expect.any(Error),
-      ]
-    ]);
-
-    const awesomeNodeJs = await githubRepo.getAwesome('sindresorhus/awesome-nodejs');
-    expect(awesomeNodeJs).toEqual({
-      url: 'https://github.com/sindresorhus/awesome-nodejs#readme',
-      uid: 'sindresorhus/awesome-nodejs',
-      description: ":zap: Delightful Node.js packages and resources",
-      avatar: "https://avatars1.githubusercontent.com/u/170270?v=4",
-      forks: 4281,
-      homepage: "https://node.cool",
-      stars: 34961,
-      topics: [
-        "awesome-list",
-        "nodejs",
-      ],
-      urls: [
-        'https://reactnative.dev',
-        "https://reactjs.org",
-        "https://flutter.dev",
-        "https://kotlinlang.org",
-      ],
-    });
-
-    const reactNativeWebsite = await websiteRepo.getWebsiteByUrl('https://reactnative.dev'); // TODO: generate uuid for website object
-    expect(reactNativeWebsite).toEqual({
-      uid: expect.any(String),
-      author: null,
-      name: null,
-      type: 'website',
-      url: 'https://reactnative.dev',
-      title: 'React Native · A framework for building native apps using React',
-      image: 'https://reactnative.dev/img/favicon.ico',
-      keywords: [],
-      description: 'A framework for building native apps using React',
-      updated: expect.any(Date)
-    });
   });
 
 });
@@ -132,7 +47,7 @@ describe('Awesome model tests', function () {
 
   it('should parse awesome-ecmascript-tools', async function () {
     const readme = require('./mock-data').awesomeNodejsMarkdown;
-    const links = Awesome.parseReadme(readme);
+    const links = awesomeService.parseReadme(readme);
     expect(links).toEqual([
       "https://reactnative.dev",
       "https://reactjs.org",

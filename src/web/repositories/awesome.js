@@ -35,9 +35,10 @@ async function getMatched (regex) {
   return results;
 }
 
-async function getAll () {
+async function getAll (limit = null) {
   const keys = Object.keys(awesome);
-  return keys.map(k => awesome[k]);
+  return keys.map(k => awesome[k])
+    .slice(0, limit || keys.length - 1);
 }
 
 async function removeAll () {
