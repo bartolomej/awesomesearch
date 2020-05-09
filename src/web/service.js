@@ -12,10 +12,15 @@ const workQueue = new Queue('work', redisUrl);
  * Triggered when jobs are completed with resulting value.
  * COOL TOOL: https://github.com/vcapretz/bull-board
  */
-workQueue.on('global', async (job, result) => {
+workQueue.on('global:completed', async (jobId, result) => {
+  const job = await getJob(jobId);
   logger.info(`Job ${job.id}:${job.name} completed !`);
   if (job.name === 'awesome') {
-    await awesomeRepo.saveAwesome(JSON.parse(result));
+    const jsonResult = JSON.parse(result);
+    await awesomeRepo.saveAwesome(jsonResult);
+    for (let url of jsonResult.urls) {
+      await workQueue.add('website', { url });
+    }
   } else if (job.name === 'website') {
     await websiteRepo.saveWebsite(JSON.parse(result));
   }
@@ -24,6 +29,7 @@ workQueue.on('global', async (job, result) => {
 async function parseJob (job, minified = false) {
   return minified ? {
     id: job.id,
+    name: job.name,
     state: await job.getState(),
     progress: job._progress,
     failed_reason: job.failedReason,

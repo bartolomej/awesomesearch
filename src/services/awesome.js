@@ -23,6 +23,7 @@ async function getAwesomeListData (url) {
 
   return new Awesome(url, null,
     repo.homepage,
+    repo.description,
     repo.stars,
     repo.forks,
     topics,

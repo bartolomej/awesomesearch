@@ -11,8 +11,9 @@
             text-decoration: none;
         }
         #container {
+            margin: 50px 0;
             width: 100vw;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -35,6 +36,7 @@
         <a class="job" href="/job/{{id}}">
             <p>ID: {{id}}</p>
             <p>STATE: {{state}}</p>
+            <p>NAME: {{name}}</p>
             <p>PROGRESS: {{progress}}</p>
             <p>TIMESTAMP: {{timestamp}}</p>
         </a>
