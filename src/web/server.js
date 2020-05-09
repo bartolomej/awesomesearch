@@ -1,7 +1,9 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
+const path = require('path');
 const logger = require('../logger')('root');
+const handlebars  = require('express-handlebars');
 
 
 module.exports = async function (routes = []) {
@@ -10,6 +12,11 @@ module.exports = async function (routes = []) {
     // development logger
     app.use(require('morgan')('dev'));
   }
+
+  // setup view engine
+  app.engine('handlebars', handlebars());
+  app.set('view engine', 'handlebars');
+  app.set('views', path.join(__dirname, 'views'));
 
   // disable "powered by" headers
   app.disable('x-powered-by');

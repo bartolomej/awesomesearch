@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8">
+    <title>{{title}}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+        }
+        #container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+
+<div id="container">
+    <img alt="{{title}}" src="{{image}}"/>
+    <h1>{{title}}</h1>
+    <a href="{{url}}">{{url}}</a>
+    <p>{{description}}</p>
+    <ul>
+        {{#each tags}}
+            <li>{{this}}</li>
+        {{/each}}
+    </ul>
+</div>
+
+</body>
+</html>

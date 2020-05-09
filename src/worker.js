@@ -15,13 +15,13 @@ module.exports.env = envalid.cleanEnv(process.env, {
 const redisUrl = process.env.REDIS_URL;
 const workers = process.env.WEB_WORKERS;
 
+const workQueue = new Queue('work', redisUrl);
+
 function start () {
-  const awesomeQueue = new Queue('awesome', redisUrl);
-  const websiteQueue = new Queue('website', redisUrl);
 
   logger.info('Worker started');
 
-  awesomeQueue.process(async job => {
+  workQueue.process('awesome', async job => {
     const url = job.data.url;
     logger.info(`Received job id:${job.id} data:${url} in awesome queue`);
     const result = await awesomeService.getAwesomeListData(url);
@@ -29,7 +29,7 @@ function start () {
     return result;
   });
 
-  websiteQueue.process(async job => {
+  workQueue.process('website', async job => {
     const url = job.data.url;
     logger.info(`Received job id:${job.id} data:${url} in website queue`);
     const html = await websiteService.getHtml(url);

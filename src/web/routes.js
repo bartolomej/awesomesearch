@@ -12,7 +12,7 @@ router.get('/meta', async (req, res, next) => {
     if (req.query.url) {
       const html = await websiteService.getHtml(req.query.url);
       const metadata = await websiteService.getMetadata(html, req.query.url);
-      res.send(metadata);
+      res.render('metadata', {...metadata, layout: false});
     } else {
       res.send('Provide website url as a query parameter !');
     }
@@ -49,15 +49,28 @@ router.get('/search', async (req, res, next) => {
 
 router.get('/job', async (req, res, next) => {
   try {
-    res.send(await service.getAllJobs());
+    const jobs = await service.getAllJobs();
+    if (req.headers.contentType === 'application/json') {
+      res.send(jobs);
+    } else {
+      res.render('jobs', { jobs, layout: false })
+    }
   } catch (e) {
     next(e);
   }
 });
 
-router.get('/job/:queue/:id', async (req, res, next) => {
+router.get('/job/:id', async (req, res, next) => {
   try {
-    res.send(await service.getJob(req.params.queue, req.params.id));
+    const job = await service.getJob(req.params.id);
+    if (req.headers.contentType === 'application/json') {
+      res.send(job);
+    } else {
+      res.render('job', { ...job,
+        data: JSON.stringify(job.data, null, 4),
+        returnvalue: JSON.stringify(job.returnvalue, null, 4),
+        layout: false })
+    }
   } catch (e) {
     next(e);
   }

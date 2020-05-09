@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8">
+    <title>Awesome Queue</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            text-decoration: none;
+        }
+        #container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .job {
+            transition: all 0.4s ease;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+        }
+        .job:hover {
+            color: crimson;
+        }
+    </style>
+</head>
+<body>
+
+<div id="container">
+    {{#each jobs}}
+        <a class="job" href="/job/{{id}}">
+            <p>ID: {{id}}</p>
+            <p>STATE: {{state}}</p>
+            <p>PROGRESS: {{progress}}</p>
+            <p>TIMESTAMP: {{timestamp}}</p>
+        </a>
+    {{/each}}
+</div>
+
+</body>
+</html>

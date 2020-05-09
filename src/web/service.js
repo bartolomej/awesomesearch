@@ -6,21 +6,19 @@ const awesomeService = require('../services/awesome');
 const Queue = require('bull');
 
 const redisUrl = process.env.REDIS_URL;
-const awesomeQueue = new Queue('awesome', redisUrl);
-const websiteQueue = new Queue('website', redisUrl);
+const workQueue = new Queue('work', redisUrl);
 
 /**
  * Triggered when jobs are completed with resulting value.
  * COOL TOOL: https://github.com/vcapretz/bull-board
  */
-awesomeQueue.on('global:completed', async (jobId, result) => {
-  logger.info(`Awesome job ${jobId} completed !`);
-  await awesomeRepo.saveAwesome(JSON.parse(result));
-});
-
-websiteQueue.on('global:completed', async (jobId, result) => {
-  logger.info(`Website job ${jobId} completed !`);
-  await websiteRepo.saveWebsite(JSON.parse(result));
+workQueue.on('global', async (job, result) => {
+  logger.info(`Job ${job.id}:${job.name} completed !`);
+  if (job.name === 'awesome') {
+    await awesomeRepo.saveAwesome(JSON.parse(result));
+  } else if (job.name === 'website') {
+    await websiteRepo.saveWebsite(JSON.parse(result));
+  }
 });
 
 async function parseJob (job, minified = false) {
@@ -33,34 +31,23 @@ async function parseJob (job, minified = false) {
   } : job
 }
 
-async function getJob (queue, id) {
-  if (queue === 'awesome') {
-    const job = await awesomeQueue.getJob(id);
-    return await parseJob(job);
-  } else if (queue === 'website') {
-    const job = await websiteQueue.getJob(id);
-    return await parseJob(job);
-  } else {
-    throw new Error('Queue not found');
-  }
+async function getJob (id) {
+  const job = await workQueue.getJob(id);
+  return await parseJob(job);
 }
 
 async function getAllJobs () {
   const statuses = ['waiting', 'active', 'completed', 'failed', 'delayed'];
-  const awesomeJobs = await awesomeQueue.getJobs(statuses);
-  const websiteJobs = await websiteQueue.getJobs(statuses);
-  return {
-    awesome: await Promise.all(awesomeJobs.map(job => parseJob(job, true))),
-    website: await Promise.all(websiteJobs.map(job => parseJob(job, true)))
-  };
+  const awesomeJobs = await workQueue.getJobs(statuses);
+  return await Promise.all(awesomeJobs.map(job => parseJob(job, true)))
 }
 
 async function scrapeWebsite (url) {
-  return await websiteQueue.add({ url });
+  return await workQueue.add('website', { url });
 }
 
 async function fetchAwesomeRepo (url) {
-  return await awesomeQueue.add({ url });
+  return await workQueue.add('awesome', { url });
 }
 
 async function fetchAwesomeFromRoot () {
@@ -69,7 +56,7 @@ async function fetchAwesomeFromRoot () {
   const urls = await awesomeService.parseReadme(readme, true);
   const jobs = [];
   for (let url of urls) {
-    jobs.add(await awesomeQueue.add({ url }));
+    jobs.add(await workQueue.add('awesome', { url }));
   }
   return jobs;
 }
