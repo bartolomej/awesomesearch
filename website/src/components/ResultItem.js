@@ -4,7 +4,7 @@ import Tag from "./Tag";
 import { LIGHTEST, PRIMARY } from "../colors";
 
 
-export default function ResultItem ({ styles, type, title, description, tags, url, image }) {
+export default function ResultItem ({ styles, type, topics, title, description, tags, url, image }) {
   const maxDescriptionLength = 70;
 
   return (
@@ -25,7 +25,10 @@ export default function ResultItem ({ styles, type, title, description, tags, ur
         </TextWrapper>
       </LeftWrapper>
       <RightWrapper>
-        {tags.slice(0, window.isMobile() ? 2 : 6).map(t => <Tag key={t} text={t}/>)}
+        {type === 'link'
+          ? tags.slice(0, window.isMobile() ? 2 : 6).map(t => <Tag key={t} text={t}/>)
+          : topics.slice(0, window.isMobile() ? 2 : 6).map(t => <Tag key={t} text={t}/>)
+        }
       </RightWrapper>
     </Container>
   )

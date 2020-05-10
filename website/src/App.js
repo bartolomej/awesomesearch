@@ -15,8 +15,12 @@ const search = new Search();
 
 export default function App () {
   const [error, setError] = useState(null);
-  const [results, setResults] = useState([]);
+  const [result, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  function getResults () {
+    return result.result ? result.result : [];
+  }
 
   async function fetchResults (query) {
     try {
@@ -44,7 +48,7 @@ export default function App () {
           </AwesomeLink>
           <Title>Awesome Search</Title>
           <SearchBar
-            results={results.length}
+            results={getResults().length}
             placeholder={"Enter search term..."}
             onChange={query => fetchResults(query)}
           />
@@ -67,21 +71,22 @@ export default function App () {
             <MessageText>{error.message}</MessageText>
           </MessageWrapper>
         )}
-        {(!loading && !error && results.length === 0) && (
+        {(!loading && !error && getResults().length === 0) && (
           <MessageWrapper>
             <UnicornLogo/>
             <MessageText>Wow such empty!</MessageText>
             <MessageText>Search the largest collection of awesome resources.</MessageText>
           </MessageWrapper>
         )}
-        {!loading && results.map((r, i) => (
+        {!loading && getResults().map((r, i) => (
           <ResultItem
             key={i}
-            type={r.type}
+            type={r.object_type}
             url={r.url}
             image={r.image}
             title={r.title}
             tags={r.tags}
+            topics={r.topics}
             description={r.description}
             styles={i === 0 ? 'margin-top: 50px !important;' : ''}
           />
