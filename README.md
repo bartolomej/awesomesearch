@@ -18,8 +18,8 @@ Request syntax:
 Example response:
 ```json
 {
-"page": "0",
-"next": "15",
+"page": 0,
+"next": 15,
 "result": [
     {
         "object_type": "link",
@@ -40,6 +40,14 @@ Example response:
 ## Some libraries used
 - [FlexSearch](https://github.com/nextapps-de/flexsearch) - Next-Generation full text search library for Browser and Node.js
 - [bull](https://github.com/OptimalBits/bull) - Premium Queue package for handling distributed jobs and messages in NodeJS
+
+
+## Architecture
+App consists of two separate processes:
+- `web`: receives HTTP requests from clients, performs search queries, stores data
+- `worker`: performs longer running tasks (website scraping, repository parsing,..)
+
+To start both just run `npm start`.
 
 ## Scripts
 

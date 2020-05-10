@@ -63,10 +63,19 @@ async function search (query, page = true, limit = 15) {
       } catch (e) {}
       try {
         const awesome = repo.getAwesome(id);
-        return { object_type: 'repo', ...awesome }
+        return {
+          ...awesome,
+          object_type: 'repo',
+          urls: undefined,
+          links_count: awesome.urls.length
+        }
       } catch (e) {}
     }) : [];
-  return { ...results, result };
+  return {
+    page: parseInt(results.page),
+    next: results.next ? parseInt(results.next) : null,
+    result
+  };
 }
 
 function searchStats () {

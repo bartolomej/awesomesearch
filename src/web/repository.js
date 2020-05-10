@@ -57,9 +57,10 @@ function removeAllWebsites () {
   websites = {};
 }
 
-function getAllWebsites () {
+function getAllWebsites (limit = null) {
   const keys = Object.keys(websites);
-  return keys.map(k => websites[k]);
+  return keys.map(k => websites[k])
+    .slice(0, limit || keys.length);
 }
 
 module.exports = {

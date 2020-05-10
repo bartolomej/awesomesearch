@@ -6,7 +6,7 @@ const repo = require('./repository');
 
 router.get('/website', async (req, res, next) => {
   try {
-    res.send(await repo.getAllWebsites());
+    res.send(await repo.getAllWebsites(req.query.limit));
   } catch (e) {
     next(e);
   }
