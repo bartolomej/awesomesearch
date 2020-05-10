@@ -2,8 +2,7 @@ const normalizeUrl = require('normalize-url');
 
 class Website {
 
-  constructor (url) {
-    this.uid = url;
+  constructor (url, source) {
     this.url = url ? normalizeUrl(url) : null;
     this.title = null;
     this.type = null;
@@ -12,8 +11,25 @@ class Website {
     this.description = null;
     this.image = null;
     this.keywords = [];
-    this.source = null;
+    this.source = source || null;
     this.updated = null;
+  }
+
+  get uid () {
+    return this.url;
+  }
+
+  static fromObject (obj) {
+    const website = new Website(obj.url);
+    website.assign(obj);
+    return website;
+  }
+
+  static fromJson (json) {
+    const obj = JSON.parse(json);
+    const website = new Website(obj.url);
+    website.assign(obj);
+    return website;
   }
 
   assign (obj) {

@@ -10,6 +10,7 @@ const Awesome = require('../models/awesome');
 
 async function getAwesomeListData (url) {
   const uid = Awesome.getUidFromUrl(url);
+
   // fetch repo info via GitHub API
   const [topics, repo, readme] = await execute(`GitHub API call to ${uid}`, [
       github.getRepositoryTopics(uid).catch(onGithubError),

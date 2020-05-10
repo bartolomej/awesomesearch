@@ -1,6 +1,5 @@
 const logger = require('../logger')('web-service');
-const websiteRepo = require('./repositories/website');
-const awesomeRepo = require('./repositories/awesome');
+const repo = require('./repository');
 const github = require('../gateways/github');
 const awesomeService = require('../services/awesome');
 const Website = require('../models/website');
@@ -21,24 +20,25 @@ const index = new FlexSearch({
 
 /**
  * Triggered when jobs are completed with resulting value.
- * COOL TOOL: https://github.com/vcapretz/bull-board
  */
 workQueue.on('global:completed', async (jobId, result) => {
   const job = await getJob(jobId);
+
   logger.info(`Job ${job.id}:${job.name} completed !`);
+
   if (job.name === 'awesome') {
-    const repo = new Awesome();
-    repo.assign(JSON.parse(result))
+    const awesome = Awesome.fromJson(result)
     // add serialized string data to search index
-    index.add(repo.uid, repo.serializeToIndex());
-    for (let url of repo.urls) {
-      await workQueue.add('website', { website: new Website(url) });
+    index.add(awesome.uid, awesome.serializeToIndex());
+    repo.saveAwesome(awesome);
+    // post website jobs for found urls
+    for (let url of awesome.urls) {
+      await workQueue.add('website', { website: new Website(url, awesome.uid) });
     }
   } else if (job.name === 'website') {
-    const website = new Website();
-    website.assign(JSON.parse(result))
+    const website = Website.fromJson(result)
+    repo.saveWebsite(website)
     // add serialized string data to search index
-    await websiteRepo.saveWebsite(website)
     index.add(website.uid, website.serializeToIndex());
   }
 });
@@ -47,22 +47,20 @@ async function search (query, page = true) {
   const results = await index.search(query, {
     limit: 15, page
   });
-  console.log(results)
-  return results.result.map(id => (
-    websiteRepo.getWebsite(id) ||
-    awesomeRepo.getAwesome(id)
-  ));
+  const result = results.result ?
+    results.result.map(id => {
+      try {
+        return repo.getWebsite(id)
+      } catch (e) {}
+      try {
+        return repo.getAwesome(id)
+      } catch (e) {}
+    }) : [];
+  return { ...results, result };
 }
 
 async function getJob (id) {
-  const job = await workQueue.getJob(id);
-  return await parseJob(job);
-}
-
-async function getAllJobs () {
-  const statuses = ['waiting', 'active', 'completed', 'failed', 'delayed'];
-  const awesomeJobs = await workQueue.getJobs(statuses);
-  return await Promise.all(awesomeJobs.map(job => parseJob(job, true)))
+  return await workQueue.getJob(id);
 }
 
 async function scrapeWebsite (url) {
@@ -84,22 +82,10 @@ async function fetchAwesomeFromRoot () {
   return jobs;
 }
 
-async function parseJob (job, minified = false) {
-  return minified ? {
-    id: job.id,
-    name: job.name,
-    state: await job.getState(),
-    progress: job._progress,
-    failed_reason: job.failedReason,
-    timestamp: job.timestamp
-  } : job
-}
-
 module.exports = {
   scrapeWebsite,
   getJob,
   search,
-  getAllJobs,
   fetchAwesomeRepo,
   fetchAwesomeFromRoot,
   workQueue

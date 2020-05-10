@@ -5,7 +5,7 @@ const { str, bool, num } = envalid;
 const { workQueue } = require('./service');
 const { setQueues } = require('bull-board')
 
-module.exports.env = envalid.cleanEnv(process.env, {
+envalid.cleanEnv(process.env, {
   PORT: num({ default: 3000 }),
   NODE_ENV: str({ default: 'production' }),
   TEST_DATA: bool({ default: false }),

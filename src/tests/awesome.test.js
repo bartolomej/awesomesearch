@@ -1,20 +1,31 @@
-const service = require('../web/service');
 const awesomeService = require('../services/awesome');
-const githubRepo = require('../web/repositories/awesome');
+const repo = require('../web/repository');
 const Awesome = require('../models/awesome');
 
 describe('Awesome repository tests', function () {
 
-  beforeEach(async () => await githubRepo.removeAll());
+  beforeEach(async () => await repo.removeAllAwesome());
 
   it('should save object to repo given awesome object', async function () {
-    const awesome = new Awesome('https://example.com');
+    const awesome = new Awesome('https://github.com/amnashanwar/awesome-portfolios');
     awesome.urls = [
       'https://example-2.com',
       'https://example-3.com',
     ];
-    const saved = await githubRepo.saveAwesome(awesome);
+    repo.saveAwesome(awesome);
+    const all = repo.getAllAwesome();
+    const saved = repo.getAwesome('amnashanwar/awesome-portfolios');
+    expect(saved.uid).toEqual('amnashanwar/awesome-portfolios');
     expect(saved).toEqual(awesome);
+    expect(all.length).toBe(1);
+  });
+
+  it('should initialize class from json', function () {
+    const json = JSON.stringify({
+      url: 'https://github.com/amnashanwar/awesome-portfolios',
+    });
+    const awesome = Awesome.fromJson(json);
+    expect(awesome.uid).toEqual('amnashanwar/awesome-portfolios');
   });
 
 });

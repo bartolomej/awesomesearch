@@ -4,9 +4,11 @@ const Queue = require('bull');
 const logger = require('./logger')('redis-consumer');
 const awesomeService = require('./services/awesome');
 const websiteService = require('./services/website');
+const Awesome = require('./models/awesome');
+const Website = require('./models/website');
 const { str, num } = envalid;
 
-module.exports.env = envalid.cleanEnv(process.env, {
+envalid.cleanEnv(process.env, {
   NODE_ENV: str({ default: 'production' }),
   REDIS_URL: str({ default: 'redis://127.0.0.1:6379' }),
   WEB_CONCURRENCY: num({ default: 1 }),
@@ -19,23 +21,27 @@ const workQueue = new Queue('work', redisUrl);
 
 function start () {
 
-  logger.info('Worker started');
-
+  /**
+   * Process awesome repository scraping jobs.
+   */
   workQueue.process('awesome', async job => {
-    const repo = job.data.repo;
+    const repo = Awesome.fromObject(job.data.repo);
     logger.info(`Received job id:${job.id} uid:${repo.uid} in awesome queue`);
-    const result = await awesomeService.getAwesomeListData(repo.url);
+    const result = await awesomeService.getAwesomeListData(repo.uid);
     logger.info(`Finished job id:${job.id} in awesome queue`);
     return { ...repo, ...result };
   });
 
+  /**
+   * Process website scraping jobs.
+   */
   workQueue.process('website', async job => {
-    const { url } = job.data.website;
-    logger.info(`Received job id:${job.id} url:${url} in website queue`);
-    const html = await websiteService.getHtml(url);
-    const result = await websiteService.getMetadata(html, url);
+    const website = Website.fromObject(job.data.website);
+    logger.info(`Received job id:${job.id} url:${website.url} in website queue`);
+    const html = await websiteService.getHtml(website.url);
+    const result = await websiteService.getMetadata(html, website.url);
     logger.info(`Finished job id:${job.id} in awesome queue`);
-    return { ...job.data.website, ...result };
+    return { ...website, ...result };
   });
 }
 

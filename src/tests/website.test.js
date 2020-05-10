@@ -1,18 +1,16 @@
 const Website = require('../models/website');
 const service = require('../services/website');
-const repo = require('../web/repositories/website');
 const fetchMock = require('fetch-mock');
 const data = require('./mock-data');
+const repo = require('../web/repository');
 
 
 describe('Website repository tests', function () {
 
-  beforeEach(async () => await repo.removeAll());
+  beforeEach(async () => await repo.removeAllWebsites());
 
   it('should initialize website from object', function () {
-    const website = new Website();
-    const obj = {
-      "uid": "https://www.google.com",
+    const obj = JSON.stringify({
       "url": "https://google.com",
       "title": "Google",
       "type": null,
@@ -23,48 +21,21 @@ describe('Website repository tests', function () {
       "keywords": [],
       "source": null,
       "updated": null
-    };
-    website.assign(obj);
+    });
+    const website = Website.fromJson(obj);
     expect(website instanceof Website).toBeTruthy();
-    expect(website).toEqual(obj);
+    expect(website).toEqual(JSON.parse(obj));
   });
 
-  function getExampleWebsite () {
+  it('should save website given website object', async function () {
     const website = new Website('https://example.com');
     website.title = 'Title';
     website.keywords = ['tech', 'money', 'example'];
     website.image = 'https://example-image.com';
     website.description = 'Some description ...';
     website.updated = new Date();
-    return website;
-  }
-
-  it('should save website given website object', async function () {
-    const website = getExampleWebsite();
     const saved = await repo.saveWebsite(website);
     expect(saved).toEqual(saved);
-  });
-
-  it('should update website given modified website object', async function () {
-    const website = getExampleWebsite();
-    const saved = await repo.saveWebsite(website);
-    website.title = 'Some title...';
-    const updated = await repo.saveWebsite(website);
-    expect(updated).toEqual(website);
-  });
-
-  it('should fetch website by url given url string', async function () {
-    const website = await repo.saveWebsite(getExampleWebsite());
-    const fetched = await repo.getWebsiteByUrl('https://example.com');
-    expect(fetched).toEqual(website);
-  });
-
-  it('should fetch websites by any attribute given regex', async function () {
-    await repo.saveWebsite(getExampleWebsite());
-    await repo.saveWebsite(getExampleWebsite());
-    const fetched = await repo.getMatched(/te/);
-
-    expect(fetched.length).toBe(2);
   });
 
 });
