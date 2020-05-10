@@ -46,7 +46,8 @@ router.get('/search', async (req, res, next) => {
     if (req.query.q) {
       res.send(await service.search(
         req.query.q,
-        req.query.p || true
+        req.query.p || true,
+        req.query.limit ? parseInt(req.query.limit) : 15
       ));
     } else {
       next(new Error('Please provide a query'))

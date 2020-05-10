@@ -15,7 +15,6 @@ const index = new FlexSearch({
   encode: "advanced",
   tokenize: "reverse",
   suggest: true,
-  cache: true
 });
 
 /**
@@ -43,14 +42,13 @@ workQueue.on('global:completed', async (jobId, result) => {
   }
 });
 
-async function search (query, page = true) {
-  const results = await index.search(query, {
-    limit: 15, page
-  });
+async function search (query, page = true, limit = 15) {
+  const results = await index.search(query, { limit, page });
   const result = results.result ?
     results.result.map(id => {
       try {
-        return { object_type: 'link', ...repo.getWebsite(id) }
+        const website = repo.getWebsite(id);
+        return { object_type: 'link', ...website, tags: website.keywords, keywords: null }
       } catch (e) {}
       try {
         const awesome = repo.getAwesome(id);
@@ -89,5 +87,5 @@ module.exports = {
   search,
   fetchAwesomeRepo,
   fetchAwesomeFromRoot,
-  workQueue
+  workQueue,
 }
