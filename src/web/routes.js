@@ -41,17 +41,39 @@ router.get('/meta', async (req, res, next) => {
   }
 });
 
+router.get('/random', async (req, res, next) => {
+  try {
+    res.send(serializeRandomResults(
+      await service.randomItems(req.query.n || 6))
+    );
+  } catch (e) {
+    next(e);
+  }
+});
+
 router.get('/search', async (req, res, next) => {
   try {
     if (req.query.q) {
-      res.send(await service.search(
+      res.send(serializeSearchResults(await service.search(
         req.query.q,
         req.query.p || true,
         req.query.limit ? parseInt(req.query.limit) : 15
-      ));
+      )));
     } else {
       next(new Error('Please provide a query'))
     }
+  } catch (e) {
+    next(e);
+  }
+});
+
+router.get('/stats', async (req, res, next) => {
+  try {
+    res.send({
+      link_count: repo.getWebsiteCount(),
+      repo_count: repo.getAwesomeCount(),
+      search_stats: service.searchStats()
+    })
   } catch (e) {
     next(e);
   }
@@ -86,5 +108,24 @@ router.post('/website', async (req, res, next) => {
     next(e);
   }
 });
+
+function serializeSearchResults (res) {
+  return { ...res, result: res.result.map(serializeItem) };
+}
+
+function serializeRandomResults (res) {
+  return res.map(serializeItem);
+}
+
+function serializeItem (item) {
+  return item.object_type === 'link' ? ({
+    ...item,
+    tags: item.keywords,
+    keywords: undefined,
+  }) : ({
+    uid: item.uid,
+    ...item
+  });
+}
 
 module.exports = router;

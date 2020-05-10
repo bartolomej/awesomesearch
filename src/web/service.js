@@ -42,20 +42,35 @@ workQueue.on('global:completed', async (jobId, result) => {
   }
 });
 
+function randomItems (n = 6) {
+  let results = [];
+  for (let i = 0; i < n; i++) {
+    results.push({
+      object_type: 'link',
+      ...repo.randomWebsite()
+    });
+  }
+  return results;
+}
+
 async function search (query, page = true, limit = 15) {
   const results = await index.search(query, { limit, page });
   const result = results.result ?
     results.result.map(id => {
       try {
         const website = repo.getWebsite(id);
-        return { object_type: 'link', ...website, tags: website.keywords, keywords: null }
+        return { object_type: 'link', ...website }
       } catch (e) {}
       try {
         const awesome = repo.getAwesome(id);
-        return { object_type: 'repo', uid: awesome.uid, ...awesome }
+        return { object_type: 'repo', ...awesome }
       } catch (e) {}
     }) : [];
   return { ...results, result };
+}
+
+function searchStats () {
+  return index.stats;
 }
 
 async function getJob (id) {
@@ -76,7 +91,7 @@ async function fetchAwesomeFromRoot () {
   const urls = await awesomeService.parseReadme(readme, true);
   const jobs = [];
   for (let url of urls) {
-    jobs.add(await workQueue.add('awesome', { repo: new Awesome(url) }));
+    jobs.push(await workQueue.add('awesome', { repo: new Awesome(url) }));
   }
   return jobs;
 }
@@ -88,4 +103,6 @@ module.exports = {
   fetchAwesomeRepo,
   fetchAwesomeFromRoot,
   workQueue,
+  searchStats,
+  randomItems
 }

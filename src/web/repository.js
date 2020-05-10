@@ -1,10 +1,13 @@
 let websites = {};
 let awesome = {};
 
-
 function saveAwesome (object) {
   awesome[object.uid] = object;
   return awesome[object.uid];
+}
+
+function getAwesomeCount () {
+  return Object.keys(awesome).length;
 }
 
 function getAwesome (uid) {
@@ -31,6 +34,10 @@ function saveWebsite (website) {
   return websites[website.uid];
 }
 
+function getWebsiteCount () {
+  return Object.keys(websites).length;
+}
+
 function getWebsite (uid) {
   const object = websites[uid];
   if (object) {
@@ -38,6 +45,12 @@ function getWebsite (uid) {
   } else {
     throw new Error('Website not found');
   }
+}
+
+function randomWebsite () {
+  const keys = Object.keys(websites);
+  const rand = Math.round(Math.random() * keys.length - 1);
+  return websites[keys[rand]];
 }
 
 function removeAllWebsites () {
@@ -57,5 +70,8 @@ module.exports = {
   removeAllWebsites,
   removeAllAwesome,
   getAllAwesome,
-  getAllWebsites
+  getAllWebsites,
+  randomWebsite,
+  getWebsiteCount,
+  getAwesomeCount
 };
