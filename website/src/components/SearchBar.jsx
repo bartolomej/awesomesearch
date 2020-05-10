@@ -1,14 +1,13 @@
 import React from 'react';
 import styled from "styled-components";
-import { ReactComponent as Icon } from "../assets/search.svg";
-import { PRIMARY, TEXT_LIGHT } from "../colors";
+import UseAnimations from "react-useanimations";
 
 
 export default function SearchBar ({ results, onChange, placeholder }) {
 
   return (
     <Container>
-      <SearchIcon/>
+      <SearchIcon animationKey="searchToX" size={50}/>
       <Input
         placeholder={placeholder}
         onChange={e => onChange(e.target.value)}
@@ -27,8 +26,10 @@ const Container = styled.div`
   width: 100%;
   border-radius: 20px;
   background: white;
-  padding: 10px;
-  border: 2px solid rgba(252, 96, 168, 0.5);
+  padding: 13px;
+  @media (max-width: 700px) {
+    width: 80%;
+  }
 `;
 
 const Input = styled.input`
@@ -39,25 +40,24 @@ const Input = styled.input`
   font-size: 16px;
   flex: 10;
   border-radius: 10px;
-  color: ${PRIMARY};
-  font-weight: bold;
+  color: ${props => props.theme.primary};
   ::placeholder {
-    color: ${TEXT_LIGHT};
+    color: ${props => props.theme.lightText};
   }
   font-family: 'Libre Franklin', sans-serif;
 `;
 
-const SearchIcon = styled(Icon)`
-  flex: 2;
+const SearchIcon = styled(UseAnimations)`
   height: 1.5rem;
   display: inline-block;
   margin: auto 0;
-  fill: rgba(252, 96, 168, 0.5);
+  color: ${props => props.theme.primary};
+  pointer-events: none;
 `;
 
 const MetaText = styled.span`
   flex: 2;
   font-size: 12px;
   margin: auto 0;
-  color: ${TEXT_LIGHT};
+  color: ${props => props.theme.lightText};
 `;

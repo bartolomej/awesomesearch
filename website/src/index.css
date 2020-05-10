@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Libre+Franklin:500,700,900&display=swap');
-@import url('https://fonts.googleapis.com/css?family=Orbitron:500,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap');
 
 * {
   margin: 0;
@@ -7,7 +6,7 @@
 }
 
 body {
-  font-family: 'Libre Franklin', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -17,10 +16,6 @@ code {
     monospace;
 }
 
-h1 {
-  font-family: 'Orbitron', sans-serif;
-}
-
-h3 {
-  font-family: 'Orbitron', sans-serif;
+a {
+  text-decoration: none;
 }

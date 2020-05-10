@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from "styled-components";
-import { TEXT_LIGHT, PRIMARY, SECONDARY, LIGHTEST } from "../colors";
 
 export default function ({text, backgroundColor, textColor}) {
 
@@ -14,7 +13,7 @@ export default function ({text, backgroundColor, textColor}) {
 }
 
 const Container = styled.div`
-  background: ${TEXT_LIGHT};
+  background: ${props => props.theme.light};
   min-width: 60px;
   width: fit-content;
   align-items: center;
@@ -23,12 +22,10 @@ const Container = styled.div`
   margin: 0 .5em .5em 0;
   padding: .3em .9em;
   border-radius: 3px;
-  color: ${SECONDARY};
   font-size: 11px;
-  background: ${LIGHTEST};
 `;
 
 const Text = styled.span`
-  color: ${PRIMARY};
+  color: ${props => props.theme.secondary};
   font-size: 12px;
 `;

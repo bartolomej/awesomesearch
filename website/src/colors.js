@@ -1,6 +1,25 @@
-export const PRIMARY = `rgba(73, 67, 104, 1)`;
-export const SECONDARY = `rgba(252, 96, 168, 1)`;
-export const PRIMARY_LIGHTER = `rgba(151, 146, 227, 1)`;
-export const SECONDARY_LIGHTER = `rgba(206, 194, 255, 1)`;
-export const TEXT_LIGHT = `rgba(142, 142, 142, 0.7)`;
-export const LIGHTEST = `rgba(252, 96, 168, 0.09)`;
+// https://coolors.co/494368-fc60a8-9d99ac-f5f7fb-ffffff
+const rawColors = {
+  purpleNavy: 'rgba(73, 67, 104, 1)',
+  hotPink: 'rgba(252, 96, 168, 1)',
+  manatee: 'rgba(157, 153, 172, 1)',
+  ghostWhite: 'rgb(245,247,251)',
+  white: 'rgba(255, 255, 255, 1)',
+  crimson: 'rgba(215, 38, 61, 1)'
+}
+
+export const theme = {
+  primary: rawColors.purpleNavy,
+  secondary: rawColors.hotPink,
+  lightText: rawColors.manatee,
+  background: rawColors.ghostWhite,
+  light: colorWithOpacity(rawColors.hotPink, 0.09),
+  vibrant: rawColors.crimson
+}
+
+export function colorWithOpacity (color, opacity) {
+  let [r, g, b] = color
+    .substring(color.indexOf('(') + 1, color.indexOf(')'))
+    .split(',').map(e => e.trim());
+  return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+}

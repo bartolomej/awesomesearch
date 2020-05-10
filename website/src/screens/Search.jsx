@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import SearchBar from "./components/SearchBar";
-import ResultItem from "./components/ResultItem";
-import { ReactComponent as awesomeIcon } from "./assets/logo.svg";
-import { ReactComponent as githubIcon } from "./assets/github.svg";
-import { ReactComponent as unicornIcon } from "./assets/unicorn.svg";
-import { ReactComponent as errorIcon } from "./assets/cancel.svg";
-import { PRIMARY, SECONDARY, TEXT_LIGHT } from "./colors";
-import Loader from "react-spinners/BeatLoader";
-import Search from "./search";
+import SearchBar from "../components/SearchBar";
+import ResultItem from "../components/ResultItem";
+import { ReactComponent as unicornIcon } from "../assets/unicorn.svg";
+import { ReactComponent as errorIcon } from "../assets/cancel.svg";
+import { ReactComponent as logo } from "../assets/logo.svg";
+import SearchEngine from "../search";
+import { GithubLink } from "../components/ui";
+import UseAnimations from "react-useanimations";
 
 
-const search = new Search();
+const search = new SearchEngine();
 
-export default function App () {
+export default function Search () {
   const [error, setError] = useState(null);
   const [result, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -38,15 +37,12 @@ export default function App () {
 
   return (
     <Container>
-      <GitHubLink target="_blank" href="https://github.com/bartolomej/awesome-api">
-        <GitHubLogo/>
-      </GitHubLink>
+      <GithubLink href={'https://github.com/bartolomej/awesome-search'}/>
       <Header>
         <HeaderWrapper>
           <AwesomeLink target="_blank" href="https://github.com/sindresorhus/awesome#readme">
             <AwesomeLogo/>
           </AwesomeLink>
-          <Title>Awesome Search</Title>
           <SearchBar
             results={getResults().length}
             placeholder={"Enter search term..."}
@@ -58,10 +54,10 @@ export default function App () {
         {loading && (
           <MessageWrapper>
             {/* https://www.davidhu.io/react-spinners/ */}
-            <Loader
-              size={30}
-              color={SECONDARY}
-              loading={loading}
+            <UseAnimations
+              animationKey="loading2"
+              size={60}
+              style={{ padding: 100 }}
             />
           </MessageWrapper>
         )}
@@ -101,8 +97,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: rgb(255,255,255);
-  background: linear-gradient(180deg, rgba(255,255,255,1) 40%, rgba(252,96,168,0.25) 100%);
 `;
 
 const Header = styled.header`
@@ -113,7 +107,8 @@ const Header = styled.header`
   align-items: center;
   justify-content: center;
   position: fixed;
-  box-shadow: 0 0 20px 40px #FFFF;
+  box-shadow: 0 0 15px 40px ${props => props.theme.background};
+  background: ${props => props.theme.background};
   z-index: 10;
 `;
 
@@ -127,6 +122,7 @@ const Body = styled.div`
   position: fixed;
   bottom: 0;
   overflow-y: scroll;
+  background: ${props => props.theme.background};
 `;
 
 const HeaderWrapper = styled.div`
@@ -137,14 +133,8 @@ const HeaderWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
-  @media (max-width: 1400px) {
-    width: 40%;
-  }
-  @media (max-width: 1000px) {
-    width: 70%;
-  }
-  @media (max-width: 600px) {
-    width: 90%;
+  @media (max-width: 700px) {
+    width: 100%;
   }
 `;
 
@@ -160,58 +150,22 @@ const MessageWrapper = styled.div`
 const MessageText = styled.span`
   font-size: 18px;
   margin-top: 10px;
-  color: ${TEXT_LIGHT};
-`;
-
-const Title = styled.h1`
-  color: ${PRIMARY};
-  font-size: 40px;
-  @media (max-width: 500px) {
-    font-size: 25px;
-  }
+  color: ${props => props.theme.lightText};
 `;
 
 
 /** LINKS **/
 
-const GitHubLink = styled.a`
-  z-index: 10;
-  opacity: 0.5;
-  transition: all ease-in-out 0.3s;
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  &:hover {
-    opacity: 1;
-    transform: scale(1.1);
-  }
-`;
-
-const AwesomeLink = styled.a`
-  transition: all 1s ease-in-out;
-  &:hover {
-    transform: scale(1.2);
-  }
-`;
+const AwesomeLink = styled.a``;
 
 
 /** SVG GRAPHICS **/
 
 // https://codesandbox.io/s/v303jqkyk7?from-embed
-const AwesomeLogo = styled(awesomeIcon)`
+const AwesomeLogo = styled(logo)`
   height: 6rem;
   display: inline-block;
   margin: 0 auto;
-  stroke: ${PRIMARY};
-  stroke-width: 15px;
-`;
-
-const GitHubLogo = styled(githubIcon)`
-  height: 2rem;
-  width: 2rem;
-  display: inline-block;
-  margin: 0 auto;
-  fill: ${PRIMARY};
 `;
 
 const UnicornLogo = styled(unicornIcon)`

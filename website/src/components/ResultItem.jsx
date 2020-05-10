@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from "styled-components";
 import Tag from "./Tag";
-import { LIGHTEST, PRIMARY } from "../colors";
 
 
 export default function ResultItem ({ styles, type, topics, title, description, tags, url, image }) {
@@ -39,17 +38,18 @@ const Container = styled.a`
   flex-direction: row;
   justify-content: space-between;
   padding: 10px;
-  width: 80%;
+  width: 70%;
   outline: none;
   text-decoration: none;
   transition: all 0.2s ease-out;
   &:hover {
-    background: ${LIGHTEST};
+    background: ${props => props.theme.light};
     transform: scale(1.01);
   }
   @media (max-width: 500px) {
     flex-direction: column;
     margin: 20px 0;
+    width: 90%;
   }
   ${props => props.styles}
 `;
@@ -82,7 +82,7 @@ const RightWrapper = styled.div`
 const Title = styled.span`
   font-size: 18px;
   font-weight: bold;
-  color: ${PRIMARY};
+  color: ${props => props.theme.primary};
 `;
 
 const Description = styled.span`
