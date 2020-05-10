@@ -8,8 +8,7 @@ const logger = require('../logger')('awesome-service');
 const Awesome = require('../models/awesome');
 
 
-async function getAwesomeListData (url) {
-  const uid = Awesome.getUidFromUrl(url);
+async function getAwesomeListData (uid) {
 
   // fetch repo info via GitHub API
   const [topics, repo, readme] = await execute(`GitHub API call to ${uid}`, [
@@ -27,14 +26,14 @@ async function getAwesomeListData (url) {
   const urls = parseReadme(readme, false);
   logger.info(`Found ${urls.length} urls in ${uid}`);
 
-  return new Awesome(url, null,
-    repo.homepage,
-    repo.description,
-    repo.stars,
-    repo.forks,
+  return {
+    homepage: repo.homepage,
+    description: repo.description,
+    stars: repo.stars,
+    forks: repo.forks,
     topics,
     urls
-  );
+  };
 }
 
 function parseReadme (text, isRoot = false) {

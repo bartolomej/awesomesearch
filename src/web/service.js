@@ -50,10 +50,11 @@ async function search (query, page = true) {
   const result = results.result ?
     results.result.map(id => {
       try {
-        return repo.getWebsite(id)
+        return { object_type: 'link', ...repo.getWebsite(id) }
       } catch (e) {}
       try {
-        return repo.getAwesome(id)
+        const awesome = repo.getAwesome(id);
+        return { object_type: 'repo', uid: awesome.uid, ...awesome }
       } catch (e) {}
     }) : [];
   return { ...results, result };
