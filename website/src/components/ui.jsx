@@ -6,7 +6,7 @@ import React from "react";
 export function GithubLink ({ href }) {
   return (
     <GitHubLinkContainer href={href} target="_blank">
-      <GitHubLogo/>
+      <GitHubLogo animationKey="github" size={50} />
     </GitHubLinkContainer>
   )
 }
@@ -24,10 +24,27 @@ const GitHubLinkContainer = styled.a`
   opacity: 0.5;
   transition: all ease-in-out 0.3s;
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 20px;
+  right: 20px;
+  color: ${props => props.theme.primary};
+  
   &:hover {
     opacity: 1;
     transform: scale(1.1);
   }
+`;
+
+export const MessageWrapper = styled.div`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+`;
+
+export const MessageText = styled.span`
+  font-size: 18px;
+  margin-top: 10px;
+  color: ${props => props.theme.lightText};
 `;

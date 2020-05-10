@@ -5,19 +5,19 @@ import styled from "styled-components";
 export default function ({ image, title, repoId, repoUrl, url }) {
 
   return (
-    <Container>
+    <Container target="_blank" href={url}>
       <ImageWrapper>
         <Image alt={title} src={image} />
       </ImageWrapper>
       <TextWrapper>
-        <Title target="_blank" href={url}>{title.substring(0, 55)}...</Title>
-        <RepoLink target="_blank" href={repoUrl}>{repoId}</RepoLink>
+        <Title>{title.substring(0, 55)}...</Title>
+        <RepoLink>{repoId}</RepoLink>
       </TextWrapper>
     </Container>
   )
 }
 
-const Container = styled.div` 
+const Container = styled.a` 
   margin-bottom: 30px;
   padding: 15px;
   width: 300px;
@@ -60,21 +60,15 @@ const Image = styled.img`
   height: 100%;
 `;
 
-const Title = styled.a`
+const Title = styled.span`
   font-size: 0.9em;
   font-weight: bolder;
   color: ${props => props.theme.primary};
   margin-bottom: 3px;
   line-height: 1.1;
-  &:hover {
-    color: ${props => props.theme.vibrant};
-  }
 `;
 
-const RepoLink = styled.a`
+const RepoLink = styled.span`
   color: ${props => props.theme.secondary};
   font-size: 0.7em;
-  &:hover {
-    color: ${props => props.theme.vibrant};
-  }
 `;

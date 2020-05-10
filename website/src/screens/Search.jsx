@@ -6,8 +6,9 @@ import { ReactComponent as unicornIcon } from "../assets/unicorn.svg";
 import { ReactComponent as errorIcon } from "../assets/cancel.svg";
 import { ReactComponent as logo } from "../assets/logo.svg";
 import SearchEngine from "../search";
-import { GithubLink } from "../components/ui";
+import { GithubLink, MessageText, MessageWrapper } from "../components/ui";
 import UseAnimations from "react-useanimations";
+import { Link } from "react-router-dom";
 
 
 const search = new SearchEngine();
@@ -40,7 +41,7 @@ export default function Search () {
       <GithubLink href={'https://github.com/bartolomej/awesome-search'}/>
       <Header>
         <HeaderWrapper>
-          <AwesomeLink target="_blank" href="https://github.com/sindresorhus/awesome#readme">
+          <AwesomeLink to="/">
             <AwesomeLogo/>
           </AwesomeLink>
           <SearchBar
@@ -138,25 +139,10 @@ const HeaderWrapper = styled.div`
   }
 `;
 
-const MessageWrapper = styled.div`
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-`;
-
-const MessageText = styled.span`
-  font-size: 18px;
-  margin-top: 10px;
-  color: ${props => props.theme.lightText};
-`;
-
 
 /** LINKS **/
 
-const AwesomeLink = styled.a``;
+const AwesomeLink = styled(Link)``;
 
 
 /** SVG GRAPHICS **/

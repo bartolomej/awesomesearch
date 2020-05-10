@@ -1,119 +1,38 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { ReactComponent as logo } from "../assets/logo.svg";
 import UseAnimations from "react-useanimations";
 import { Link } from "react-router-dom";
 import RandomItem from "../components/RandomItem";
+import { GithubLink, MessageWrapper } from "../components/ui";
 
-
-const randomPics = [
-  {
-    object_type: "link",
-    url: "http://rog.ie",
-    title: "Rogie King — Multidisciplinary Artist, Designer and Programmer",
-    type: "website",
-    name: null,
-    author: "Rogie King",
-    description: "Rogie King — Rogie is a Multidisciplinary Artist, Designer and Programmer that loves design and art with a touch of whimsy and good vibes.",
-    image: "https://rog.ie/assets/rog.ie-og-card.jpg",
-    keywords: null,
-    source: "amnashanwar/awesome-portfolios",
-    updated: null,
-    tags: [ ]
-  },
-  {
-    object_type: "link",
-    url: "http://jeanhelfenstein.com",
-    title: "Jean Helfenstein | Creative Developer | Los Angeles",
-    type: null,
-    name: "Jean Helfenstein | Creative Developer | Los Angeles",
-    author: null,
-    description: "Jean Helfenstein's Portfolio. French Creative Developer based in Los Angeles, California",
-    image: "http://jeanhelfenstein.com/share.jpg",
-    keywords: null,
-    source: "amnashanwar/awesome-portfolios",
-    updated: null,
-    tags: [ ]
-  },
-  {
-    object_type: "link",
-    url: "http://artist-developer.com",
-    title: "Artist-Developer",
-    type: null,
-    name: null,
-    author: null,
-    description: null,
-    image: null,
-    keywords: null,
-    source: "amnashanwar/awesome-portfolios",
-    updated: null,
-    tags: [ ]
-  },
-  {
-    object_type: "link",
-    url: "https://daneden.me",
-    title: "Daniel Eden, Designer",
-    type: null,
-    name: null,
-    author: null,
-    description: "The personal site, blog, and portfolio of Daniel Eden, a designer who cares about the web and design systems",
-    image: "https://daneden.me/images/og.png",
-    keywords: null,
-    source: "amnashanwar/awesome-portfolios",
-    updated: null,
-    tags: [ ]
-  },
-  {
-    object_type: "link",
-    url: "http://corentinfardeau.fr",
-    title: "Corentin Fardeau - Freelance Creative Developer - Paris",
-    type: "website",
-    name: "Corentin Fardeau Portfolio",
-    author: null,
-    description: "My name is Corentin Fardeau, I’m a french creative developer based in Los Angeles currently interning at watson/DG. I’m a fifth year student at HETIC in Paris. I'm available for freelance now.",
-    image: "http://corentinfardeau.fr/assets/images/pixi/about.jpg",
-    keywords: null,
-    source: "amnashanwar/awesome-portfolios",
-    updated: null,
-    tags: [ ]
-  },
-  {
-    object_type: "link",
-    url: "http://lucasmartin.fr",
-    title: "Lucas Martin - Freelance interactive developer",
-    type: "website",
-    name: "Lucas Martin - Freelance interactive developer",
-    author: "Lucas Martin",
-    description: "I'm a freelance interactive developer focusing on merging design with programming to create interactive digital experiences. Contact: contact@lucasmartin.fr",
-    image: "http://lucasmartin.fr/share.png",
-    keywords: null,
-    source: "amnashanwar/awesome-portfolios",
-    updated: null,
-    tags: [
-      "developer",
-      "front-end",
-      "freelance",
-      "interactive",
-      "website",
-      "lucas",
-      "martin",
-      "offf",
-      "hetic",
-      "aqka",
-      "wild"
-    ]
-  },
-];
 
 export default function Home () {
+  const [randomPics, setRandomPics] = useState(null);
+  const [stats, setStats] = useState(null);
+
+  useEffect(() => {
+    fetch(process.env.REACT_APP_API_HOST + '/random')
+      .then(res => res.json())
+      .then(setRandomPics)
+    fetch(process.env.REACT_APP_API_HOST + '/stats')
+      .then(res => res.json())
+      .then(setStats)
+  }, []);
 
   return (
     <Container>
+      <GithubLink href={'https://github.com/bartolomej/awesome-search'}/>
       <TopWrapper>
         <AwesomeSearchLogo/>
-        <Description>
+        <Description style={{marginBottom: 0}}>
           Search engine for discovering more relevant awesome stuff from <a href="https://awesome.re/">Awesome Lists.</a>
         </Description>
+        {stats && (
+          <Description>
+            Includes over {stats.link_count} indexed awesome links from {stats.repo_count} awesome lists.
+          </Description>
+        )}
         <SearchLink to="/search">
           Go to Search
           <UseAnimations
@@ -126,8 +45,19 @@ export default function Home () {
       <BottomWrapper>
         <SectionTitle>Random Pics</SectionTitle>
         <PickedItemsWrapper>
-          {randomPics.map(item => (
+          {!randomPics && (
+            <MessageWrapper>
+              {/* https://www.davidhu.io/react-spinners/ */}
+              <UseAnimations
+                animationKey="loading2"
+                size={60}
+                style={{ padding: 100 }}
+              />
+            </MessageWrapper>
+          )}
+          {randomPics && randomPics.map(item => (
             <RandomItem
+              key={item.url}
               url={item.url}
               image={item.image}
               title={item.title}
