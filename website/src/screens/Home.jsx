@@ -5,6 +5,7 @@ import UseAnimations from "react-useanimations";
 import { Link } from "react-router-dom";
 import RandomItem from "../components/RandomItem";
 import { GithubLink, MessageWrapper } from "../components/ui";
+import { theme } from "../colors";
 
 
 export default function Home () {
@@ -51,7 +52,7 @@ export default function Home () {
               <UseAnimations
                 animationKey="loading2"
                 size={60}
-                style={{ padding: 100 }}
+                style={{ padding: 100, color: theme.primary }}
               />
             </MessageWrapper>
           )}
@@ -105,16 +106,20 @@ const SectionTitle = styled.h2`
 `;
 
 const PickedItemsWrapper = styled.div`
-  width: 100%;
+  width: 60%;
+  margin: 0 auto;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-evenly;
+  @media (max-width: 700px) {
+    width: 100%;
+  }
 `;
 
 const Description = styled.p`
   color: ${props => props.theme.lightText};
-  font-size: 1.2em;
+  font-size: 1.1em;
   text-align: center;
   max-width: 500px;
   margin-top: 30px;

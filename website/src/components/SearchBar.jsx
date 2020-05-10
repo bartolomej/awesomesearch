@@ -1,14 +1,17 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from "styled-components";
 import UseAnimations from "react-useanimations";
 
 
 export default function SearchBar ({ results, onChange, placeholder }) {
+    const [isFocused, setFocused] = useState(false);
 
   return (
-    <Container>
+    <Container isFocused={isFocused}>
       <SearchIcon animationKey="searchToX" size={50}/>
       <Input
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
         placeholder={placeholder}
         onChange={e => onChange(e.target.value)}
         type="text"
@@ -23,6 +26,7 @@ const Container = styled.div`
   flex-direction: row;
   justify-content: space-between;
   position: relative;
+  transition: all ease 0.5s;
   width: 100%;
   border-radius: 20px;
   background: white;
@@ -30,6 +34,7 @@ const Container = styled.div`
   @media (max-width: 700px) {
     width: 80%;
   }
+  ${props => props.isFocused ? 'box-shadow: 4px 4px 10px #d0d2d5, -7px -7px 14px #ffffff;' : ''}
 `;
 
 const Input = styled.input`

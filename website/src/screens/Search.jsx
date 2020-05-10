@@ -9,6 +9,7 @@ import SearchEngine from "../search";
 import { GithubLink, MessageText, MessageWrapper } from "../components/ui";
 import UseAnimations from "react-useanimations";
 import { Link } from "react-router-dom";
+import { theme } from "../colors";
 
 
 const search = new SearchEngine();
@@ -58,7 +59,7 @@ export default function Search () {
             <UseAnimations
               animationKey="loading2"
               size={60}
-              style={{ padding: 100 }}
+              style={{ padding: 100, color: theme.primary }}
             />
           </MessageWrapper>
         )}
