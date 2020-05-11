@@ -6,7 +6,7 @@ const repo = require('./repository');
 
 router.get('/website', async (req, res, next) => {
   try {
-    res.send(await repo.getAllWebsites(req.query.limit));
+    res.send((await repo.getAllWebsites(req.query.limit)).map(serializeItem));
   } catch (e) {
     next(e);
   }
@@ -15,9 +15,9 @@ router.get('/website', async (req, res, next) => {
 router.get('/awesome', async (req, res, next) => {
   try {
     if (req.query.uid) {
-      res.send(await repo.getAwesome(req.query.uid));
+      res.send(serializeItem(await repo.getAwesome(req.query.uid)));
     } else {
-      res.send(await repo.getAllAwesome(req.query.limit));
+      res.send((await repo.getAllAwesome(req.query.limit)).map(serializeItem));
     }
   } catch (e) {
     next(e);
@@ -72,7 +72,8 @@ router.get('/stats', async (req, res, next) => {
     res.send({
       link_count: repo.getWebsiteCount(),
       repo_count: repo.getAwesomeCount(),
-      search_stats: service.searchStats()
+      search_stats: service.searchStats(),
+      repos: (await repo.getAllAwesome()).map(serializeToMinimalRepoInfo)
     })
   } catch (e) {
     next(e);
@@ -115,6 +116,17 @@ function serializeSearchResults (res) {
 
 function serializeRandomResults (res) {
   return res.map(serializeItem);
+}
+
+function serializeToMinimalRepoInfo (repo) {
+  return {
+    uid: repo.uid,
+    description: repo.description,
+    link_count: repo.urls.length,
+    topics: repo.topics,
+    stars: repo.stars,
+    forks: repo.forks
+  }
 }
 
 function serializeItem (item) {
