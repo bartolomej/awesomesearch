@@ -19,7 +19,8 @@ async function getAwesomeListData (uid) {
   );
 
   function onGithubError (e) {
-    logger.error(`Error while fetching from Github API: ${e.message}`);
+    logger.error(`Error fetching from Github API: ${e.message}`);
+    throw e;
   }
 
   // scrape website urls found in readme
