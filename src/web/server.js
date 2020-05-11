@@ -22,6 +22,8 @@ module.exports = async function (routes = []) {
   app.set('view engine', 'handlebars');
   app.set('views', path.join(__dirname, 'views'));
 
+  app.use(express.static(path.join(__dirname, 'public')));
+
   // disable "powered by" headers
   app.disable('x-powered-by');
   // allow cors
@@ -30,11 +32,6 @@ module.exports = async function (routes = []) {
   app.use(express.json());
   // express url parser
   app.use(express.urlencoded({ extended: false }));
-
-  // root endpoint
-  app.get('/', (req, res, next) => {
-    res.send(`Server is running on port ${process.env.PORT} 🙌`)
-  });
 
   // setup module apis
   for (let route of routes) app.use(route);

@@ -1,0 +1,16 @@
+<link rel="stylesheet" href="/root.css">
+
+<div id="container">
+    <div>
+        <img alt="Awesome Search logo" src="/logo.png"/>
+        <a href="https://github.com/bartolomej/awesome-service">View project on GitHub</a>
+    </div>
+    <ul>
+        {{#each endpoints}}
+            <li>
+                <a target="_blank" class="endpoint" href="{{host}}{{examplePath}}">GET {{path}}</a>
+                <span class="description">{{description}}</span>
+            </li>
+        {{/each}}
+    </ul>
+</div>

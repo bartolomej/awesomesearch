@@ -4,6 +4,31 @@ const websiteService = require('../services/website');
 const repo = require('./repository');
 
 
+// root endpoint
+router.get('/', (req, res, next) => {
+  res.render('root', {
+    host: 'https://api.awesomesearch.in',
+    endpoints: [
+      {
+        path: '/stats',
+        examplePath: '/stats',
+        description: 'Returns data statistics.'
+      },
+      {
+        path: '/random',
+        examplePath: '/random',
+        description: 'Returns random indexed links.'
+      },
+      {
+        path: '/search?q={query_string}&p={page_index}&limit={items_per_page}',
+        examplePath: '/search?q=Awesome',
+        description: 'Returns search results sorted by relevance.',
+      }
+    ]
+  })
+});
+
+
 router.get('/website', async (req, res, next) => {
   try {
     res.send((await repo.getAllWebsites(req.query.limit)).map(serializeItem));
@@ -32,7 +57,7 @@ router.get('/meta', async (req, res, next) => {
     if (req.query.url) {
       const html = await websiteService.getHtml(req.query.url);
       const metadata = await websiteService.getMetadata(html, req.query.url);
-      res.render('metadata', {...metadata, layout: false});
+      res.render('metadata', metadata);
     } else {
       next(new Error('Please provide website url'));
     }
