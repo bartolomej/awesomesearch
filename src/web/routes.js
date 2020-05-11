@@ -14,7 +14,7 @@ router.get('/website', async (req, res, next) => {
 
 router.get('/awesome', async (req, res, next) => {
   try {
-    if (req.query.url) {
+    if (req.query.uid) {
       res.send(await repo.getAwesome(req.query.uid));
     } else {
       res.send(await repo.getAllAwesome(req.query.limit));
@@ -120,6 +120,7 @@ function serializeRandomResults (res) {
 function serializeItem (item) {
   return item.object_type === 'link' ? ({
     ...item,
+    uid: item.url,
     tags: item.keywords,
     keywords: undefined,
   }) : ({

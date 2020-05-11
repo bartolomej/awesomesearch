@@ -32,7 +32,9 @@ module.exports = async function (routes = []) {
   app.use(express.urlencoded({ extended: false }));
 
   // root endpoint
-  app.get('/', (req, res, next) => res.send('Server is running 🙌'));
+  app.get('/', (req, res, next) => {
+    res.send(`Server is running on port ${process.env.PORT} 🙌`)
+  });
 
   // setup module apis
   for (let route of routes) app.use(route);

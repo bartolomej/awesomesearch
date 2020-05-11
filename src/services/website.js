@@ -82,11 +82,11 @@ async function getHtml (url) {
   try {
     response = await fetch(url);
   } catch (e) {
-    logger.info(`Website ${url} fetch failed`, e);
+    logger.warn(`Website ${url} fetch failed: ${e.message}`);
     throw e;
   }
   if (!response.ok) {
-    logger.info(`Website ${url} responded with ${response.status}`);
+    logger.warn(`Website ${url} responded with ${response.status}`);
     throw new Error(response.statusText);
   } else {
     return response.text();
