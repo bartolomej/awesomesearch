@@ -58,17 +58,10 @@ async function search (query, page = true, limit = 15) {
   const result = results.result ?
     results.result.map(id => {
       try {
-        const website = repo.getWebsite(id);
-        return { object_type: 'link', ...website }
+        return repo.getWebsite(id);
       } catch (e) {}
       try {
-        const awesome = repo.getAwesome(id);
-        return {
-          ...awesome,
-          object_type: 'repo',
-          urls: undefined,
-          links_count: awesome.urls.length
-        }
+        return repo.getAwesome(id);
       } catch (e) {}
     }) : [];
   return {
@@ -76,6 +69,16 @@ async function search (query, page = true, limit = 15) {
     next: results.next ? parseInt(results.next) : null,
     result
   };
+}
+
+function getItem (uid) {
+  try {
+    return repo.getWebsite(uid)
+  } catch (e) {}
+  try {
+    return repo.getAwesome(uid)
+  } catch (e) {}
+  throw new Error('Object not found');
 }
 
 function searchStats () {
@@ -108,6 +111,7 @@ async function fetchAwesomeFromRoot () {
 module.exports = {
   scrapeWebsite,
   getJob,
+  getItem,
   search,
   fetchAwesomeRepo,
   fetchAwesomeFromRoot,

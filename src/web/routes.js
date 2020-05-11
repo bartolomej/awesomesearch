@@ -20,29 +20,30 @@ router.get('/', (req, res, next) => {
         description: 'Returns random indexed links.'
       },
       {
+        path: '/object?uid={object_uid}',
+        examplePath: '/object?url=',
+        description: 'Returns information about object.'
+      },
+      {
         path: '/search?q={query_string}&p={page_index}&limit={items_per_page}',
         examplePath: '/search?q=Awesome',
         description: 'Returns search results sorted by relevance.',
-      }
+      },
+      {
+        path: '/meta?url={website_url}',
+        examplePath: '/meta?url=https://www.github.com',
+        description: 'Returns website metadata.'
+      },
     ]
   })
 });
 
-
-router.get('/website', async (req, res, next) => {
-  try {
-    res.send((await repo.getAllWebsites(req.query.limit)).map(serializeItem));
-  } catch (e) {
-    next(e);
-  }
-});
-
-router.get('/awesome', async (req, res, next) => {
+router.get('/object', async (req, res, next) => {
   try {
     if (req.query.uid) {
-      res.send(serializeItem(await repo.getAwesome(req.query.uid)));
+      res.send(serializeItem(service.getItem(req.query.uid), true));
     } else {
-      res.send((await repo.getAllAwesome(req.query.limit)).map(serializeItem));
+      next(new Error('Please provide object url as query param'));
     }
   } catch (e) {
     next(e);
@@ -57,7 +58,11 @@ router.get('/meta', async (req, res, next) => {
     if (req.query.url) {
       const html = await websiteService.getHtml(req.query.url);
       const metadata = await websiteService.getMetadata(html, req.query.url);
-      res.render('metadata', metadata);
+      if (req.headers.accept.indexOf('text/html') === 0) {
+        res.render('metadata', metadata);
+      } else {
+        res.send(metadata);
+      }
     } else {
       next(new Error('Please provide website url'));
     }
@@ -136,11 +141,11 @@ router.post('/website', async (req, res, next) => {
 });
 
 function serializeSearchResults (res) {
-  return { ...res, result: res.result.map(serializeItem) };
+  return { ...res, result: res.result.map(o => serializeItem(o, false)) };
 }
 
 function serializeRandomResults (res) {
-  return res.map(serializeItem);
+  return res.map(o => serializeItem(o, false));
 }
 
 function serializeToMinimalRepoInfo (repo) {
@@ -154,15 +159,19 @@ function serializeToMinimalRepoInfo (repo) {
   }
 }
 
-function serializeItem (item) {
+function serializeItem (item, includeLinks = false) {
   return item.object_type === 'link' ? ({
     ...item,
     uid: item.url,
+    website_type: item.type,
     tags: item.keywords,
     keywords: undefined,
+    type: undefined,
   }) : ({
+    ...item,
     uid: item.uid,
-    ...item
+    urls: includeLinks ? item.urls : undefined,
+    link_count: !includeLinks ? item.urls.length : undefined
   });
 }
 

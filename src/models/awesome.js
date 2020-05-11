@@ -3,6 +3,7 @@ const normalizeUrl = require('normalize-url');
 class Awesome {
 
   constructor (url, avatar, homepage, description, stars, forks, topics, urls) {
+    this.object_type = 'repo';
     this.url = url;
     this.avatar = avatar || null;
     this.homepage = homepage || null;

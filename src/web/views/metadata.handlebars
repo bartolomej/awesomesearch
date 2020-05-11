@@ -2,12 +2,47 @@
 
 <div id="container">
     <img alt="{{title}}" src="{{image}}"/>
-    <h1>{{title}}</h1>
-    <a href="{{url}}">{{url}}</a>
-    <p>{{description}}</p>
     <ul>
-        {{#each tags}}
-            <li>{{this}}</li>
-        {{/each}}
+        <li>
+            <span>Title:</span>
+            <span>{{title}}</span>
+        </li>
+        <li>
+            <span>Url:</span>
+            <a href="{{url}}">{{url}}</a>
+        </li>
+        {{#if description}}
+            <li>
+                <span>Description:</span>
+                <span>{{description}}</span>
+            </li>
+        {{/if}}
+        {{#if type}}
+            <li>
+                <span>Object Type:</span>
+                <span>{{type}}</span>
+            </li>
+        {{/if}}
+        {{#if author}}
+            <li>
+                <span>Author:</span>
+                <span>{{author}}</span>
+            </li>
+        {{/if}}
+        <ul>
+            {{#each keywords}}
+                <li>{{this}}</li>
+            {{/each}}
+        </ul>
     </ul>
+    <button onclick="copyJson('{{url}}')">GET JSON</button>
 </div>
+
+<script>
+    async function copyJson (url) {
+        const response = await fetch(`/meta?url=${url}`);
+        const json = await response.json();
+        await navigator.clipboard.writeText(JSON.stringify(json, null, 4));
+        alert('JSON copied to clipboard');
+    }
+</script>

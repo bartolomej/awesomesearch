@@ -3,6 +3,7 @@ const normalizeUrl = require('normalize-url');
 class Website {
 
   constructor (url, source) {
+    this.object_type = 'link';
     this.url = url ? normalizeUrl(url) : null;
     this.title = null;
     this.type = null;
