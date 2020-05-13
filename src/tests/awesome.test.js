@@ -6,6 +6,16 @@ describe('Awesome repository tests', function () {
 
   beforeEach(async () => await repo.removeAllAwesome());
 
+  it('should minify awesome object', function () {
+    const a = new Awesome('https://github.com/amnashanwar/awesome-portfolios');
+    const constructed = Awesome.fromJson(JSON.stringify(a.minify()));
+    expect(a.minify()).toEqual({
+      url: 'https://github.com/amnashanwar/awesome-portfolios'
+    });
+    expect(constructed instanceof Awesome).toBeTruthy();
+    expect(constructed.url).toEqual('https://github.com/amnashanwar/awesome-portfolios');
+  });
+
   it('should save object to repo given awesome object', async function () {
     const awesome = new Awesome('https://github.com/amnashanwar/awesome-portfolios');
     awesome.urls = [

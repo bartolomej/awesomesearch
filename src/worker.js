@@ -1,7 +1,6 @@
 const throng = require('throng');
 const envalid = require('envalid');
-const Queue = require('bull');
-const logger = require('./logger')('redis-consumer');
+const Queue = require('./queue');
 const awesomeService = require('./services/awesome');
 const websiteService = require('./services/website');
 const Awesome = require('./models/awesome');
@@ -13,12 +12,11 @@ envalid.cleanEnv(process.env, {
   WEB_WORKERS: num({ default: 2 }),
 });
 
-const redisUrl = process.env.REDIS_URL;
 const workers = process.env.WEB_WORKERS;
-
-const workQueue = new Queue('work', redisUrl);
+const workQueue = Queue('work');
 
 function start () {
+
   /**
    * Process awesome repository scraping jobs.
    */

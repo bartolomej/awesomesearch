@@ -16,6 +16,21 @@ class Website {
     this.updated = null;
   }
 
+  /**
+   * Removes fields that have undefined or null value.
+   * Used for serialization before transporting to queue.
+   */
+  minify () {
+    const keys = Object.keys(this);
+    const result = {};
+    for (let k of keys) {
+      if (this[k] !== null && !(this[k] instanceof Array && this[k].length === 0)) {
+        result[k] = this[k];
+      }
+    }
+    return result;
+  }
+
   serialize () {
     return new Result({
       type: Result.type.LINK,

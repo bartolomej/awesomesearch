@@ -4,10 +4,9 @@ const awesomeService = require('../services/awesome');
 const Website = require('../models/website');
 const Awesome = require('../models/awesome');
 const FlexSearch = require("flexsearch");
-const Queue = require('bull');
+const Queue = require('../queue');
 
-const redisUrl = process.env.REDIS_URL;
-const workQueue = new Queue('work', redisUrl);
+const workQueue = Queue('work');
 
 // https://github.com/nextapps-de/flexsearch#presets
 const index = new FlexSearch({
@@ -29,7 +28,7 @@ workQueue.on('global:completed', async (jobId, result) => {
     repo.saveAwesome(awesome);
     // post website jobs for found urls
     for (let url of awesome.urls) {
-      await workQueue.add('website', { website: new Website(url, awesome.uid) });
+      await scrapeWebsite(url, awesome.uid);
     }
   } else if (job.name === 'website') {
     const website = Website.fromJson(result)
@@ -86,12 +85,12 @@ async function getJob (id) {
   return await workQueue.getJob(id);
 }
 
-async function scrapeWebsite (url) {
-  return await workQueue.add('website', { website: new Website(url) });
+async function scrapeWebsite (url, source = null) {
+  return await workQueue.add('website', { website: new Website(url, source).minify() });
 }
 
 async function fetchAwesomeRepo (url) {
-  return await workQueue.add('awesome', { repo: new Awesome(url) });
+  return await workQueue.add('awesome', { repo: new Awesome(url).minify() });
 }
 
 async function fetchAwesomeFromRoot () {
@@ -100,7 +99,7 @@ async function fetchAwesomeFromRoot () {
   const urls = await awesomeService.parseReadme(readme, true);
   const jobs = [];
   for (let url of urls) {
-    jobs.push(await workQueue.add('awesome', { repo: new Awesome(url) }));
+    jobs.push(await workQueue.add('awesome', { repo: new Awesome(url).minify() }));
   }
   return jobs;
 }

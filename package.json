@@ -43,6 +43,7 @@
     "fetch-mock": "9.2.1",
     "flexsearch": "0.6.32",
     "foreman": "3.0.1",
+    "ioredis": "4.16.3",
     "meow": "6.0.1",
     "morgan": "1.10.0",
     "node-fetch": "2.6.0",

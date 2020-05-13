@@ -9,22 +9,26 @@ describe('Website repository tests', function () {
 
   beforeEach(async () => await repo.removeAllWebsites());
 
+  it('should minify website object', function () {
+    const website = new Website('https://example.com', 'user/repo');
+    const constructed = Website.fromJson(JSON.stringify(website.minify()));
+    expect(website.minify()).toEqual({
+      url: 'https://example.com',
+      source: 'user/repo'
+    });
+    expect(constructed instanceof Website).toBeTruthy();
+    expect(constructed.url).toEqual('https://example.com');
+    expect(constructed.source).toEqual('user/repo');
+  });
+
   it('should initialize website from object', function () {
     const obj = JSON.stringify({
       "url": "https://google.com",
       "title": "Google",
-      "type": null,
-      "name": null,
-      "author": null,
-      "description": null,
       "image": "https://google.com/favicon.ico",
-      "keywords": [],
-      "source": null,
-      "updated": null
     });
     const website = Website.fromJson(obj);
     expect(website instanceof Website).toBeTruthy();
-    expect(website).toEqual(JSON.parse(obj));
   });
 
   it('should save website given website object', async function () {
