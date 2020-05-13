@@ -3,7 +3,6 @@ const service = require('./service');
 const websiteService = require('../services/website');
 const repo = require('./repository');
 
-
 // root endpoint
 router.get('/', (req, res, next) => {
   res.render('root', {
@@ -41,7 +40,7 @@ router.get('/', (req, res, next) => {
 router.get('/object', async (req, res, next) => {
   try {
     if (req.query.uid) {
-      res.send(serializeItem(service.getItem(req.query.uid), true));
+      res.send(service.getItem(req.query.uid).serialize());
     } else {
       next(new Error('Please provide object url as query param'));
     }
@@ -73,8 +72,9 @@ router.get('/meta', async (req, res, next) => {
 
 router.get('/random', async (req, res, next) => {
   try {
-    res.send(serializeRandomResults(
-      await service.randomItems(req.query.n || 6))
+    res.send(
+      (await service.randomItems(req.query.n || 6))
+        .map(e => e.serialize())
     );
   } catch (e) {
     next(e);
@@ -84,11 +84,15 @@ router.get('/random', async (req, res, next) => {
 router.get('/search', async (req, res, next) => {
   try {
     if (req.query.q) {
-      res.send(serializeSearchResults(await service.search(
+      const searchRes = await service.search(
         req.query.q,
         req.query.p || true,
         req.query.limit ? parseInt(req.query.limit) : 15
-      )));
+      );
+      res.send({
+        ...searchRes,
+        result: searchRes.result.map(e => e.serialize())
+      });
     } else {
       next(new Error('Please provide a query'))
     }
@@ -103,7 +107,8 @@ router.get('/stats', async (req, res, next) => {
       link_count: repo.getWebsiteCount(),
       repo_count: repo.getAwesomeCount(),
       search_stats: service.searchStats(),
-      repos: (await repo.getAllAwesome()).map(serializeToMinimalRepoInfo)
+      repos: (await repo.getAllAwesome())
+        .map(e => e.serialize().toShortVersion())
     })
   } catch (e) {
     next(e);
@@ -139,40 +144,5 @@ router.post('/website', async (req, res, next) => {
     next(e);
   }
 });
-
-function serializeSearchResults (res) {
-  return { ...res, result: res.result.map(o => serializeItem(o, false)) };
-}
-
-function serializeRandomResults (res) {
-  return res.map(o => serializeItem(o, false));
-}
-
-function serializeToMinimalRepoInfo (repo) {
-  return {
-    uid: repo.uid,
-    description: repo.description,
-    link_count: repo.urls.length,
-    topics: repo.topics,
-    stars: repo.stars,
-    forks: repo.forks
-  }
-}
-
-function serializeItem (item, includeLinks = false) {
-  return item.object_type === 'link' ? ({
-    ...item,
-    uid: item.url,
-    website_type: item.type,
-    tags: item.keywords,
-    keywords: undefined,
-    type: undefined,
-  }) : ({
-    ...item,
-    uid: item.uid,
-    urls: includeLinks ? item.urls : undefined,
-    link_count: !includeLinks ? item.urls.length : undefined
-  });
-}
 
 module.exports = router;

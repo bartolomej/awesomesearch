@@ -3,6 +3,7 @@ const { joinUrls } = require('../utils');
 const cheerio = require('cheerio');
 const fetch = require('node-fetch');
 const normalizeUrl = require('normalize-url');
+const { execute } = require('../utils');
 
 
 async function getMetadata (html, websiteUrl) {
@@ -80,7 +81,7 @@ const isResourceAvailable = async url => {
 async function getHtml (url) {
   let response;
   try {
-    response = await fetch(url);
+    response = await execute(`Fetching ${url}`, fetch(url));
   } catch (e) {
     logger.error(`Website ${url} fetch failed: ${e.message}`);
     throw e;

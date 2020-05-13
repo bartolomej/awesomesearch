@@ -3,7 +3,7 @@ const { selectAll } = require("unist-util-select");
 const unified = require('unified');
 const markdown = require('remark-parse');
 const normalizeUrl = require('normalize-url');
-const { performance } = require('perf_hooks');
+const { execute } = require('../utils');
 const logger = require('../logger')('awesome-service');
 const Awesome = require('../models/awesome');
 
@@ -51,14 +51,6 @@ function parseReadme (text, isRoot = false) {
     }
   }
   return urls;
-}
-
-async function execute (name, promises) {
-  const start = performance.now();
-  const result = await Promise.all(promises);
-  const duration = performance.now() - start;
-  logger.info(`${name} took ${duration} ms`);
-  return result;
 }
 
 module.exports = {

@@ -1,9 +1,9 @@
 const normalizeUrl = require('normalize-url');
+const Result = require('./result');
 
 class Website {
 
   constructor (url, source) {
-    this.object_type = 'link';
     this.url = url ? normalizeUrl(url) : null;
     this.title = null;
     this.type = null;
@@ -14,6 +14,20 @@ class Website {
     this.keywords = [];
     this.source = source || null;
     this.updated = null;
+  }
+
+  serialize () {
+    return new Result({
+      type: Result.type.LINK,
+      image: this.image,
+      websiteName: this.name,
+      websiteType: this.type,
+      description: this.description,
+      tags: this.keywords,
+      source: this.source,
+      author: this.author,
+      title: this.title
+    })
   }
 
   get uid () {

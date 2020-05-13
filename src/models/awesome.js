@@ -1,9 +1,9 @@
 const normalizeUrl = require('normalize-url');
+const Result = require('./result');
 
 class Awesome {
 
   constructor (url, avatar, homepage, description, stars, forks, topics, urls) {
-    this.object_type = 'repo';
     this.url = url;
     this.avatar = avatar || null;
     this.homepage = homepage || null;
@@ -12,6 +12,21 @@ class Awesome {
     this.forks = forks || null;
     this.topics = topics || null;
     this.urls = urls || [];
+  }
+
+  serialize () {
+    return new Result({
+      uid: this.url,
+      links: this.urls,
+      url: this.url,
+      stars: this.stars,
+      type: Result.type.REPOSITORY,
+      forks: this.forks,
+      image: this.avatar,
+      description: this.description,
+      title: `${this.getUser()}/${this.getRepository()}`,
+      tags: this.topics
+    })
   }
 
   get uid () {

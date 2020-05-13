@@ -1,3 +1,6 @@
+const { performance } = require('perf_hooks');
+const logger = require('./logger')('utils');
+
 const isRelativeUrl = url => (
   url !== undefined &&
   url !== null &&
@@ -17,4 +20,20 @@ const joinUrls = (rootUrl, path) => {
   }
 };
 
-module.exports.joinUrls = joinUrls;
+async function execute (name, promises) {
+  const start = performance.now();
+  const result = promises instanceof Array
+    ? await Promise.all(promises)
+    : await Promise.resolve(promises);
+  const duration = performance.now() - start;
+  // log if execution took more than 2000ms
+  if (duration > 2000) {
+    logger.info(`${name} took ${duration} ms`);
+  }
+  return result;
+}
+
+module.exports = {
+  joinUrls,
+  execute
+}

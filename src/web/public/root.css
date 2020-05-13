@@ -18,6 +18,10 @@
     margin-top: 10px;
 }
 
+#container > div > a:hover {
+    color: #f09e22;
+}
+
 img {
     width: 300px;
 }

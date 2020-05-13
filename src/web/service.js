@@ -23,8 +23,6 @@ const index = new FlexSearch({
 workQueue.on('global:completed', async (jobId, result) => {
   const job = await getJob(jobId);
 
-  logger.info(`Job ${job.id}:${job.name} completed !`);
-
   if (job.name === 'awesome') {
     const awesome = Awesome.fromJson(result)
     // add serialized string data to search index
