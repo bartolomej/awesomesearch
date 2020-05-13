@@ -44,7 +44,7 @@ export default function Home () {
         </SearchLink>
       </TopWrapper>
       <BottomWrapper>
-        {/*<SectionTitle>Random Pics</SectionTitle>*/}
+        <SectionTitle>Random Pics</SectionTitle>
         <PickedItemsWrapper>
           {!randomPics && (
             <MessageWrapper>
@@ -82,17 +82,18 @@ const TopWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 40vh;
+  height: 60vh;
 `;
 
 const BottomWrapper = styled.div`
   width: 100%;
-  height: 60vh;
   text-align: center;
   display: flex;
+  flex-direction: column;
   align-items: center;
   @media (max-width: 700px) {
     width: 90%;
+    margin: 0 auto;
   }
 `;
 
@@ -137,8 +138,7 @@ const SearchLink = styled(Link)`
 `;
 
 const AwesomeSearchLogo = styled(logo)`
-  width: 300px;
-  height: 100%;
+  width: 350px;
   @media (max-width: 700px) {
     width: 200px;
   }

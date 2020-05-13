@@ -48,8 +48,9 @@ const Container = styled.a`
   }
   @media (max-width: 500px) {
     flex-direction: column;
-    margin: 20px 0;
+    margin: 0;
     width: 90%;
+    padding: 10px;
   }
   ${props => props.styles}
 `;
@@ -60,9 +61,8 @@ const LeftWrapper = styled.div`
   flex-direction: row;
   justify-content: flex-start;
   @media (max-width: 500px) {
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    margin-bottom: 10px;
   }
 `;
 
@@ -97,6 +97,7 @@ const ImageWrapper = styled.div`
   justify-content: center;
   @media (max-width: 500px) {
     margin-bottom: 10px;
+    flex: 1;
   }
 `;
 
@@ -106,10 +107,14 @@ const TextWrapper = styled.div`
   margin-left: 40px;
   @media (max-width: 500px) {
     margin: 0;
+    flex: 4;
   }
 `;
 
 const Image = styled.img`
-  height: 60px;
+  width: 60px;
   border-radius: 8px;
+  @media (max-width: 500px) {
+    margin-right: 5px;
+  }
 `;
