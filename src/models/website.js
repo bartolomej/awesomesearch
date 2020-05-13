@@ -26,7 +26,8 @@ class Website {
       tags: this.keywords,
       source: this.source,
       author: this.author,
-      title: this.title
+      title: this.title,
+      url: this.url
     })
   }
 

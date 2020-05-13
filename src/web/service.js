@@ -1,4 +1,3 @@
-const logger = require('../logger')('web-service');
 const repo = require('./repository');
 const github = require('../gateways/github');
 const awesomeService = require('../services/awesome');
