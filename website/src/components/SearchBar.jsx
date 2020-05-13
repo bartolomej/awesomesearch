@@ -16,7 +16,6 @@ export default function SearchBar ({ results, onChange, placeholder }) {
         onChange={e => onChange(e.target.value)}
         type="text"
       />
-      <MetaText>{results && results > 0 ? `${results} results` : ''}</MetaText>
     </Container>
   )
 }
@@ -58,11 +57,4 @@ const SearchIcon = styled(UseAnimations)`
   margin: auto 0;
   color: ${props => props.theme.primary};
   pointer-events: none;
-`;
-
-const MetaText = styled.span`
-  flex: 2;
-  font-size: 12px;
-  margin: auto 0;
-  color: ${props => props.theme.lightText};
 `;

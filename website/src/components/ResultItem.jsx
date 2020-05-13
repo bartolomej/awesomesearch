@@ -3,11 +3,11 @@ import styled from "styled-components";
 import Tag from "./Tag";
 
 
-export default function ResultItem ({ styles, type, topics, title, description, tags, url, image }) {
+export default function ResultItem ({ innerRef, styles, type, title, description, tags, url, image }) {
   const maxDescriptionLength = 70;
 
   return (
-    <Container styles={styles} href={url} target="_blank">
+    <Container ref={innerRef} styles={styles} href={url} target="_blank">
       <LeftWrapper>
         <ImageWrapper>
           <Image src={image}/>
@@ -24,10 +24,7 @@ export default function ResultItem ({ styles, type, topics, title, description, 
         </TextWrapper>
       </LeftWrapper>
       <RightWrapper>
-        {type === 'link'
-          ? tags.slice(0, window.isMobile() ? 2 : 6).map(t => <Tag key={t} text={t}/>)
-          : topics.slice(0, window.isMobile() ? 2 : 6).map(t => <Tag key={t} text={t}/>)
-        }
+        {tags.slice(0, window.isMobile() ? 2 : 6).map(t => <Tag key={t} text={t}/>)}
       </RightWrapper>
     </Container>
   )
@@ -37,14 +34,17 @@ const Container = styled.a`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 10px;
+  padding: 13px;
+  margin-top: 20px;
   width: 70%;
   outline: none;
   text-decoration: none;
-  transition: all 0.2s ease-out;
+  transition: all 0.1s ease-out;
+  border-radius: 22px;
   &:hover {
-    background: ${props => props.theme.light};
     transform: scale(1.01);
+    box-shadow:  7px 7px 14px #d0d2d5, 
+             -7px -7px 14px #ffffff;
   }
   @media (max-width: 500px) {
     flex-direction: column;

@@ -24,14 +24,13 @@ const Container = styled.a`
   display: flex;
   flex-direction: row;
   border-radius: 22px;
-  transition: 0.5s all ease;
+  transition: all 0.2s ease-out;
   background: #F5F7FB;
-  box-shadow:  7px 7px 14px #d0d2d5, 
-             -7px -7px 14px #ffffff;
+  box-shadow:  5px 5px 12px #bfc1c4, 
+             -5px -5px 12px #ffffff;
   &:hover {
-    background: white;
     transform: scale(1.02);
-    box-shadow:  12px 12px 17px #d0d2d5, 
+    box-shadow:  7px 7px 14px #d0d2d5, 
              -7px -7px 14px #ffffff;
   }
 `;

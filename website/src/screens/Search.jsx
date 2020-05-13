@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import SearchBar from "../components/SearchBar";
 import ResultItem from "../components/ResultItem";
-import { ReactComponent as unicornIcon } from "../assets/unicorn.svg";
+import { ReactComponent as searchIcon } from "../assets/telescope.svg";
 import { ReactComponent as errorIcon } from "../assets/cancel.svg";
 import { ReactComponent as logo } from "../assets/logo.svg";
 import SearchEngine from "../search";
@@ -10,6 +10,7 @@ import { GithubLink, MessageText, MessageWrapper } from "../components/ui";
 import UseAnimations from "react-useanimations";
 import { Link } from "react-router-dom";
 import { theme } from "../colors";
+import { useInView } from "react-intersection-observer";
 
 
 const search = new SearchEngine();
@@ -19,8 +20,21 @@ export default function Search () {
   const [result, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const [ref, inView, entry] = useInView({
+    /* Optional options */
+    threshold: 0,
+  });
+
+  useEffect(() => {
+    if (inView === true) {
+      if (search.isNextPage()) {
+        search.nextPage().then(res => setResults([...result, ...res]));
+      }
+    }
+  }, [inView]);
+
   function getResults () {
-    return result.result ? result.result : [];
+    return result || [];
   }
 
   async function fetchResults (query) {
@@ -71,7 +85,7 @@ export default function Search () {
         )}
         {(!loading && !error && getResults().length === 0) && (
           <MessageWrapper>
-            <UnicornLogo/>
+            <SearchIcon/>
             <MessageText>Wow such empty!</MessageText>
             <MessageText>Search the largest collection of awesome resources.</MessageText>
           </MessageWrapper>
@@ -79,6 +93,7 @@ export default function Search () {
         {!loading && getResults().map((r, i) => (
           <ResultItem
             key={i}
+            innerRef={i === getResults().length - 5 ? ref : null}
             type={r.object_type}
             url={r.url}
             image={r.image}
@@ -95,14 +110,14 @@ export default function Search () {
 }
 
 const Container = styled.div`
-  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-height: 100vh;
 `;
 
 const Header = styled.header`
-  height: 30%;
+  height: 30vh;
   width: 100vw;
   display: flex;
   flex-direction: column;
@@ -110,12 +125,11 @@ const Header = styled.header`
   justify-content: center;
   position: fixed;
   box-shadow: 0 0 15px 40px ${props => props.theme.background};
-  background: ${props => props.theme.background};
   z-index: 10;
 `;
 
 const Body = styled.div`
-  height: 70%;
+  height: 70vh;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -124,7 +138,6 @@ const Body = styled.div`
   position: fixed;
   bottom: 0;
   overflow-y: scroll;
-  background: ${props => props.theme.background};
 `;
 
 const HeaderWrapper = styled.div`
@@ -155,9 +168,9 @@ const AwesomeLogo = styled(logo)`
   margin: 0 auto;
 `;
 
-const UnicornLogo = styled(unicornIcon)`
-  height: 10rem;
-  width: 10rem;
+const SearchIcon = styled(searchIcon)`
+  height: 13rem;
+  width: 13rem;
   display: inline-block;
   opacity: 0.7;
   margin: 0 auto 20px;
