@@ -72,10 +72,7 @@ router.get('/meta', async (req, res, next) => {
 
 router.get('/random', async (req, res, next) => {
   try {
-    res.send(
-      (await service.randomItems(req.query.n || 6))
-        .map(e => e.serialize())
-    );
+    res.send(service.randomItems(req.query.n || 6).map(e => e.serialize()));
   } catch (e) {
     next(e);
   }

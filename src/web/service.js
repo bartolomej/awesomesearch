@@ -43,10 +43,10 @@ workQueue.on('global:completed', async (jobId, result) => {
 function randomItems (n = 6) {
   let results = [];
   for (let i = 0; i < n; i++) {
-    results.push({
-      object_type: 'link',
-      ...repo.randomWebsite()
-    });
+    const rand = repo.randomWebsite();
+    if (rand) {
+      results.push(rand);
+    }
   }
   return results;
 }
