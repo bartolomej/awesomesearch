@@ -39,7 +39,7 @@ export default function Home () {
           <UseAnimations
             animationKey="arrowDown"
             size={30}
-            style={{ transform: 'rotate(-90deg)', padding: 10 }}
+            style={{ transform: 'rotate(-90deg)', paddingTop: 10 }}
           />
         </SearchLink>
       </TopWrapper>
@@ -83,6 +83,9 @@ const TopWrapper = styled.div`
   align-items: center;
   justify-content: center;
   height: 60vh;
+  @media (max-width: 500px) {
+    height: 70vh;
+  }
 `;
 
 const BottomWrapper = styled.div`
@@ -101,7 +104,7 @@ const SectionTitle = styled.h2`
   font-size: 1.5em;
   color: ${props => props.theme.primary};
   font-weight: bold;
-  margin: 40px;
+  margin-bottom: 30px;
 `;
 
 const PickedItemsWrapper = styled.div`
@@ -125,6 +128,10 @@ const Description = styled.p`
   margin-bottom: 50px;
   a {
     color: ${props => props.theme.secondary};
+  }
+  @media (max-width: 500px) {
+    width: 90%;
+    margin-bottom: 20px;
   }
 `;
 

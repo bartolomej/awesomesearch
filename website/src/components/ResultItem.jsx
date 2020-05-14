@@ -13,7 +13,7 @@ export default function ResultItem ({ innerRef, styles, type, title, description
           <Image src={image}/>
         </ImageWrapper>
         <TextWrapper>
-          <Title>{title}</Title>
+          <Title>{title ? (title.length === 0 ? url : title) : url}</Title>
           <Description>
             {
               description &&
@@ -106,15 +106,12 @@ const TextWrapper = styled.div`
   flex-direction: column;
   margin-left: 40px;
   @media (max-width: 500px) {
-    margin: 0;
     flex: 4;
+    margin: 0 0 0 8px;
   }
 `;
 
 const Image = styled.img`
   width: 60px;
   border-radius: 8px;
-  @media (max-width: 500px) {
-    margin-right: 5px;
-  }
 `;

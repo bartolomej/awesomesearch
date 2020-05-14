@@ -53,7 +53,6 @@ export default function Search () {
 
   return (
     <Container>
-      <GithubLink href={'https://github.com/bartolomej/awesome-search'}/>
       <Header>
         <HeaderWrapper>
           <AwesomeLink to="/">
@@ -126,6 +125,9 @@ const Header = styled.header`
   position: fixed;
   box-shadow: 0 0 15px 40px ${props => props.theme.background};
   z-index: 10;
+  @media (max-width: 500px) {
+    box-shadow: none;
+  }
 `;
 
 const Body = styled.div`
