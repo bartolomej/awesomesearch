@@ -33,6 +33,7 @@ class Website {
 
   serialize () {
     return new Result({
+      uid: this.uid,
       type: Result.type.LINK,
       image: this.image,
       websiteName: this.name,

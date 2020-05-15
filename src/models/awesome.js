@@ -31,7 +31,7 @@ class Awesome {
 
   serialize () {
     return new Result({
-      uid: this.url,
+      uid: this.uid,
       links: this.urls,
       url: this.url,
       stars: this.stars,

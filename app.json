@@ -5,6 +5,6 @@
   "logo": "https://api.awesomesearch.in/logo.png",
   "keywords": ["nodejs", "awesome", "api"],
   "addons": [
-    "Heroku Redis"
+    "heroku-redis"
   ]
 }

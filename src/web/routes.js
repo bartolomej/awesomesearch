@@ -92,7 +92,7 @@ router.get('/search', async (req, res, next) => {
       );
       res.send({
         ...searchRes,
-        result: searchRes.result.map(e => e.serialize())
+        result: searchRes.result.map(e => e.serialize().toShortVersion())
       });
     } else {
       next(new Error('Please provide a query'))

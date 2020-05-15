@@ -1,5 +1,5 @@
 <div align="center">
-	<img width="300" src="https://api.awesomesearch.in/logo.png" alt="Awesome Node.js">
+	<img width="400" src="https://api.awesomesearch.in/logo.png" alt="Awesome Node.js">
 </div>
 <br>
 <hr>
