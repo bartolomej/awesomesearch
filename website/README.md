@@ -1,9 +1,16 @@
-# Awesome Search [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
+<div align="center">
+	<img width="400" src="https://api.awesomesearch.in/logo.png" alt="Awesome Node.js">
+</div>
+<br>
+<hr>
 
-Search awesome list collection to discover new resources.
+[![Awesome](https://awesome.re/badge-flat2.svg)](https://awesome.re)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/0ac05498-6234-4998-acb5-b4493acf362e/deploy-status)](https://app.netlify.com/sites/awesomesearch/deploys)
 
 
-## Scripts
+Search the largest collection about all kinds of interesting topics and resources found on the internet. Uses [AwesomeSearch API](https://github.com/bartolomej/awesomesearch-api).
+
+## Development
 Define API gateway address of [awesome-service](https://github.com/bartolomej/awesome-service) in
 `REACT_APP_API_HOST` variable in `.env` file before running.
 - `npm start` - start development build
