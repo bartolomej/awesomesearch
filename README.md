@@ -4,12 +4,16 @@
 <br>
 <hr>
 
+[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 [![Awesome](https://awesome.re/badge-flat2.svg)](https://awesome.re)
 <br>
 
 Awesome web service indexes [awesome](https://awesome.com/sindresorhus/awesome) list collections and exposes external search REST API.
 
-[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+After deploying to Heroku, you will need to [manualy scale worker process](https://devcenter.heroku.com/articles/procfile#scaling-a-process-type) with heroku cli command: 
+```
+$ heroku ps:scale worker=1 --app <appname>
+```
 
 
 ## API docs
