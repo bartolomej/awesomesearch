@@ -38,6 +38,12 @@ describe('Awesome repository tests', function () {
     expect(awesome.uid).toEqual('amnashanwar/awesome-portfolios');
   });
 
+  it('should verify that object does not exist in db', function () {
+    repo.saveAwesome(new Awesome('https://github.com/amnashanwar/awesome-portfolios'));
+    expect(repo.exists('someUid')).toBeFalsy();
+    expect(repo.exists('amnashanwar/awesome-portfolios')).toBeTruthy();
+  });
+
 });
 
 describe('Awesome model tests', function () {

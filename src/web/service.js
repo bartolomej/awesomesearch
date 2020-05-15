@@ -23,18 +23,16 @@ workQueue.on('global:completed', async (jobId, result) => {
 
   if (job.name === 'awesome') {
     const awesome = Awesome.fromJson(result)
-    // add serialized string data to search index
-    index.add(awesome.uid, awesome.serializeToIndex());
+    addToIndex(awesome);
     repo.saveAwesome(awesome);
     // post website jobs for found urls
     for (let url of awesome.urls) {
       await scrapeWebsite(url, awesome.uid);
     }
   } else if (job.name === 'website') {
-    const website = Website.fromJson(result)
-    repo.saveWebsite(website)
-    // add serialized string data to search index
-    index.add(website.uid, website.serializeToIndex());
+    const website = Website.fromJson(result);
+    addToIndex(website);
+    repo.saveWebsite(website);
   }
 });
 
@@ -65,6 +63,13 @@ async function search (query, page = true, limit = 15) {
     next: results.next ? parseInt(results.next) : null,
     result
   };
+}
+
+function addToIndex (object) {
+  // add serialized string data to search index
+  if (!repo.exists(object.uid)) {
+    index.add(object.uid, object.serializeToIndex());
+  }
 }
 
 function getItem (uid) {

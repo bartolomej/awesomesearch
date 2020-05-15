@@ -63,6 +63,10 @@ function getAllWebsites (limit = null) {
     .slice(0, limit || keys.length);
 }
 
+function exists (uid) {
+  return !(!websites[uid] && !awesome[uid]);
+}
+
 module.exports = {
   saveWebsite,
   saveAwesome,
@@ -74,5 +78,6 @@ module.exports = {
   getAllWebsites,
   randomWebsite,
   getWebsiteCount,
-  getAwesomeCount
+  getAwesomeCount,
+  exists
 };
