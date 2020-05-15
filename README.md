@@ -1,6 +1,16 @@
-# Awesome Service [![Awesome](https://awesome.re/badge.svg)](https://awesome.re)
+<div align="center">
+	<img width="300" src="https://api.awesomesearch.in/logo.png" alt="Awesome Node.js">
+</div>
+<br>
+<hr>
+
+[![Awesome](https://awesome.re/badge-flat2.svg)](https://awesome.re)
+<br>
 
 Awesome web service indexes [awesome](https://awesome.com/sindresorhus/awesome) list collections and exposes external search REST API.
+
+[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
+
 
 ## API docs
 
@@ -23,17 +33,21 @@ Example response:
 "result": [
     {
         "object_type": "link",
-        "url": "https://github.com/chrs1885/Capable",
-        "title": "chrs1885/Capable",
-        "type": "object",
-        "name": "GitHub",
-        "author": null,
-        "description": "Keep track of accessibility settings, leverage high contrast colors, and use scalable fonts to enable users with disabilities to use your app. - chrs1885/Capable",
-        "image": "https://repository-images.githubusercontent.com/128437025/d1604580-6ad0-11e9-98cd-5ccc5b64f03c",
-        "source": "vsouza/awesome-ios",
-        "updated": null,
-        "tags": [ ]
-    }
+        "title": "Level Out",
+        "website_name": null,
+        "url": "http://level-out.com",
+        "image": "https://level-out.com/assets/images/og-image.png",
+        "tags": [
+          "Level Out",
+          "Luke Hedger",
+          "Software Engineer"
+        ],
+        "source": "amnashanwar/awesome-portfolios",
+        "website_type": "website",
+        "description": "The world needs software that is modern yet stable, balanced skillfully between innovation and standards",
+        "author": "Luke Hedger"
+    },
+    ...
 ]
 ```
 
@@ -49,6 +63,11 @@ To start both just run `npm start`.
 - [FlexSearch](https://github.com/nextapps-de/flexsearch) - Next-Generation full text search library for Browser and Node.js
 - [bull](https://github.com/OptimalBits/bull) - Premium Queue package for handling distributed jobs and messages in NodeJS
 
+## Developing
+
+- before running, you need to have [Redis](https://redis.io/) installed on your machine. 
+- run `yarn install` or `npm i` command to install dependencies
+- run `yarn start` or `npm start` to start both app processes in production
 
 ## Scripts
 

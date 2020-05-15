@@ -1,0 +1,10 @@
+{
+  "name": "Awesome Search API",
+  "description": "Open source Awesome lists search app with REST API.",
+  "repository": "https://github.com/bartolomej/awesomesearch-api",
+  "logo": "https://api.awesomesearch.in/logo.png",
+  "keywords": ["nodejs", "awesome", "api"],
+  "addons": [
+    "Heroku Redis"
+  ]
+}
