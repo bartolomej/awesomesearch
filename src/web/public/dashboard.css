@@ -1,0 +1,19 @@
+#container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    justify-content: center;
+}
+
+#url-label {
+    margin: 10px 0;
+}
+
+#stats-container {
+    margin: 10px 0;
+}
+
+ul {
+    list-style: none;
+}

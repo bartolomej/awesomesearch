@@ -23,23 +23,6 @@ ul > li {
     margin: 8px 0;
 }
 
-button {
-    outline: none;
-    padding: 10px;
-    margin: 20px;
-    border-radius: 10px;
-    border: #fc5fa8 1px solid;
-    color: #fc5fa8;
-    transition: 0.5s all ease;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-button:hover {
-    background: #fc5fa8;
-    color: white;
-}
-
 @media (max-width: 700px) {
    #container {
         width: 90%;

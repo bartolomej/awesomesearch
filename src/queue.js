@@ -19,6 +19,10 @@ const opts = {
       default:
         throw new Error('Unexpected connection type: ', type);
     }
+  },
+  limiter: {
+    max: 20,
+    duration: 5000
   }
 }
 

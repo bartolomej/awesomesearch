@@ -49,6 +49,10 @@ router.get('/object', async (req, res, next) => {
   }
 });
 
+router.get('/dashboard', async (req, res, next) => {
+  res.render('dash');
+});
+
 /**
  * Returns website metadata given url in query param.
  */
