@@ -9,7 +9,7 @@
   "scripts": {
     "test": "jest",
     "start": "NODE_ENV=production nf start",
-    "start:dev": "NODE_ENV=development  nodemon src/worker.js",
+    "start:dev": "NODE_ENV=development  nodemon src/web/index.js",
     "start:dev:test": "NODE_ENV=development TEST_DATA=true nodemon src/worker.js",
     "coverage": "jest --coverage",
     "coverage:web": "npm run coverage && open coverage/lcov-report/index.html",
@@ -48,7 +48,9 @@
     "morgan": "1.10.0",
     "node-fetch": "2.6.0",
     "normalize-url": "5.0.0",
+    "puppeteer": "3.0.4",
     "remark-parse": "7.0.2",
+    "rimraf": "3.0.2",
     "throng": "4.0.0",
     "unified": "8.4.2",
     "unist-util-select": "3.0.1",

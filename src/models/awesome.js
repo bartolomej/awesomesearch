@@ -83,12 +83,12 @@ class Awesome {
     return Awesome.parseUrl(this.url).repo;
   }
 
-  // https://stackoverflow.com/questions/2219830/regular-expression-to-find-two-strings-anywhere-in-input
   static isValidUrl (url, isRoot = false) {
     return (
       /^http/.test(url) &&
       (!/^.*?\bgithub\b.*?\bawesome\b.*?$/m.test(url) || isRoot) &&
-      !/creativecommons.org/.test(url)
+      !/creativecommons.org/.test(url) &&
+      !/license/i.test(url)
     )
   }
 

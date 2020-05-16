@@ -79,3 +79,6 @@ To start both just run `npm start`.
 - `npm start` - start server in production environment
 - `npm start:dev` - start server in development environment
 - `npm start:dev:test` - start server in development environment with mocked REST API calls defined in `src/index.js`
+
+## Future Ideas
+- topic / keywords extraction from website text

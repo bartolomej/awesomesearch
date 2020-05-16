@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const service = require('./service');
-const websiteService = require('../services/website');
+const websiteService = require('../services/metadata');
 const repo = require('./repository');
 
 // root endpoint

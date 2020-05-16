@@ -1,4 +1,4 @@
-const service = require('../services/website');
+const service = require('../services/metadata');
 const fetchMock = require('fetch-mock');
 const { performance, PerformanceObserver } = require('perf_hooks');
 

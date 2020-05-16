@@ -1,5 +1,5 @@
 const Website = require('../models/website');
-const service = require('../services/website');
+const service = require('../services/metadata');
 const fetchMock = require('fetch-mock');
 const data = require('./mock-data');
 const repo = require('../web/repository');
