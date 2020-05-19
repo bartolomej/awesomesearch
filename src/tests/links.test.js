@@ -1,4 +1,4 @@
-const Website = require('../models/website');
+const Link = require('../models/link');
 const service = require('../services/metadata');
 const fetchMock = require('fetch-mock');
 const data = require('./data/mock-data');
@@ -10,15 +10,16 @@ describe('Website repository tests', function () {
   beforeEach(async () => await repo.removeAllWebsites());
 
   it('should minify website object', function () {
-    const website = new Website('https://example.com', 'user/repo');
-    const constructed = Website.fromJson(JSON.stringify(website.minify()));
+    const website = new Link('https://example.com', 'user.repo');
+    const constructed = Link.fromJson(JSON.stringify(website.minify()));
     expect(website.minify()).toEqual({
       url: 'https://example.com',
-      source: 'user/repo'
+      uid: "example.com",
+      source: 'user.repo'
     });
-    expect(constructed instanceof Website).toBeTruthy();
+    expect(constructed instanceof Link).toBeTruthy();
     expect(constructed.url).toEqual('https://example.com');
-    expect(constructed.source).toEqual('user/repo');
+    expect(constructed.source).toEqual('user.repo');
   });
 
   it('should initialize website from object', function () {
@@ -27,12 +28,12 @@ describe('Website repository tests', function () {
       "title": "Google",
       "image": "https://google.com/favicon.ico",
     });
-    const website = Website.fromJson(obj);
-    expect(website instanceof Website).toBeTruthy();
+    const website = Link.fromJson(obj);
+    expect(website instanceof Link).toBeTruthy();
   });
 
   it('should save website given website object', async function () {
-    const website = new Website('https://example.com');
+    const website = new Link('https://example.com');
     website.title = 'Title';
     website.keywords = ['tech', 'money', 'example'];
     website.image = 'https://example-image.com';
@@ -133,3 +134,18 @@ describe('Website service tests', function () {
   });
 
 });
+
+
+describe('Link model tests', function () {
+
+  it('should compute uid given url: case 1', function () {
+    const uid = Link.computeUid('https://reactnative.dev/subpage');
+    expect(uid).toEqual('reactnative.dev.subpage');
+  });
+
+  it('should compute uid given url: case 2', function () {
+    const uid = Link.computeUid('http://www.github.com/bartolomej/cool-links/#readme');
+    expect(uid).toEqual('github.com.bartolomej.cool-links');
+  });
+
+})

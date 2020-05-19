@@ -4,7 +4,7 @@ const Queue = require('./queue');
 const awesomeService = require('./services/awesome');
 const websiteService = require('./services/metadata');
 const Awesome = require('./models/awesome');
-const Website = require('./models/website');
+const Website = require('./models/link');
 const { str, num } = envalid;
 
 envalid.cleanEnv(process.env, {
@@ -22,7 +22,7 @@ function start () {
    */
   workQueue.process('awesome', async job => {
     const repo = Awesome.fromObject(job.data.repo);
-    const result = await awesomeService.getAwesomeListData(repo.uid);
+    const result = await awesomeService.getAwesomeListData(repo.getRepository(), repo.getUser());
     return { ...repo, ...result };
   });
 

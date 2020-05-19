@@ -24,8 +24,8 @@ describe('Awesome repository tests', function () {
     ];
     repo.saveAwesome(awesome);
     const all = repo.getAllAwesome();
-    const saved = repo.getAwesome('amnashanwar/awesome-portfolios');
-    expect(saved.uid).toEqual('amnashanwar/awesome-portfolios');
+    const saved = repo.getAwesome('amnashanwar.awesome-portfolios');
+    expect(saved.uid).toEqual('amnashanwar.awesome-portfolios');
     expect(saved).toEqual(awesome);
     expect(all.length).toBe(1);
   });
@@ -35,13 +35,13 @@ describe('Awesome repository tests', function () {
       url: 'https://github.com/amnashanwar/awesome-portfolios',
     });
     const awesome = Awesome.fromJson(json);
-    expect(awesome.uid).toEqual('amnashanwar/awesome-portfolios');
+    expect(awesome.uid).toEqual('amnashanwar.awesome-portfolios');
   });
 
   it('should verify that object does not exist in db', function () {
     repo.saveAwesome(new Awesome('https://github.com/amnashanwar/awesome-portfolios'));
     expect(repo.exists('someUid')).toBeFalsy();
-    expect(repo.exists('amnashanwar/awesome-portfolios')).toBeTruthy();
+    expect(repo.exists('amnashanwar.awesome-portfolios')).toBeTruthy();
   });
 
 });
@@ -59,7 +59,7 @@ describe('Awesome model tests', function () {
 
   it('should normalize url on init', function () {
     const awesome = new Awesome('https://github.com/jthegedus/awesome-firebase/#readme');
-    expect(awesome.uid).toEqual('jthegedus/awesome-firebase');
+    expect(awesome.uid).toEqual('jthegedus.awesome-firebase');
     expect(awesome.url).toEqual('https://github.com/jthegedus/awesome-firebase/#readme');
   });
 

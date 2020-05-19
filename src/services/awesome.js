@@ -8,13 +8,13 @@ const logger = require('../logger')('awesome-service');
 const Awesome = require('../models/awesome');
 
 
-async function getAwesomeListData (uid) {
+async function getAwesomeListData (repo, user) {
 
   // fetch repo info via GitHub API
-  const [topics, repo, readme] = await execute(`GitHub API call to ${uid}`, [
-      github.getRepositoryTopics(uid).catch(onGithubError),
-      github.getRepositoryInfo(uid).catch(onGithubError),
-      github.getReadme(uid).catch(onGithubError)
+  const [topics, info, readme] = await execute(`GitHub API call to ${repo}/${user}`, [
+      github.getRepositoryTopics(user, repo).catch(onGithubError),
+      github.getRepositoryInfo(user, repo).catch(onGithubError),
+      github.getReadme(user, repo).catch(onGithubError)
     ]
   );
 
@@ -25,13 +25,13 @@ async function getAwesomeListData (uid) {
 
   // scrape website urls found in readme
   const urls = parseReadme(readme, false);
-  logger.info(`Found ${urls.length} urls repo:${uid}`);
+  logger.info(`Found ${urls.length} urls repo:${repo}/${user}`);
 
   return {
-    homepage: repo.homepage,
-    description: repo.description,
-    stars: repo.stars,
-    forks: repo.forks,
+    homepage: info.homepage,
+    description: info.description,
+    stars: info.stars,
+    forks: info.forks,
     topics,
     urls
   };

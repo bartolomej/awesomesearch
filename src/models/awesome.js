@@ -1,4 +1,3 @@
-const normalizeUrl = require('normalize-url');
 const Result = require('./result');
 
 class Awesome {
@@ -12,6 +11,18 @@ class Awesome {
     this.forks = forks || null;
     this.topics = topics || null;
     this.urls = urls || [];
+  }
+
+  get uid () {
+    return this.url ? `${this.getUser()}.${this.getRepository()}` : null;
+  }
+
+  getUser () {
+    return Awesome.parseUrl(this.url).user;
+  }
+
+  getRepository () {
+    return Awesome.parseUrl(this.url).repo;
   }
 
   /**
@@ -44,10 +55,6 @@ class Awesome {
     })
   }
 
-  get uid () {
-    return this.url ? `${this.getUser()}/${this.getRepository()}` : null;
-  }
-
   static fromObject (obj) {
     const awesome = new Awesome(obj.url);
     awesome.assign(obj);
@@ -73,14 +80,6 @@ class Awesome {
       serializeValue(this.description) +
       serializeValue(this.url)
     )
-  }
-
-  getUser () {
-    return Awesome.parseUrl(this.url).user;
-  }
-
-  getRepository () {
-    return Awesome.parseUrl(this.url).repo;
   }
 
   static isValidUrl (url, isRoot = false) {

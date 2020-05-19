@@ -1,10 +1,11 @@
 const normalizeUrl = require('normalize-url');
 const Result = require('./result');
 
-class Website {
+class Link {
 
   constructor (url, source) {
-    this.url = url ? normalizeUrl(url) : null;
+    this.uid = null;
+    this.url = null
     this.title = null;
     this.type = null;
     this.name = null;
@@ -14,6 +15,15 @@ class Website {
     this.keywords = [];
     this.source = source || null;
     this.updated = null;
+
+    if (url) {
+      this.setUrl(url);
+    }
+  }
+
+  setUrl (url) {
+    this.url = normalizeUrl(url);
+    this.uid = Link.computeUid(url);
   }
 
   /**
@@ -47,23 +57,6 @@ class Website {
     })
   }
 
-  get uid () {
-    return this.url;
-  }
-
-  static fromObject (obj) {
-    const website = new Website(obj.url);
-    website.assign(obj);
-    return website;
-  }
-
-  static fromJson (json) {
-    const obj = JSON.parse(json);
-    const website = new Website(obj.url);
-    website.assign(obj);
-    return website;
-  }
-
   assign (obj) {
     obj && Object.assign(this, obj);
   }
@@ -79,6 +72,30 @@ class Website {
     );
   }
 
+  static fromObject (obj) {
+    const website = new Link(obj.url);
+    website.assign(obj);
+    return website;
+  }
+
+  static fromJson (json) {
+    const obj = JSON.parse(json);
+    const website = new Link(obj.url);
+    website.assign(obj);
+    return website;
+  }
+
+  static computeUid (url) {
+    const normalized = normalizeUrl(url, {
+      stripHash: true,
+      stripWWW: true,
+      stripProtocol: true,
+      removeTrailingSlash: true,
+      removeQueryParameters: true
+    });
+    return normalized.replace(/\//g, '.');
+  }
+
 }
 
-module.exports = Website;
+module.exports = Link;

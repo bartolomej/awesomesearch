@@ -1,7 +1,7 @@
 const service = require('../services/metadata');
 const fetchMock = require('fetch-mock');
+const normalizeUrl = require('normalize-url');
 const { performance, PerformanceObserver } = require('perf_hooks');
-
 
 // LIBRARIES TESTS
 
@@ -41,4 +41,9 @@ it('should measure performance in observer', function () {
   performance.mark('A');
   performance.mark('B');
   performance.measure('A to B', 'A', 'B');
+});
+
+it('should normalize url', function () {
+  const url1 = 'https://github.com/avelino/awesome-go#awesome-go';
+  expect(normalizeUrl(url1, { stripHash: true })).toEqual('https://github.com/avelino/awesome-go');
 });

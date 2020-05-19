@@ -1,7 +1,7 @@
 global.fetch = require('node-fetch');
 
-async function getRepositoryInfo (id) {
-  const url = `https://api.github.com/repos/${id}`;
+async function getRepositoryInfo (repo, user) {
+  const url = `https://api.github.com/repos/${repo}/${user}`;
   const response = await request('GET', url);
   return {
     avatar: response.owner.avatar_url,
@@ -13,8 +13,8 @@ async function getRepositoryInfo (id) {
 }
 
 // https://developer.github.com/v3/repos/#get-all-repository-topics
-async function getRepositoryTopics (id) {
-  const url = `https://api.github.com/repos/${id}/topics`;
+async function getRepositoryTopics (user, repo) {
+  const url = `https://api.github.com/repos/${user}/${repo}/topics`;
   const response = await request('GET', url, 'preview');
   return response.names;
 }
@@ -22,8 +22,8 @@ async function getRepositoryTopics (id) {
 // TODO: get contribution data via GraphQL api
 // https://github.community/t5/GitHub-API-Development-and/Get-contributor-count-with-the-graphql-api/td-p/18593
 
-async function getReadme (id) {
-  const url = `https://api.github.com/repos/${id}/readme`;
+async function getReadme (user, repo) {
+  const url = `https://api.github.com/repos/${user}/${repo}/readme`;
   return await request('GET', url, 'raw');
 }
 

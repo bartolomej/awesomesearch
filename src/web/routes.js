@@ -37,12 +37,12 @@ router.get('/', (req, res, next) => {
   })
 });
 
-router.get('/object', async (req, res, next) => {
+router.get('/object/:uid', async (req, res, next) => {
   try {
-    if (req.query.uid) {
-      res.send(service.getItem(req.query.uid).serialize());
+    if (req.params.uid) {
+      res.send(service.getItem(req.params.uid).serialize());
     } else {
-      next(new Error('Please provide object url as query param'));
+      next(new Error('Please provide object url as param'));
     }
   } catch (e) {
     next(e);
