@@ -12,7 +12,10 @@ envalid.cleanEnv(process.env, {
   PORT: num({ default: 3000 }),
   TEST_DATA: bool({ default: false }),
   REDIS_URL: str({ default: 'redis://127.0.0.1:6379' }),
-  WEB_CONCURRENCY: num({ default: 1 })
+  WEB_CONCURRENCY: num({ default: 1 }),
+  CLOUDINARY_CLOUD_NAME: str(),
+  CLOUDINARY_API_KEY: str(),
+  CLOUDINARY_API_SECRET: str()
 });
 
 const routes = [

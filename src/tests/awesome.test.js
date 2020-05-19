@@ -60,7 +60,7 @@ describe('Awesome model tests', function () {
   it('should normalize url on init', function () {
     const awesome = new Awesome('https://github.com/jthegedus/awesome-firebase/#readme');
     expect(awesome.uid).toEqual('jthegedus/awesome-firebase');
-    expect(awesome.url).toEqual('https://github.com/jthegedus/awesome-firebase#readme');
+    expect(awesome.url).toEqual('https://github.com/jthegedus/awesome-firebase/#readme');
   });
 
   it('should validate url on child awesome repo', function () {
@@ -73,7 +73,7 @@ describe('Awesome model tests', function () {
   });
 
   it('should parse awesome-ecmascript-tools', async function () {
-    const readme = require('./mock-data').awesomeNodejsMarkdown;
+    const readme = require('./data/mock-data').awesomeNodejsMarkdown;
     const links = awesomeService.parseReadme(readme);
     expect(links).toEqual([
       "https://reactnative.dev",
