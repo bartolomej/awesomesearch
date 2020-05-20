@@ -1,122 +1,128 @@
-const repo = require('./repository');
-const github = require('../gateways/github');
-const awesomeService = require('../services/awesome');
-const Website = require('../models/link');
-const Awesome = require('../models/awesome');
+const github = require('../services/github');
+const listService = require('../services/list');
+const Link = require('../models/link');
+const List = require('../models/list');
 const FlexSearch = require("flexsearch");
-const Queue = require('../queue');
 
-const workQueue = Queue('work');
 
-// https://github.com/nextapps-de/flexsearch#presets
-const index = new FlexSearch({
-  encode: "advanced",
-  tokenize: "reverse",
-  suggest: true,
-});
+function WebService ({ listRepository, linkRepository, workQueue }) {
 
-/**
- * Triggered when jobs are completed with resulting value.
- */
-workQueue.on('global:completed', async (jobId, result) => {
-  const job = await getJob(jobId);
-
-  if (job.name === 'awesome') {
-    const awesome = Awesome.fromJson(result)
-    addToIndex(awesome);
-    repo.saveAwesome(awesome);
-    // post website jobs for found urls
-    for (let url of awesome.urls) {
-      await scrapeWebsite(url, awesome.uid);
-    }
-  } else if (job.name === 'website') {
-    const website = Website.fromJson(result);
-    addToIndex(website);
-    repo.saveWebsite(website);
+  if (!workQueue) {
+    throw new Error('Queue dependency not provided');
   }
-});
+  if (!linkRepository) {
+    throw new Error('Link repository not provided');
+  }
+  if (!listRepository) {
+    throw new Error('List repository not provided');
+  }
 
-function randomItems (n = 6) {
-  let results = [];
-  for (let i = 0; i < n; i++) {
-    const rand = repo.randomWebsite();
-    if (rand) {
-      results.push(rand);
+  // https://github.com/nextapps-de/flexsearch#presets
+  const index = new FlexSearch({
+    encode: "advanced",
+    tokenize: "reverse",
+    suggest: true,
+  });
+
+  /**
+   * Triggered when jobs are completed with resulting value.
+   */
+  workQueue.on('global:completed', async (jobId, result) => {
+    const job = await workQueue.getJob(jobId);
+
+    if (job.name === 'list') {
+      const list = List.createFromJson(result)
+      await addToIndex(list);
+      await listRepository.save(list);
+      // post link jobs for found urls
+      for (let url of list.urls) {
+        await scrapeLink(url, list.uid);
+      }
+    }
+    else if (job.name === 'link') {
+      const link = Link.createFromJson(result);
+      await addToIndex(link);
+      await linkRepository.save(link);
+    }
+  });
+
+  function randomObject (n = 6) {
+    let results = [];
+    for (let i = 0; i < n; i++) {
+      const rand = linkRepository.randomObject();
+      if (rand) {
+        results.push(rand);
+      }
+    }
+    return results;
+  }
+
+  async function search (query, page = true, limit = 15) {
+    const searchRes = await index.search(query, { limit, page });
+    const result = searchRes.result ?
+      await Promise.all(searchRes.result.map(getItem)) : [];
+    return {
+      page: parseInt(searchRes.page),
+      next: searchRes.next ? parseInt(searchRes.next) : null,
+      result
+    };
+  }
+
+  async function addToIndex (object) {
+    // add serialized string data to search index
+    if (!(
+      await linkRepository.exists(object.uid) ||
+      await listRepository.exists(object.uid))
+    ) {
+      index.add(object.uid, object.serializeToIndex());
     }
   }
-  return results;
-}
 
-async function search (query, page = true, limit = 15) {
-  const results = await index.search(query, { limit, page });
-  const result = results.result ?
-    results.result.map(id => {
-      try {
-        return repo.getWebsite(id);
-      } catch (e) {}
-      try {
-        return repo.getAwesome(id);
-      } catch (e) {}
-    }) : [];
+  async function getItem (uid) {
+    try {
+      return await linkRepository.get(uid)
+    } catch (e) {}
+    try {
+      return await listRepository.get(uid)
+    } catch (e) {}
+    throw new Error('Object not found');
+  }
+
+  async function scrapeLink (url, source = null) {
+    return await workQueue.add('link', { url, source });
+  }
+
+  async function scrapeList (url) {
+    return await workQueue.add('list', { url });
+  }
+
+  async function getStats () {
+    return {
+      linkCount: await linkRepository.getCount(),
+      listCount: await listRepository.getCount(),
+    }
+  }
+
+  async function scrapeFromRoot () {
+    const AWESOME_README_ROOT_ID = 'sindresorhus/awesome';
+    const readme = await github.getReadme(AWESOME_README_ROOT_ID);
+    const urls = await listService.parseReadme(readme, true);
+    const jobs = [];
+    for (let url of urls) {
+      jobs.push(await workQueue.add('awesome', { url }));
+    }
+    return jobs;
+  }
+
   return {
-    page: parseInt(results.page),
-    next: results.next ? parseInt(results.next) : null,
-    result
-  };
-}
-
-function addToIndex (object) {
-  // add serialized string data to search index
-  if (!repo.exists(object.uid)) {
-    index.add(object.uid, object.serializeToIndex());
+    randomObject,
+    search,
+    scrapeFromRoot,
+    scrapeLink,
+    scrapeList,
+    getStats,
+    workQueue,
   }
 }
 
-function getItem (uid) {
-  try {
-    return repo.getWebsite(uid)
-  } catch (e) {}
-  try {
-    return repo.getAwesome(uid)
-  } catch (e) {}
-  throw new Error('Object not found');
-}
-
-function searchStats () {
-  return index.stats;
-}
-
-async function getJob (id) {
-  return await workQueue.getJob(id);
-}
-
-async function scrapeWebsite (url, source = null) {
-  return await workQueue.add('website', { website: new Website(url, source).minify() });
-}
-
-async function fetchAwesomeRepo (url) {
-  return await workQueue.add('awesome', { repo: new Awesome(url).minify() });
-}
-
-async function fetchAwesomeFromRoot () {
-  const AWESOME_README_ROOT_ID = 'sindresorhus/awesome';
-  const readme = await github.getReadme(AWESOME_README_ROOT_ID);
-  const urls = await awesomeService.parseReadme(readme, true);
-  const jobs = [];
-  for (let url of urls) {
-    jobs.push(await workQueue.add('awesome', { repo: new Awesome(url).minify() }));
-  }
-  return jobs;
-}
-
-module.exports = {
-  scrapeWebsite,
-  getJob,
-  getItem,
-  search,
-  fetchAwesomeRepo,
-  fetchAwesomeFromRoot,
-  workQueue,
-  searchStats,
-  randomItems
-}
+module.exports = WebService;

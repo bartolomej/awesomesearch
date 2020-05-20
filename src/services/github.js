@@ -1,4 +1,40 @@
 global.fetch = require('node-fetch');
+const Repository = require('../models/repository');
+const logger = require('../logger')('github-service');
+const { execute } = require('../utils');
+
+async function getRepository (url, fetchReadme = false) {
+  const repository = new Repository(url);
+  const user = repository.user;
+  const repo = repository.name;
+
+  const calls = [
+    getRepositoryTopics(user, repo).catch(onGithubError),
+    getRepositoryInfo(user, repo).catch(onGithubError),
+  ];
+
+  if (fetchReadme) {
+    calls.push(getReadme(user, repo).catch(onGithubError))
+  }
+
+  const [topics, info, readme] = await execute(`GitHub API call to ${repo}/${user}`, calls);
+
+  function onGithubError (e) {
+    logger.error(`Error fetching ${repo}/${user} from Github API: ${e.message}`);
+    throw e;
+  }
+
+  repository.topics = topics;
+  repository.avatar = info.avatar;
+  repository.description = info.description;
+  repository.stars = info.stars;
+  repository.forks = info.forks;
+  if (fetchReadme) {
+    repository.readme = readme;
+  }
+
+  return repository;
+}
 
 async function getRepositoryInfo (repo, user) {
   const url = `https://api.github.com/repos/${repo}/${user}`;
@@ -50,5 +86,6 @@ async function request (method = 'GET', url, type = 'json', body = undefined) {
 module.exports = {
   getReadme,
   getRepositoryInfo,
-  getRepositoryTopics
+  getRepositoryTopics,
+  getRepository
 };

@@ -8,7 +8,7 @@
 [![Awesome](https://awesome.re/badge-flat2.svg)](https://awesome.re)
 <br>
 
-Awesome web service indexes [awesome](https://awesome.com/sindresorhus/awesome) list collections and exposes external search REST API.
+Awesome web service indexes [store](https://awesome.com/sindresorhus/awesome) list collections and exposes external search REST API.
 
 After deploying to Heroku, you will need to [manualy scale worker process](https://devcenter.heroku.com/articles/procfile#scaling-a-process-type) with heroku cli command: 
 ```
@@ -46,7 +46,7 @@ Example response:
           "Luke Hedger",
           "Software Engineer"
         ],
-        "source": "amnashanwar/awesome-portfolios",
+        "source": "amnashanwar/store-portfolios",
         "website_type": "website",
         "description": "The world needs software that is modern yet stable, balanced skillfully between innovation and standards",
         "author": "Luke Hedger"

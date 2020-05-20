@@ -3,8 +3,11 @@ const throng = require('throng');
 const { name } = require('../../package.json');
 const envalid = require('envalid');
 const { str, bool, num } = envalid;
-const { workQueue } = require('./service');
 const { setQueues } = require('bull-board')
+const routes = require('./routes');
+const WebService = require('./service');
+const memoryRepository = require('./repos/memorydb');
+const Queue = require('../queue');
 
 const WORKERS = process.env.WEB_CONCURRENCY;
 
@@ -18,14 +21,20 @@ envalid.cleanEnv(process.env, {
   CLOUDINARY_API_SECRET: str()
 });
 
-const routes = [
-  require('./routes')
-];
-
 function start () {
+
+  // inject required dependencies
+  const webService = WebService({
+    listRepository: memoryRepository(),
+    linkRepository: memoryRepository(),
+    workQueue: Queue('work')
+  });
+
   try {
-    setQueues([workQueue]);
-    require('./server')(routes);
+    setQueues([webService.workQueue]);
+    require('./server')([
+      routes({ webService })
+    ]);
     console.log(`Web process ${process.pid} started 🙌`);
   } catch (e) {
     console.log(red(`${name} encountered an error 🤕 \n${e.stack}`));

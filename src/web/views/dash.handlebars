@@ -34,7 +34,7 @@
 
     function registerListeners () {
         submit.addEventListener('click', async function () {
-            const response = await fetch(`/awesome?url=${input.value}`, {
+            const response = await fetch(`/list?url=${input.value}`, {
                 method: 'POST'
             });
             const body = await response.json();
@@ -48,7 +48,7 @@
         const response = await fetch('/stats');
         const body = await response.json();
         linkCount.innerText = body.link_count;
-        repoCount.innerText = body.repo_count;
+        repoCount.innerText = body.list_count;
     }
 
 </script>

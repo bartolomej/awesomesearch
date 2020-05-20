@@ -134,36 +134,6 @@ module.exports.react = `
     </html>
 `;
 
-module.exports.flutterHtml = `
-    <html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Flutter - Beautiful native apps in record time </title>
-        <link rel="icon" href="/images/offline-image.png">
-        <link rel="shortcut icon" href="/images/favicon.png">
-        <meta name="description"
-              content="Flutter is Google's UI toolkit for crafting beautiful, natively compiled applications for mobile, web, and desktop from a single codebase.  Flutter works with existing code, is used by developers and organizations around the world, and is free and open source.">
-        <meta name="keywords" content=" ">
-        <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:site" content="@flutterdev">
-        <meta property="og:title" content="Flutter - Beautiful native apps in record time">
-        <meta property="og:url" content="https://flutter.dev/">
-        <meta property="og:description"
-              content="Flutter is Google's UI toolkit for crafting beautiful, natively compiled applications for mobile, web, and desktop from a single codebase.  Flutter works with existing code, is used by developers and organizations around the world, and is free and open source.">
-        <meta property="og:image" content="https://flutter.dev/images/flutter-logo-sharing.png">
-        <link href="https://fonts.googleapis.com/css?family=Google+Sans:400,500|Roboto:300,400,500|Roboto+Mono:400,700|Material+Icons"
-              rel="stylesheet">
-        <link rel="stylesheet" type="text/css"
-              href="/assets/main-094812bce4cc4b3c1ece24851a2ac506e83ffa17701779ac96ca5c4d659423e5.css"
-              integrity="sha256-CUgSvOTMSzweziSFGirFBug/+hdwF3mslspcTWWUI+U=" crossorigin="anonymous">
-        <meta name="google-site-verification" content="HFqxhSbf9YA_0rBglNLzDiWnrHiK_w4cqDh2YD2GEY4">
-        <meta name="google-site-verification" content="Zom-prnFykfYycmI_nzRWYx5r6Z9OwR-yEsgElRz_Ug">
-    </head>
-    </html>
-`;
-
 module.exports.reactNativeHtml = `
     <!DOCTYPE html>
     <html lang="en">

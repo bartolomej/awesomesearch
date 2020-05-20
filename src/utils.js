@@ -1,6 +1,7 @@
 const { performance } = require('perf_hooks');
 const logger = require('./logger')('utils');
 
+
 const isRelativeUrl = url => (
   url !== undefined &&
   url !== null &&
@@ -35,5 +36,5 @@ async function execute (name, promises) {
 
 module.exports = {
   joinUrls,
-  execute
+  execute,
 }

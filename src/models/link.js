@@ -1,19 +1,13 @@
-const normalizeUrl = require('normalize-url');
 const Result = require('./result');
+const Website = require('./website');
 
 class Link {
 
-  constructor (url, source) {
-    this.uid = null;
+  constructor (url, source, website, repository) {
     this.url = null
-    this.title = null;
-    this.type = null;
-    this.name = null;
-    this.author = null;
-    this.description = null;
-    this.image = null;
-    this.keywords = [];
+    this.website = website || null;
     this.source = source || null;
+    this.repository = repository || null;
     this.updated = null;
 
     if (url) {
@@ -21,24 +15,59 @@ class Link {
     }
   }
 
-  setUrl (url) {
-    this.url = normalizeUrl(url);
-    this.uid = Link.computeUid(url);
+  get image () {
+    return this.website ? this.website.image : this.repository.avatar
   }
 
-  /**
-   * Removes fields that have undefined or null value.
-   * Used for serialization before transporting to queue.
-   */
-  minify () {
-    const keys = Object.keys(this);
-    const result = {};
-    for (let k of keys) {
-      if (this[k] !== null && !(this[k] instanceof Array && this[k].length === 0)) {
-        result[k] = this[k];
-      }
+  get title () {
+    return this.website ? this.website.title : this.repository.getName()
+  }
+
+  get description () {
+    if (this.repository) {
+      return this.repository.description;
+    } else if (this.website) {
+      return this.website.description;
+    } else {
+      return null;
     }
-    return result;
+  }
+
+  get screenshot () {
+    return this.website ? this.website.screenshot : null
+  }
+
+  get websiteName () {
+    return this.website ? this.website.name : null;
+  }
+
+  get websiteType () {
+    return this.website ? this.website.type : null;
+  }
+
+  get author () {
+    if (this.repository) {
+      return this.repository.user;
+    } else if (this.website) {
+      return this.website.author;
+    } else {
+      return null;
+    }
+  }
+
+  get tags () {
+    if (this.repository) {
+      return this.repository.topics;
+    } else if (this.website) {
+      return this.website.keywords;
+    } else {
+      return [];
+    }
+  }
+
+  setUrl (url) {
+    this.url = Website.normalizeUrl(url);
+    this.uid = Website.computeUid(url);
   }
 
   serialize () {
@@ -46,19 +75,17 @@ class Link {
       uid: this.uid,
       type: Result.type.LINK,
       image: this.image,
-      websiteName: this.name,
-      websiteType: this.type,
+      screenshotImage: this.screenshot,
+      websiteName: this.websiteName,
+      websiteType: this.websiteType,
       description: this.description,
-      tags: this.keywords,
+      objectType: Result.type.LINK,
+      tags: this.tags,
       source: this.source,
       author: this.author,
       title: this.title,
       url: this.url
     })
-  }
-
-  assign (obj) {
-    obj && Object.assign(this, obj);
   }
 
   serializeToIndex () {
@@ -68,32 +95,13 @@ class Link {
       serializeValue(this.title) +
       serializeValue(this.url) +
       serializeValue(this.description) +
-      serializeValue(this.keywords.join(','))
+      serializeValue(this.tags.join(','))
     );
   }
 
-  static fromObject (obj) {
-    const website = new Link(obj.url);
-    website.assign(obj);
-    return website;
-  }
-
-  static fromJson (json) {
+  static createFromJson (json) {
     const obj = JSON.parse(json);
-    const website = new Link(obj.url);
-    website.assign(obj);
-    return website;
-  }
-
-  static computeUid (url) {
-    const normalized = normalizeUrl(url, {
-      stripHash: true,
-      stripWWW: true,
-      stripProtocol: true,
-      removeTrailingSlash: true,
-      removeQueryParameters: true
-    });
-    return normalized.replace(/\//g, '.');
+    return Object.assign(new Link(), obj);
   }
 
 }

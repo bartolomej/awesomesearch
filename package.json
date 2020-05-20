@@ -1,5 +1,5 @@
 {
-  "name": "awesome-server",
+  "name": "awesomesearch-api",
   "version": "1.0.0",
   "description": "",
   "main": "src/worker.js",
@@ -10,6 +10,8 @@
     "test": "jest",
     "start": "NODE_ENV=production nf start",
     "start:web": "NODE_ENV=development nodemon src/web/index.js",
+    "test:unit": "jest src/tests/unit",
+    "test:integration": "jest src/tests/integration",
     "coverage": "jest --coverage",
     "coverage:web": "npm run coverage && open coverage/lcov-report/index.html",
     "repo-graph-ddot": "depcruise --exclude \"^node_modules\" --output-type ddot src | dot -T svg > graph.ddot.svg",

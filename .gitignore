@@ -12,3 +12,4 @@ graph.ddot.svg
 .env
 /TODO.md
 src/tests/res
+cache
