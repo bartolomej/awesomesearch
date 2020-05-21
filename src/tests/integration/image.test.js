@@ -1,6 +1,6 @@
+const { describe, expect, it } = require("@jest/globals");
 const imageService = require('../../services/image');
 const path = require('path');
-
 
 describe('Image service tests', function () {
 

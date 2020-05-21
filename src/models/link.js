@@ -4,11 +4,11 @@ const Website = require('./website');
 class Link {
 
   constructor (url, source, website, repository) {
+    this.uid = null;
     this.url = null
     this.website = website || null;
     this.source = source || null;
     this.repository = repository || null;
-    this.updated = null;
 
     if (url) {
       this.setUrl(url);
@@ -23,16 +23,6 @@ class Link {
     return this.website ? this.website.title : this.repository.getName()
   }
 
-  get description () {
-    if (this.repository) {
-      return this.repository.description;
-    } else if (this.website) {
-      return this.website.description;
-    } else {
-      return null;
-    }
-  }
-
   get screenshot () {
     return this.website ? this.website.screenshot : null
   }
@@ -43,6 +33,16 @@ class Link {
 
   get websiteType () {
     return this.website ? this.website.type : null;
+  }
+
+  get description () {
+    if (this.repository) {
+      return this.repository.description;
+    } else if (this.website) {
+      return this.website.description;
+    } else {
+      return null;
+    }
   }
 
   get author () {

@@ -12,6 +12,7 @@ class Repository {
     this.forks = null;
     this.readme = null;
     this.topics = [];
+
     if (url) {
       this.setUrl(url);
     }
@@ -23,8 +24,7 @@ class Repository {
       stripHash: true,
       removeTrailingSlash: true
     });
-    const { user, name } = Repository.parseUrl(url);
-    this.uid = `${user}.${name}`;
+    this.uid = Repository.parseUid(url);
   }
 
   get user () {
@@ -49,6 +49,11 @@ class Repository {
       .replace('github.com/', '')
       .split('/');
     return { user: parsed[0], name: parsed[1] }
+  }
+
+  static parseUid (url) {
+    const { user, name } = Repository.parseUrl(url);
+    return `${user}.${name}`;
   }
 
 }

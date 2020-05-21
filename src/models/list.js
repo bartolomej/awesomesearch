@@ -4,10 +4,11 @@ const Repository = require('./repository');
 
 class List {
 
-  constructor (url, repository, urls, avatar) {
+  constructor (url, repository, urls) {
+    this.uid = null;
     this.url = url;
-    this.avatar = avatar || null;
-    this.repository = null;
+    this.repository = repository || null;
+    // TODO: add website (if homepage exist)
     this.urls = urls || [];
 
     if (url) {
@@ -35,12 +36,8 @@ class List {
     return this.repository ? this.repository.description : null
   }
 
-  get uid () {
-    return this.repository.uid;
-  }
-
   setUrl () {
-    this.repository = new Repository(this.url);
+    this.uid = Repository.parseUid(this.url);
   }
 
   serialize () {
@@ -51,7 +48,7 @@ class List {
       stars: this.stars,
       type: Result.type.LIST,
       forks: this.forks,
-      image: this.avatar,
+      image: this.repository.avatar,
       description: this.description,
       title: this.title,
       tags: this.tags

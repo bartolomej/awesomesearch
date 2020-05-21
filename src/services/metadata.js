@@ -136,6 +136,7 @@ function MetaService ({ imageService }) {
       width: 1300,
       height: 1000,
       deviceScaleFactor: 1,
+      headless: true
     });
     // remove the navigation timeout limit
     await page.setDefaultNavigationTimeout(0);

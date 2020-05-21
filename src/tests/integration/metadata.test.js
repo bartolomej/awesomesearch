@@ -1,3 +1,4 @@
+const { describe, expect, it, beforeEach, afterEach, beforeAll } = require("@jest/globals");
 const MetaService = require('../../services/metadata');
 const imageService = require('../../services/image');
 const path = require('path');

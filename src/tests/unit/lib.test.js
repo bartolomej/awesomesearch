@@ -1,3 +1,4 @@
+const { expect, it } =  require("@jest/globals");
 const normalizeUrl = require('normalize-url');
 const { performance, PerformanceObserver } = require('perf_hooks');
 

@@ -1,3 +1,4 @@
+const { describe, expect, it, beforeEach } = require("@jest/globals");
 const MetaService = require('../../services/metadata');
 const fetchMock = require('fetch-mock');
 const data = require('../data/mock-data');

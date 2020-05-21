@@ -25,10 +25,11 @@
   "author": "Bartolomej Kozorog",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/bartolomej/awesome-server/issues"
+    "url": "https://github.com/bartolomej/awesomesearch-api/issues"
   },
-  "homepage": "https://github.com/bartolomej/awesome-server#readme",
+  "homepage": "https://github.com/bartolomej/awesomesearch-api#readme",
   "devDependencies": {
+    "@jest/globals": "26.0.1",
     "jest": "25.1.0"
   },
   "dependencies": {
@@ -49,12 +50,15 @@
     "ioredis": "4.16.3",
     "meow": "6.0.1",
     "morgan": "1.10.0",
+    "mysql": "2.18.1",
     "node-fetch": "2.6.0",
     "normalize-url": "5.0.0",
     "puppeteer": "3.0.4",
+    "reflect-metadata": "0.1.13",
     "remark-parse": "7.0.2",
     "rimraf": "3.0.2",
     "throng": "4.0.0",
+    "typeorm": "0.2.25",
     "unified": "8.4.2",
     "unist-util-select": "3.0.1",
     "uuid": "latest",

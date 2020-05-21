@@ -1,3 +1,4 @@
+const { describe, expect, it } = require("@jest/globals");
 const WebService = require('../../web/service');
 const memoryDb = require('../../web/repos/memorydb');
 const Repository = require('../../models/repository');

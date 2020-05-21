@@ -5,6 +5,7 @@ class Website {
 
   constructor (url, title) {
     this.uid = null;
+    this.url = null;
     this.title = title || null;
     this.type = null;
     this.name = null;
@@ -22,7 +23,7 @@ class Website {
 
   setUrl (url) {
     this.url = Website.normalizeUrl(url);
-    this.uid = Website.computeUid(url);
+    this.uid = Website.computeUid(this.url);
   }
 
   static normalizeUrl (url) {
