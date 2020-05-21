@@ -11,6 +11,8 @@ const Queue = require('../queue');
 const typeorm = require('./typeorm');
 
 async function start () {
+  const listRepositoryDb = env.USE_MEMORY_DB ? memoryRepository() : listRepository;
+  const linkRepositoryDb = env.USE_MEMORY_DB ? memoryRepository() : linkRepository;
 
   if (!env.USE_MEMORY_DB) {
     await typeorm.create();
@@ -18,8 +20,8 @@ async function start () {
 
   // inject required dependencies
   const webService = WebService({
-    listRepository: env.USE_MEMORY_DB ? memoryRepository() : listRepository,
-    linkRepository: env.USE_MEMORY_DB ? memoryRepository() : linkRepository,
+    listRepository: listRepositoryDb,
+    linkRepository: linkRepositoryDb,
     workQueue: Queue('work')
   });
 
@@ -37,7 +39,11 @@ async function start () {
   try {
     setQueues([webService.workQueue]);
     await require('./server')([
-      routes({ webService })
+      routes({
+        webService,
+        linkRepository: linkRepositoryDb,
+        listRepository: listRepositoryDb
+      })
     ]);
     console.log(`Web process ${process.pid} started 🙌`);
   } catch (e) {

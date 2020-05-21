@@ -24,7 +24,7 @@ module.exports = new EntitySchema({
       nullable: true
     },
     description: {
-      type: "varchar",
+      type: "longtext",
       nullable: true
     },
     author: {
@@ -32,7 +32,7 @@ module.exports = new EntitySchema({
       nullable: true
     },
     image: {
-      type: "varchar",
+      type: "longtext",
       nullable: true
     },
     screenshot: {
@@ -44,7 +44,7 @@ module.exports = new EntitySchema({
       nullable: true
     },
     keywords: {
-      type: "varchar",
+      type: "longtext",
       nullable: true
     },
   }

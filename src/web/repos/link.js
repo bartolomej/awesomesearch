@@ -36,14 +36,18 @@ async function getFromSource (sourceUid) {
     .getMany()).map(utils.deserializeLink)
 }
 
-async function getAll (pageLimit = 10, pageNumber = 0) {
-  return (await getRepository(Link)
+async function getAll (pageLimit = 10, pageNumber = 0, source = null) {
+  const query = getRepository(Link)
     .createQueryBuilder('link')
     .leftJoinAndSelect('link.repository', 'repository')
     .leftJoinAndSelect('link.website', 'website')
+  if (source) {
+    query.where('link.source =: source', { source })
+  }
+  query
     .skip(pageNumber * pageLimit)
-    .take(pageLimit)
-    .getMany()).map(utils.deserializeLink);
+    .take(pageLimit);
+  return (await query.getMany()).map(utils.deserializeLink);
 }
 
 async function getCount () {

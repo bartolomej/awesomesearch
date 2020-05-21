@@ -25,6 +25,9 @@ function deserializeWebsite (website) {
 }
 
 function serializeWebsite (website) {
+  if (!website) {
+    return null;
+  }
   return Object.assign(new Website(), {
     ...website,
     keywords: join(website.keywords)
@@ -62,6 +65,9 @@ function deserializeRepo (repo) {
 }
 
 function split (value) {
+  if (!value) {
+    return [];
+  }
   return value.split(',').filter(e => e !== '')
 }
 

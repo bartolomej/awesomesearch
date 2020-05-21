@@ -1,7 +1,7 @@
 const router = require('express').Router();
-const metaService = require('../services/metadata');
+const metaService = require('../services/metadata')({ imageService: null });
 
-function Routes ({ webService }) {
+function Routes ({ webService, listRepository, linkRepository }) {
 
   // root endpoint
   router.get('/', (req, res, next) => {
@@ -17,6 +17,11 @@ function Routes ({ webService }) {
           path: '/random',
           examplePath: '/random',
           description: 'Returns random indexed links.'
+        },
+        {
+          path: '/list?limit={objects_per_page}&page={page_index}',
+          examplePath: '/list',
+          description: 'Returns indexed lists.'
         },
         {
           path: '/object?uid={object_uid}',
@@ -44,6 +49,30 @@ function Routes ({ webService }) {
       } else {
         next(new Error('Please provide object url as param'));
       }
+    } catch (e) {
+      next(e);
+    }
+  });
+
+  router.get('/list', async (req, res, next) => {
+    try {
+      res.send(await listRepository.getAll(req.query.limit || 10, req.query.page || 0))
+    } catch (e) {
+      next(e);
+    }
+  });
+
+  router.get('/list/:uid', async (req, res, next) => {
+    try {
+      res.send((await listRepository.get(req.params.uid)).serialize().toShortVersion())
+    } catch (e) {
+      next(e);
+    }
+  });
+
+  router.get('/list/:uid/link', async (req, res, next) => {
+    try {
+      res.send(await linkRepository.getAll(req.query.limit || 10, req.query.page || 0));
     } catch (e) {
       next(e);
     }

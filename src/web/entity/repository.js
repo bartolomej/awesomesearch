@@ -31,7 +31,7 @@ module.exports = new EntitySchema({
       type: "int"
     },
     topics: {
-      type: "json"
+      type: "longtext"
     }
   },
   relations: {
