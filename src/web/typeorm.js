@@ -23,7 +23,11 @@ async function create () {
       Website
     ],
     synchronize: true,
-    logging: false
+    logging: false,
+    // https://github.com/typeorm/typeorm/issues/390
+    extra: {
+      charset: "utf8mb4_unicode_ci"
+    }
   });
   console.log(`Mysql connection created !`);
 }

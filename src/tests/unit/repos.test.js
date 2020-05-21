@@ -1,4 +1,4 @@
-const { describe, expect, it, beforeAll, afterAll } = require("@jest/globals");
+const { describe, expect, it, beforeAll, afterAll, afterEach } = require("@jest/globals");
 const path = require('path');
 const linkRepository = require('../../web/repos/link');
 const listRepository = require('../../web/repos/list');
@@ -19,7 +19,7 @@ describe('Link repository tests', function () {
     await typeorm.close();
   });
 
-  beforeEach(async () => {
+  afterEach(async () => {
     await listRepository.removeAll();
   });
 
