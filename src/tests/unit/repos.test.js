@@ -24,11 +24,7 @@ describe('Link repository tests', function () {
   });
 
   it('should save and fetch list model', async function () {
-    const listGithubRepo = new Repository('https://github.com/bartolomej/bookmarks');
-    listGithubRepo.stars = 12;
-    listGithubRepo.forks = 23;
-    listGithubRepo.topics = ['test'];
-    const list = new List('https://github.com/bartolomej/bookmarks', listGithubRepo);
+    const list = exampleList('https://github.com/bartolomej/bookmarks');
 
     const savedList = await listRepository.save(list);
     const fetchedList = await listRepository.get(list.uid);
@@ -47,12 +43,7 @@ describe('Link repository tests', function () {
   });
 
   it('should save and fetch link', async function () {
-    const website = new Website('https://example.com', 'example');
-    const repository = new Repository('https://github.com/user/example');
-    repository.stars = 12;
-    repository.forks = 23;
-    repository.topics = ['test'];
-    const link = new Link('https://github.com/user/example', 'user.example', website, repository);
+    const link = exampleLink();
 
     const savedLink = await linkRepository.save(link);
     const fetchedLink = await linkRepository.get(link.uid);
@@ -69,4 +60,47 @@ describe('Link repository tests', function () {
     expect(await linkRepository.getCount()).toBe(1);
   });
 
+  it('should fetch links all with pagination', async function () {
+    // insert 10 links in database
+    for (let i = 0; i < 10; i++) {
+      await linkRepository.save(exampleLink(i));
+    }
+
+    const firstPage = await linkRepository.getAll(3, 0);
+    const secondPage = await linkRepository.getAll(3, 1);
+
+    expect(firstPage.length).toBe(3);
+    expect(/example2/.test(firstPage[2].uid)).toBeTruthy();
+    expect(secondPage.length).toBe(3);
+    expect(/example5/.test(secondPage[2].uid)).toBeTruthy();
+  });
+
+  it('should fetch link with half empty and null page', async function () {
+    await linkRepository.save(exampleLink());
+
+    const firstPage = await linkRepository.getAll(2, 0);
+    const secondPage = await linkRepository.getAll(2, 1);
+
+    expect(firstPage.length).toBe(1);
+    // expect empty page if no items to return
+    expect(secondPage.length).toBe(0);
+  });
+
 });
+
+function exampleLink (urlPostfix = '') {
+  const website = new Website(`https://example.com${urlPostfix}`, 'example');
+  const repository = new Repository(`https://github.com/user/example${urlPostfix}`);
+  repository.stars = 12;
+  repository.forks = 23;
+  repository.topics = ['test'];
+  return new Link(`https://github.com/user/example${urlPostfix}`, 'user.example', website, repository);
+}
+
+function exampleList (urlPostfix = '') {
+  const listGithubRepo = new Repository(`https://github.com/bartolomej/bookmarks${urlPostfix}`);
+  listGithubRepo.stars = 12;
+  listGithubRepo.forks = 23;
+  listGithubRepo.topics = ['test'];
+  return new List(`https://github.com/user/example${urlPostfix}`, listGithubRepo);
+}

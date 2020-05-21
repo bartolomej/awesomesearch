@@ -72,6 +72,7 @@ To start both just run `npm start`.
 - before running, you need to have [Redis](https://redis.io/) installed on your machine. 
 - run `yarn install` or `npm i` command to install dependencies
 - run `yarn start` or `npm start` to start both app processes in production
+- you need to configure environmental variables defined in `src/env.js` file
 
 ## Scripts
 

@@ -1,47 +1,51 @@
-const { red } = require('colors');
+const env = require('../env');
 const throng = require('throng');
 const { name } = require('../../package.json');
-const envalid = require('envalid');
-const { str, bool, num } = envalid;
 const { setQueues } = require('bull-board')
 const routes = require('./routes');
 const WebService = require('./service');
 const memoryRepository = require('./repos/memorydb');
+const linkRepository = require('./repos/link');
+const listRepository = require('./repos/list');
 const Queue = require('../queue');
+const typeorm = require('./typeorm');
 
-const WORKERS = process.env.WEB_CONCURRENCY;
+async function start () {
 
-envalid.cleanEnv(process.env, {
-  PORT: num({ default: 3000 }),
-  TEST_DATA: bool({ default: false }),
-  REDIS_URL: str({ default: 'redis://127.0.0.1:6379' }),
-  WEB_CONCURRENCY: num({ default: 1 }),
-  CLOUDINARY_CLOUD_NAME: str(),
-  CLOUDINARY_API_KEY: str(),
-  CLOUDINARY_API_SECRET: str()
-});
-
-function start () {
+  if (!env.USE_MEMORY_DB) {
+    await typeorm.create();
+  }
 
   // inject required dependencies
   const webService = WebService({
-    listRepository: memoryRepository(),
-    linkRepository: memoryRepository(),
+    listRepository: env.USE_MEMORY_DB ? memoryRepository() : listRepository,
+    linkRepository: env.USE_MEMORY_DB ? memoryRepository() : linkRepository,
     workQueue: Queue('work')
   });
 
+  // build index with stored objects
+  if (!env.USE_MEMORY_DB) {
+    try {
+      await webService.buildIndex();
+      console.log('Index build complete');
+    } catch (e) {
+      console.error(`Error building index: ${e}`)
+    }
+
+  }
+
   try {
     setQueues([webService.workQueue]);
-    require('./server')([
+    await require('./server')([
       routes({ webService })
     ]);
     console.log(`Web process ${process.pid} started 🙌`);
   } catch (e) {
-    console.log(red(`${name} encountered an error 🤕 \n${e.stack}`));
+    console.error(`${name} encountered an error 🤕 \n${e.stack}`);
   }
 }
 
 throng({
-  workers: WORKERS,
+  workers: env.WEB_CONCURRENCY,
   lifetime: Infinity
 }, start);

@@ -1,8 +1,9 @@
 const winston = require('winston');
 const colors = require('colors');
+const env = require('./env')
 
 module.exports = function (service) {
-  if (process.env.isProduction) {
+  if (env.isProduction) {
     return productionLogger(service);
   } else {
     return developmentLogger(service);

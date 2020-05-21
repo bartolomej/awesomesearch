@@ -42,6 +42,9 @@ function deserializeList (list) {
 }
 
 function serializeRepo (repo) {
+  if (!repo) {
+    return null;
+  }
   return Object.assign(new Repository(), {
     ...repo,
     topics: join(repo.topics)
@@ -49,6 +52,9 @@ function serializeRepo (repo) {
 }
 
 function deserializeRepo (repo) {
+  if (!repo) {
+    return null;
+  }
   return Object.assign(new Repository(), {
     ...repo,
     topics: split(repo.topics)

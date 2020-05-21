@@ -1,17 +1,10 @@
 const throng = require('throng');
-const envalid = require('envalid');
 const Queue = require('./queue');
 const listService = require('./services/list');
 const imageService = require('./services/image');
 const MetaService = require('./services/metadata');
-const { str, num } = envalid;
+const env = require('./env');
 
-envalid.cleanEnv(process.env, {
-  REDIS_URL: str({ default: 'redis://127.0.0.1:6379' }),
-  WEB_WORKERS: num({ default: 2 }),
-});
-
-const workers = process.env.WEB_WORKERS;
 const workQueue = Queue('work');
 
 function start () {
@@ -35,4 +28,4 @@ function start () {
   console.log(`Worker ${process.pid} started 🙌`);
 }
 
-throng(({ workers, start }));
+throng(({ workers: env.WEB_WORKERS, start }));

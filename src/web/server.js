@@ -3,9 +3,9 @@ const app = express();
 const cors = require('cors');
 const path = require('path');
 const logger = require('../logger')('root');
-const handlebars  = require('express-handlebars');
+const handlebars = require('express-handlebars');
 const { UI } = require('bull-board');
-
+const env = require('../env');
 
 module.exports = async function (routes = []) {
 
@@ -54,7 +54,7 @@ module.exports = async function (routes = []) {
       name: err.name,
       message: err.message,
       description: err.description,
-      details: !process.env.isProduction ? details : undefined
+      details: !env.isProduction ? details : undefined
     };
     logger.debug('debug', 'Error in response', error);
     res.status(err.statusCode || 400).send(error);
@@ -63,7 +63,7 @@ module.exports = async function (routes = []) {
   // start the server on port <PORT> or 3000
   app.listen(process.env.PORT, error => {
     if (error) throw error;
-    logger.info(`Server listening on port ${process.env.PORT} 🙌`);
+    logger.info(`Server listening on port ${env.PORT} 🙌`);
   });
 
   process.on('unhandledRejection', (reason, promise) => {

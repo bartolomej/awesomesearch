@@ -3,6 +3,7 @@ const listService = require('../services/list');
 const Link = require('../models/link');
 const List = require('../models/list');
 const FlexSearch = require("flexsearch");
+const logger = require('../logger')('web-service');
 
 
 function WebService ({ listRepository, linkRepository, workQueue }) {
@@ -33,7 +34,15 @@ function WebService ({ listRepository, linkRepository, workQueue }) {
     if (job.name === 'list') {
       const list = List.createFromJson(result)
       await addToIndex(list);
-      await listRepository.save(list);
+      try {
+        await listRepository.save(list);
+      } catch (e) {
+        if (/ER_DUP_ENTRY/.test(e.message)) {
+          logger.info(`Duplicate entry for list: ${list.uid}`)
+        } else {
+          throw e;
+        }
+      }
       // post link jobs for found urls
       for (let url of list.urls) {
         await scrapeLink(url, list.uid);
@@ -42,7 +51,15 @@ function WebService ({ listRepository, linkRepository, workQueue }) {
     else if (job.name === 'link') {
       const link = Link.createFromJson(result);
       await addToIndex(link);
-      await linkRepository.save(link);
+      try {
+        await linkRepository.save(link);
+      } catch (e) {
+        if (/ER_DUP_ENTRY/.test(e.message)) {
+          logger.info(`Duplicate entry for link: ${link.uid}`)
+        } else {
+          throw e;
+        }
+      }
     }
   });
 
@@ -68,12 +85,31 @@ function WebService ({ listRepository, linkRepository, workQueue }) {
     };
   }
 
+  async function buildIndex (itemsPerBatch = 50) {
+    let linkBatchSize = 0;
+    let linkPageIndex = 0;
+    while (linkBatchSize > 0 || linkPageIndex === 0) {
+      const batch = await linkRepository.getAll(itemsPerBatch, linkPageIndex);
+      await Promise.all(batch.map(addToIndex));
+      linkBatchSize = batch.length;
+      linkPageIndex++;
+    }
+    let listBatchSize = 0;
+    let listPageIndex = 0;
+    while (listBatchSize > 0 || listPageIndex === 0) {
+      const batch = await listRepository.getAll(itemsPerBatch, listBatchSize);
+      await Promise.all(batch.map(addToIndex));
+      listBatchSize = batch.length
+      listPageIndex++;
+    }
+  }
+
   async function addToIndex (object) {
     // add serialized string data to search index
-    if (!(
-      await linkRepository.exists(object.uid) ||
-      await listRepository.exists(object.uid))
-    ) {
+    if (object instanceof Link && await linkRepository.exists(object.uid)) {
+      index.add(object.uid, object.serializeToIndex());
+    }
+    if (object instanceof List && await listRepository.exists(object.uid)) {
       index.add(object.uid, object.serializeToIndex());
     }
   }
@@ -119,6 +155,7 @@ function WebService ({ listRepository, linkRepository, workQueue }) {
     search,
     scrapeFromRoot,
     scrapeLink,
+    buildIndex,
     scrapeList,
     getStats,
     workQueue,

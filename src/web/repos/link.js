@@ -36,10 +36,31 @@ async function getFromSource (sourceUid) {
     .getMany()).map(utils.deserializeLink)
 }
 
+async function getAll (pageLimit = 10, pageNumber = 0) {
+  return (await getRepository(Link)
+    .createQueryBuilder('link')
+    .leftJoinAndSelect('link.repository', 'repository')
+    .leftJoinAndSelect('link.website', 'website')
+    .skip(pageNumber * pageLimit)
+    .take(pageLimit)
+    .getMany()).map(utils.deserializeLink);
+}
+
 async function getCount () {
   const result = await getRepository(Link)
     .query('SELECT COUNT(*) as c FROM link');
   return parseInt(result[0].c);
+}
+
+async function exists (uid) {
+  try {
+    await get(uid);
+    return true;
+  } catch (e) {
+    if (e.message === 'Object not found') {
+      return false;
+    }
+  }
 }
 
 module.exports = {
@@ -47,4 +68,6 @@ module.exports = {
   get,
   getFromSource,
   getCount,
+  getAll,
+  exists
 }

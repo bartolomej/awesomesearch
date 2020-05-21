@@ -1,9 +1,8 @@
-const { REDIS_URL } = process.env
-
+const env = require('./env');
 const Queue = require('bull');
 const Redis = require('ioredis')
-const client = new Redis(REDIS_URL);
-const subscriber = new Redis(REDIS_URL);
+const client = new Redis(env.REDIS_URL);
+const subscriber = new Redis(env.REDIS_URL);
 
 // reuse redis connections
 // https://github.com/OptimalBits/bull/blob/develop/PATTERNS.md
@@ -15,7 +14,7 @@ const opts = {
       case 'subscriber':
         return subscriber;
       case 'bclient':
-        return new Redis(REDIS_URL);
+        return new Redis(env.REDIS_URL);
       default:
         throw new Error('Unexpected connection type: ', type);
     }
