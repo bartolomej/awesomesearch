@@ -24,9 +24,14 @@ function Routes ({ webService, listRepository, linkRepository }) {
           description: 'Returns indexed lists.'
         },
         {
-          path: '/object?uid={object_uid}',
-          examplePath: '/object?url=',
-          description: 'Returns information about object.'
+          path: '/list/{list_uid}',
+          examplePath: '/list/amnashanwar.awesome-portfolios',
+          description: 'Returns information about list object.'
+        },
+        {
+          path: '/link/{link_uid}',
+          examplePath: '/link/shewolfe.co',
+          description: 'Returns information about link object.'
         },
         {
           path: '/search?q={query_string}&p={page_index}&limit={items_per_page}',
@@ -44,11 +49,7 @@ function Routes ({ webService, listRepository, linkRepository }) {
 
   router.get('/list/:uid', async (req, res, next) => {
     try {
-      if (req.params.uid) {
-        res.send(await webService.getItem(req.params.uid, 'list').serialize());
-      } else {
-        next(new Error('Please provide object url as param'));
-      }
+      res.send((await webService.getItem(req.params.uid, 'list')).serialize());
     } catch (e) {
       next(e);
     }
@@ -56,11 +57,7 @@ function Routes ({ webService, listRepository, linkRepository }) {
 
   router.get('/link/:uid', async (req, res, next) => {
     try {
-      if (req.params.uid) {
-        res.send(await webService.getItem(req.params.uid, 'link').serialize());
-      } else {
-        next(new Error('Please provide object url as param'));
-      }
+      res.send((await webService.getItem(req.params.uid, 'link')).serialize());
     } catch (e) {
       next(e);
     }
@@ -68,15 +65,10 @@ function Routes ({ webService, listRepository, linkRepository }) {
 
   router.get('/list', async (req, res, next) => {
     try {
-      res.send(await listRepository.getAll(req.query.limit || 10, req.query.page || 0))
-    } catch (e) {
-      next(e);
-    }
-  });
-
-  router.get('/list/:uid', async (req, res, next) => {
-    try {
-      res.send((await listRepository.get(req.params.uid)).serialize().toShortVersion())
+      res.send((await listRepository.getAll(
+        req.query.limit || 10,
+        req.query.page || 0
+      )).map(l => l.serialize()))
     } catch (e) {
       next(e);
     }
@@ -84,7 +76,10 @@ function Routes ({ webService, listRepository, linkRepository }) {
 
   router.get('/list/:uid/link', async (req, res, next) => {
     try {
-      res.send(await linkRepository.getAll(req.query.limit || 10, req.query.page || 0));
+      res.send((await linkRepository.getAll(
+        req.query.limit || 10,
+        req.query.page || 0
+      )).map(l => l.serialize()));
     } catch (e) {
       next(e);
     }
