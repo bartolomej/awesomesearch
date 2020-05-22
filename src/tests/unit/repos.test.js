@@ -61,6 +61,7 @@ describe('Link repository tests', function () {
   });
 
   it('should fetch links all with pagination', async function () {
+    jest.setTimeout(10000);
     // insert 10 links in database
     for (let i = 0; i < 10; i++) {
       await linkRepository.save(exampleLink(i));
@@ -84,6 +85,15 @@ describe('Link repository tests', function () {
     expect(firstPage.length).toBe(1);
     // expect empty page if no items to return
     expect(secondPage.length).toBe(0);
+  });
+
+  it('should fetch 2 random link objects', async function () {
+    await linkRepository.save(exampleLink());
+    const random = await linkRepository.getRandomObject(1);
+
+    expect(random.length).toBe(1);
+    expect(random.repository).not.toBeNull();
+    expect(random.website).not.toBeNull();
   });
 
 });

@@ -5,6 +5,7 @@ const List = require('../models/list');
 const IndexObject = require('../models/index-object');
 const FlexSearch = require("flexsearch");
 const logger = require('../logger')('web-service');
+const AwesomeError = require('../errors');
 
 function WebService ({ listRepository, linkRepository, workQueue }) {
 
@@ -40,8 +41,8 @@ function WebService ({ listRepository, linkRepository, workQueue }) {
         await listRepository.save(list);
         await addToIndex(list);
       } catch (e) {
-        if (/ER_DUP_ENTRY/.test(e.message)) {
-          logger.info(`Duplicate entry for list: ${list.uid}`)
+        if (e.message === AwesomeError.types.DUPLICATE_ENTRY) {
+          logger.info(e.description)
         } else {
           throw e;
         }
@@ -56,25 +57,14 @@ function WebService ({ listRepository, linkRepository, workQueue }) {
         await linkRepository.save(link);
         await addToIndex(link);
       } catch (e) {
-        if (/ER_DUP_ENTRY/.test(e.message)) {
-          logger.info(`Duplicate entry for link: ${link.uid}`)
+        if (e.message === AwesomeError.types.DUPLICATE_ENTRY) {
+          logger.info(e.description)
         } else {
           throw e;
         }
       }
     }
   });
-
-  function randomObject (n = 6) {
-    let results = [];
-    for (let i = 0; i < n; i++) {
-      const rand = linkRepository.randomObject();
-      if (rand) {
-        results.push(rand);
-      }
-    }
-    return results;
-  }
 
   // TODO: implement field search
   async function search ({ query, page = true, limit = 15 }) {
@@ -91,6 +81,7 @@ function WebService ({ listRepository, linkRepository, workQueue }) {
   async function buildIndex (itemsPerBatch = 50) {
     let linkBatchSize = 0;
     let linkPageIndex = 0;
+    // link batch size is 0 when there are no objects left to process
     while (linkBatchSize > 0 || linkPageIndex === 0) {
       const batch = await linkRepository.getAll(itemsPerBatch, linkPageIndex);
       await Promise.all(batch.map(addToIndex));
@@ -119,10 +110,20 @@ function WebService ({ listRepository, linkRepository, workQueue }) {
 
   async function getItem (obj) {
     if (obj.type === 'link') {
-      return await linkRepository.get(obj.uid)
+      try {
+        return await linkRepository.get(obj.uid)
+      } catch (e) {
+        logger.error(`Error fetching link ${obj.uid} from db: ${e}`);
+        throw e;
+      }
     }
     if (obj.type === 'list') {
-      return await listRepository.get(obj.uid)
+      try {
+        return await listRepository.get(obj.uid)
+      } catch (e) {
+        logger.error(`Error fetching list ${obj.uid} from db: ${e}`);
+        throw e;
+      }
     }
   }
 
@@ -154,7 +155,6 @@ function WebService ({ listRepository, linkRepository, workQueue }) {
   }
 
   return {
-    randomObject,
     search,
     scrapeFromRoot,
     scrapeLink,

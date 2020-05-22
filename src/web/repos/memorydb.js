@@ -20,10 +20,14 @@ function MemoryRepository () {
     }
   }
 
-  function randomObject () {
-    const keys = Object.keys(store);
-    const rand = Math.round(Math.random() * keys.length - 1);
-    return store[keys[rand]];
+  function getRandomObject (n = 1) {
+    const results = [];
+    for (let i = 0; i < n; i++) {
+      const keys = Object.keys(store);
+      const rand = Math.round(Math.random() * keys.length - 1);
+      results.push(store[keys[rand]]);
+    }
+    return results;
   }
 
   function getAll (limit = null) {
@@ -52,7 +56,7 @@ function MemoryRepository () {
     getAll,
     exists,
     getCount,
-    randomObject
+    getRandomObject
   }
 
 }

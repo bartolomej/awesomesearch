@@ -17,11 +17,23 @@ class Link {
   }
 
   get image () {
-    return this.website ? this.website.image : this.repository.avatar
+    if (this.website) {
+      return this.website.image;
+    } else if (this.repository) {
+      return this.repository.avatar;
+    } else {
+      return null;
+    }
   }
 
   get title () {
-    return this.website ? this.website.title : this.repository.getName()
+    if (this.website) {
+      return this.website.title;
+    } else if (this.repository) {
+      return this.repository.name;
+    } else {
+      return null;
+    }
   }
 
   get screenshot () {

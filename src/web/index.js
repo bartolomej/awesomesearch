@@ -37,7 +37,7 @@ async function start () {
     try {
       await execute(`Building search index`, webService.buildIndex());
     } catch (e) {
-      logger.error(`Error while building search index: ${e}`);
+      logger.error(`Error while building search index: ${e}: ${e.description}`);
     }
 
   }

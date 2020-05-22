@@ -2,10 +2,11 @@ const Link = require('../../models/link');
 const List = require('../../models/list');
 const Website = require('../../models/website');
 const Repository = require('../../models/repository');
+const AwesomeError = require('../../errors');
 
 function deserializeLink (link) {
   if (!link) {
-    throw new Error('Object not found')
+    throw new AwesomeError(AwesomeError.types.NOT_FOUND)
   }
   return Object.assign(new Link(), {
     ...link,
@@ -16,7 +17,7 @@ function deserializeLink (link) {
 
 function deserializeWebsite (website) {
   if (!website) {
-    throw new Error('Object not found')
+    return null;
   }
   return Object.assign(new Website(), {
     ...website,
@@ -36,7 +37,7 @@ function serializeWebsite (website) {
 
 function deserializeList (list) {
   if (!list) {
-    throw new Error('Object not found')
+    throw new AwesomeError(AwesomeError.types.NOT_FOUND);
   }
   return Object.assign(new List(), {
     ...list,

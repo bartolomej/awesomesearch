@@ -4,10 +4,12 @@ const List = require('../../models/list');
 const Website = require('../../models/website');
 const Repository = require('../../models/repository');
 const utils = require('./utils');
+const AwesomeError = require('../../errors');
 
 async function save (list) {
   await getRepository(Repository)
-    .save(utils.serializeRepo(list.repository));
+    .save(utils.serializeRepo(list.repository))
+    .catch();
   return getRepository(List).save(list);
 }
 
@@ -43,8 +45,10 @@ async function exists (uid) {
     await get(uid);
     return true;
   } catch (e) {
-    if (e.message === 'Object not found') {
+    if (e.message === AwesomeError.types.NOT_FOUND) {
       return false;
+    } else {
+      throw e;
     }
   }
 }

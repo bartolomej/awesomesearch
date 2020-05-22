@@ -105,7 +105,8 @@ function Routes ({ webService, listRepository, linkRepository }) {
 
   router.get('/random', async (req, res, next) => {
     try {
-      res.send(await webService.randomObject(req.query.n || 6).map(e => e.serialize()));
+      res.send((await linkRepository.getRandomObject(req.query.n || 6))
+        .map(e => e.serialize()));
     } catch (e) {
       next(e);
     }
