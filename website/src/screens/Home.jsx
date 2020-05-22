@@ -60,7 +60,7 @@ export default function Home () {
             <RandomItem
               key={item.url}
               url={item.url}
-              image={item.image}
+              image={item.image_url}
               title={item.title}
               repoId={item.source}
               repoUrl={`https://github.com/${item.source}`}

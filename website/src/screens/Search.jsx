@@ -95,7 +95,7 @@ export default function Search () {
             innerRef={i === getResults().length - 5 ? ref : null}
             type={r.object_type}
             url={r.url}
-            image={r.image}
+            image={r.image_url}
             title={r.title}
             tags={r.tags}
             topics={r.topics}
