@@ -2,9 +2,9 @@ const github = require('../services/github');
 const listService = require('../services/list');
 const Link = require('../models/link');
 const List = require('../models/list');
+const IndexObject = require('../models/index-object');
 const FlexSearch = require("flexsearch");
 const logger = require('../logger')('web-service');
-
 
 function WebService ({ listRepository, linkRepository, workQueue }) {
 
@@ -18,11 +18,14 @@ function WebService ({ listRepository, linkRepository, workQueue }) {
     throw new Error('List repository not provided');
   }
 
-  // https://github.com/nextapps-de/flexsearch#presets
+  // https://github.com/nextapps-de/flexsearch
   const index = new FlexSearch({
     encode: "advanced",
     tokenize: "reverse",
-    suggest: true,
+    doc: {
+      id: 'uid',
+      field: IndexObject.fields
+    }
   });
 
   /**
@@ -33,9 +36,9 @@ function WebService ({ listRepository, linkRepository, workQueue }) {
 
     if (job.name === 'list') {
       const list = List.createFromJson(result)
-      await addToIndex(list);
       try {
         await listRepository.save(list);
+        await addToIndex(list);
       } catch (e) {
         if (/ER_DUP_ENTRY/.test(e.message)) {
           logger.info(`Duplicate entry for list: ${list.uid}`)
@@ -47,12 +50,11 @@ function WebService ({ listRepository, linkRepository, workQueue }) {
       for (let url of list.urls) {
         await scrapeLink(url, list.uid);
       }
-    }
-    else if (job.name === 'link') {
+    } else if (job.name === 'link') {
       const link = Link.createFromJson(result);
-      await addToIndex(link);
       try {
         await linkRepository.save(link);
+        await addToIndex(link);
       } catch (e) {
         if (/ER_DUP_ENTRY/.test(e.message)) {
           logger.info(`Duplicate entry for link: ${link.uid}`)
@@ -74,8 +76,9 @@ function WebService ({ listRepository, linkRepository, workQueue }) {
     return results;
   }
 
-  async function search (query, page = true, limit = 15) {
-    const searchRes = await index.search(query, { limit, page });
+  // TODO: implement field search
+  async function search ({ query, page = true, limit = 15 }) {
+    const searchRes = await index.search({ limit, page, query, suggest: true });
     const result = searchRes.result ?
       await Promise.all(searchRes.result.map(getItem)) : [];
     return {
@@ -107,21 +110,20 @@ function WebService ({ listRepository, linkRepository, workQueue }) {
   async function addToIndex (object) {
     // add serialized string data to search index
     if (object instanceof Link && await linkRepository.exists(object.uid)) {
-      index.add(object.uid, object.serializeToIndex());
+      index.add(object.serializeToIndex());
     }
     if (object instanceof List && await listRepository.exists(object.uid)) {
-      index.add(object.uid, object.serializeToIndex());
+      index.add(object.serializeToIndex());
     }
   }
 
-  async function getItem (uid) {
-    try {
-      return await linkRepository.get(uid)
-    } catch (e) {}
-    try {
-      return await listRepository.get(uid)
-    } catch (e) {}
-    throw new Error('Object not found');
+  async function getItem (obj) {
+    if (obj.type === 'link') {
+      return await linkRepository.get(obj.uid)
+    }
+    if (obj.type === 'list') {
+      return await listRepository.get(obj.uid)
+    }
   }
 
   async function scrapeLink (url, source = null) {
@@ -136,6 +138,7 @@ function WebService ({ listRepository, linkRepository, workQueue }) {
     return {
       linkCount: await linkRepository.getCount(),
       listCount: await listRepository.getCount(),
+      searchIndex: index.info()
     }
   }
 

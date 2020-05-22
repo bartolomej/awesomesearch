@@ -9,13 +9,20 @@ const linkRepository = require('./repos/link');
 const listRepository = require('./repos/list');
 const Queue = require('../queue');
 const typeorm = require('./typeorm');
+const logger = require('../logger')('web-index');
+const { execute } = require('../utils');
 
 async function start () {
   const listRepositoryDb = env.USE_MEMORY_DB ? memoryRepository() : listRepository;
   const linkRepositoryDb = env.USE_MEMORY_DB ? memoryRepository() : linkRepository;
 
   if (!env.USE_MEMORY_DB) {
-    await typeorm.create();
+    try {
+      await typeorm.create();
+    } catch (e) {
+      logger.error(`Error while connecting to db: ${e}`);
+      process.exit(1);
+    }
   }
 
   // inject required dependencies
@@ -28,10 +35,9 @@ async function start () {
   // build index with stored objects
   if (!env.USE_MEMORY_DB) {
     try {
-      await webService.buildIndex();
-      console.log('Index build complete');
+      await execute(`Building search index`, webService.buildIndex());
     } catch (e) {
-      console.error(`Error building index: ${e}`)
+      logger.error(`Error while building search index: ${e}`);
     }
 
   }
@@ -45,9 +51,9 @@ async function start () {
         listRepository: listRepositoryDb
       })
     ]);
-    console.log(`Web process ${process.pid} started 🙌`);
+    logger.info(`Web process ${process.pid} started 🙌`);
   } catch (e) {
-    console.error(`${name} encountered an error 🤕 \n${e.stack}`);
+    logger.error(`${name} encountered an error 🤕 \n${e.stack}`);
   }
 }
 

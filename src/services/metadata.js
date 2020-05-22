@@ -129,14 +129,13 @@ function MetaService ({ imageService }) {
 
   async function screenshotWebsite (url, outputPath) {
     const browser = await puppeteer.launch({
-      headless: process.env.NODE_ENV === 'production'
+      headless: true
     });
     const page = await browser.newPage();
     await page.setViewport({
       width: 1300,
       height: 1000,
       deviceScaleFactor: 1,
-      headless: true
     });
     // remove the navigation timeout limit
     await page.setDefaultNavigationTimeout(0);

@@ -114,11 +114,11 @@ function Routes ({ webService, listRepository, linkRepository }) {
   router.get('/search', async (req, res, next) => {
     try {
       if (req.query.q) {
-        const searchRes = await webService.search(
-          req.query.q,
-          req.query.p || true,
-          req.query.limit ? parseInt(req.query.limit) : 15
-        );
+        const searchRes = await webService.search({
+          query: req.query.q,
+          page: req.query.p || true,
+          limit: req.query.limit ? parseInt(req.query.limit) : 15
+        });
         res.send({
           ...searchRes,
           result: searchRes.result.map(e => e.serialize().toShortVersion())
@@ -136,7 +136,8 @@ function Routes ({ webService, listRepository, linkRepository }) {
       const stats = await webService.getStats();
       res.send({
         link_count: stats.linkCount,
-        list_count: stats.listCount
+        list_count: stats.listCount,
+        search_index: stats.searchIndex
       })
     } catch (e) {
       next(e);

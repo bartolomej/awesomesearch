@@ -6,6 +6,6 @@
   "keywords": ["nodejs", "awesome", "api"],
   "addons": [
     "heroku-redis",
-    "jawsdb-mysql"
+    "jawsdb"
   ]
 }

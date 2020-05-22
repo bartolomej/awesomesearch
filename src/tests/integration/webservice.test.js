@@ -6,7 +6,6 @@ const Website = require('../../models/website');
 const List = require('../../models/list');
 const Link = require('../../models/link');
 
-
 function MockQueue () {
   let completedCb;
   let jobs = {};
@@ -58,7 +57,7 @@ describe('Web service tests', function () {
     const list = new List(listUrl, new Repository(listUrl), [linkUrl]);
     workQueue._setJob('1', { name: 'list' });
     await workQueue._completeJob('1', JSON.stringify(list));
-    const searchResult = await service.search('portfolios');
+    const searchResult = await service.search({ query: 'portfolios' });
 
     expect(listRepository.get(list.repository.uid)).toEqual(list);
     expect(workQueue._getQueuedJobs()).toEqual([{
@@ -81,7 +80,7 @@ describe('Web service tests', function () {
     );
     workQueue._setJob('1', { name: 'link' });
     await workQueue._completeJob('1', JSON.stringify(link));
-    const searchResult = await service.search('LinkTest');
+    const searchResult = await service.search({ query: 'LinkTest' });
 
     expect(linkRepository.get(link.uid)).toEqual(link);
     expect(searchResult.result.length).toBe(1);

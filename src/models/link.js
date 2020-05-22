@@ -1,5 +1,6 @@
 const Result = require('./result');
 const Website = require('./website');
+const IndexObject = require('./index-object');
 
 class Link {
 
@@ -89,14 +90,16 @@ class Link {
   }
 
   serializeToIndex () {
-    const postfix = ' ';
-    const serializeValue = v => v ? `${v}${postfix}` : '';
-    return (
-      serializeValue(this.title) +
-      serializeValue(this.url) +
-      serializeValue(this.description) +
-      serializeValue(this.tags.join(','))
-    );
+    return new IndexObject({
+      uid: this.uid,
+      title: this.title,
+      tags: this.tags,
+      description: this.description,
+      author: this.author,
+      websiteName: this.websiteName,
+      url: this.url,
+      type: 'link'
+    });
   }
 
   static createFromJson (json) {

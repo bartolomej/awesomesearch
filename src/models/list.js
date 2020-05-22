@@ -1,5 +1,6 @@
 const Result = require('./result');
 const Repository = require('./repository');
+const IndexObject = require('./index-object');
 
 
 class List {
@@ -17,11 +18,15 @@ class List {
   }
 
   get title () {
-    return this.repository ? `${this.repository.user}/${this.repository.name}` : null;
+    return this.repository ? this.repository.name: null;
   }
 
   get tags () {
     return this.repository ? this.repository.topics : [];
+  }
+
+  get author () {
+    return this.repository ? this.repository.user : null;
   }
 
   get stars () {
@@ -56,13 +61,16 @@ class List {
   }
 
   serializeToIndex () {
-    const postfix = ' ';
-    const serializeValue = v => v ? `${v}${postfix}` : '';
-    return (
-      serializeValue(this.repository.homepage) +
-      serializeValue(this.repository.description) +
-      serializeValue(this.url)
-    )
+    return new IndexObject({
+      uid: this.uid,
+      title: this.title,
+      tags: this.tags,
+      description: this.description,
+      author: this.author,
+      websiteName: 'Github',
+      url: this.url,
+      type: 'list'
+    });
   }
 
   static isValidUrl (url, isRoot = false) {
