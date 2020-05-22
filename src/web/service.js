@@ -70,7 +70,7 @@ function WebService ({ listRepository, linkRepository, workQueue }) {
   async function search ({ query, page = true, limit = 15 }) {
     const searchRes = await index.search({ limit, page, query, suggest: true });
     const result = searchRes.result ?
-      await Promise.all(searchRes.result.map(getItem)) : [];
+      await Promise.all(searchRes.result.map(obj => getItem(obj.uid, obj.type))) : [];
     return {
       page: parseInt(searchRes.page),
       next: searchRes.next ? parseInt(searchRes.next) : null,
@@ -108,20 +108,20 @@ function WebService ({ listRepository, linkRepository, workQueue }) {
     }
   }
 
-  async function getItem (obj) {
-    if (obj.type === 'link') {
+  async function getItem (uid, type) {
+    if (type === 'link') {
       try {
-        return await linkRepository.get(obj.uid)
+        return await linkRepository.get(uid)
       } catch (e) {
-        logger.error(`Error fetching link ${obj.uid} from db: ${e}`);
+        logger.error(`Error fetching link ${uid} from db: ${e}`);
         throw e;
       }
     }
-    if (obj.type === 'list') {
+    if (type === 'list') {
       try {
-        return await listRepository.get(obj.uid)
+        return await listRepository.get(uid)
       } catch (e) {
-        logger.error(`Error fetching list ${obj.uid} from db: ${e}`);
+        logger.error(`Error fetching list ${uid} from db: ${e}`);
         throw e;
       }
     }
@@ -158,6 +158,7 @@ function WebService ({ listRepository, linkRepository, workQueue }) {
     search,
     scrapeFromRoot,
     scrapeLink,
+    getItem,
     buildIndex,
     scrapeList,
     getStats,

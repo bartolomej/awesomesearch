@@ -42,10 +42,22 @@ function Routes ({ webService, listRepository, linkRepository }) {
     })
   });
 
-  router.get('/object/:uid', async (req, res, next) => {
+  router.get('/list/:uid', async (req, res, next) => {
     try {
       if (req.params.uid) {
-        res.send(await webService.getItem(req.params.uid).serialize());
+        res.send(await webService.getItem(req.params.uid, 'list').serialize());
+      } else {
+        next(new Error('Please provide object url as param'));
+      }
+    } catch (e) {
+      next(e);
+    }
+  });
+
+  router.get('/link/:uid', async (req, res, next) => {
+    try {
+      if (req.params.uid) {
+        res.send(await webService.getItem(req.params.uid, 'link').serialize());
       } else {
         next(new Error('Please provide object url as param'));
       }
@@ -89,11 +101,11 @@ function Routes ({ webService, listRepository, linkRepository }) {
     try {
       if (req.query.url) {
         const html = await metaService.getHtml(req.query.url);
-        const metadata = await metaService.parseHtml(html, req.query.url);
+        const website = await metaService.parseHtml(html, req.query.url);
         if (req.headers.accept.indexOf('text/html') === 0) {
-          res.render('metadata', metadata);
+          res.render('metadata', website);
         } else {
-          res.send(metadata);
+          res.send(website);
         }
       } else {
         next(new Error('Please provide website url'));
