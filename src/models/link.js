@@ -94,7 +94,7 @@ class Link {
       description: this.description,
       objectType: Result.type.LINK,
       tags: this.tags,
-      source: this.source,
+      sourceList: this.source,
       author: this.author,
       title: this.title,
       url: this.url
