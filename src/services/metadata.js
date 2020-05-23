@@ -7,7 +7,6 @@ const normalizeUrl = require('normalize-url');
 const { execute } = require('../utils');
 const puppeteer = require('puppeteer');
 const fs = require('fs');
-const env = require('../env');
 const path = require('path');
 const Link = require('../models/link');
 const Repository = require('../models/repository');
@@ -70,6 +69,7 @@ function MetaService ({ imageService }) {
       return null;
     }
 
+    // TODO: provide separate fields for favicon and meta images
     const website = new Website(websiteUrl);
     website.image = null;
     website.title = getMetaTag('title') || $('title').first().text();
@@ -142,7 +142,7 @@ function MetaService ({ imageService }) {
       resolve => setTimeout(resolve, ms)
     );
     const browser = await puppeteer.launch({
-      headless: env.isProduction,
+      headless: true,
       args: ['--no-sandbox']
     });
     const page = await browser.newPage();

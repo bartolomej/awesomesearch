@@ -25,12 +25,16 @@ $ heroku buildpacks:add jontewks/puppeteer --app <appname>
 ## Architecture
 App consists of two separate processes:
 - `web`: receives HTTP requests from clients, performs search queries, stores data
-- `worker`: performs longer running tasks (website scraping, repository parsing,..)
+- `worker`: performs long running asynchronous tasks (website scraping, parsing,..)
+
+You can configure the number of instances of each processes with environmental variables `WEB_CONCURRENCY` (for web process) and `WEB_WORKERS` (for worker process).
+To start both processes in production just run `npm start`.
 
 ![Architecture Diagram](architecture.png)
 
-Define number of each processes with environmental variables`WEB_CONCURRENCY` and `WEB_WORKERS`.
-To start both just run `npm start`.
+<div align="center">
+    <img src="architecture.png" width="500" />
+</div>
 
 ## Some libraries used
 - [FlexSearch](https://github.com/nextapps-de/flexsearch) - Next-Generation full text search library for Browser and Node.js
@@ -38,17 +42,17 @@ To start both just run `npm start`.
 
 ## Developing
 
-- before running, you need to have [Redis](https://redis.io/) installed on your machine. 
+Before running, you need to have [Redis](https://redis.io/) installed on your machine. 
+Also you need to configure environmental variables defined in `src/env.js` file
 - run `yarn install` or `npm i` command to install dependencies
 - run `yarn start` or `npm start` to start both app processes in production
-- you need to configure environmental variables defined in `src/env.js` file
 
 ## Scripts
 
-- `npm test` - runs all unit tests
-- `npm start` - start server in production environment
-- `npm start:dev` - start server in development environment
-- `npm start:dev:test` - start server in development environment with mocked REST API calls defined in `src/index.js`
+- `yarn test` - runs all unit tests
+- `yarn start` - start server in production environment
+- `yarn start:dev` - start server in development environment
+- `node src/scripts/link.js <website-url>` - process website (outputs metadata to `/out`).
 
 ## Future Ideas
 - topic / keywords extraction from website text
