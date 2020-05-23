@@ -19,12 +19,12 @@ describe('Test screenshot feature', function () {
     rimraf.sync(path.join(__dirname, 'res'));
   });
 
-  it('should make an screenshot given url', async function () {
+  it('should screenshot website with intro animation', async function () {
     jest.setTimeout(30000);
     const metaService = MetaService({ imageService });
 
-    const out = path.join(__dirname, 'res', 'example.png');
-    await metaService.screenshotWebsite('https://www.debugbear.com/', out);
+    const out = path.join(__dirname, 'res', 'uix.png');
+    await metaService.screenshotWebsite('https://uix.me/', out);
     expect(fs.existsSync(out)).toBeTruthy();
   });
 

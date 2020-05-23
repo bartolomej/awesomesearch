@@ -7,6 +7,7 @@ const normalizeUrl = require('normalize-url');
 const { execute } = require('../utils');
 const puppeteer = require('puppeteer');
 const fs = require('fs');
+const env = require('../env');
 const path = require('path');
 const Link = require('../models/link');
 const Repository = require('../models/repository');
@@ -23,7 +24,8 @@ function MetaService ({ imageService }) {
       const html = await getHtml(url);
       const website = await parseHtml(html, url);
       try {
-        const response = await processScreenshot(website);
+        let wait = /portfolio/g.test(source) ? 4000 : 1000;
+        const response = await processScreenshot(website, wait);
         website.screenshot = response.url;
         website.screenshotId = response.id;
       } catch (e) {
@@ -112,14 +114,14 @@ function MetaService ({ imageService }) {
     return website;
   }
 
-  async function processScreenshot (website) {
+  async function processScreenshot (website, waitBeforeScreenshot = 0) {
     // take a screenshot and upload it to image store
     const cachePath = path.join(__dirname, '..', '..', 'cache');
     if (!fs.existsSync(cachePath)) {
       fs.mkdirSync(cachePath);
     }
     const screenshotPath = path.join(cachePath, `${uuid()}.png`);
-    await screenshotWebsite(website.url, screenshotPath);
+    await screenshotWebsite(website.url, screenshotPath, waitBeforeScreenshot);
     const response = await imageService.upload(screenshotPath, website.uid)
     return {
       url: response.secure_url,
@@ -127,9 +129,12 @@ function MetaService ({ imageService }) {
     }
   }
 
-  async function screenshotWebsite (url, outputPath) {
+  async function screenshotWebsite (url, outputPath, waitBeforeScreenshot = 0) {
+    const wait = ms => new Promise(
+      resolve => setTimeout(resolve, ms)
+    );
     const browser = await puppeteer.launch({
-      headless: true
+      headless: env.isProduction
     });
     const page = await browser.newPage();
     await page.setViewport({
@@ -140,6 +145,11 @@ function MetaService ({ imageService }) {
     // remove the navigation timeout limit
     await page.setDefaultNavigationTimeout(0);
     await page.goto(url, { waitUntil: ['networkidle2'] });
+    if (waitBeforeScreenshot > 0) {
+      // wait if there is some loading animation
+      logger.debug(`Waiting for ${waitBeforeScreenshot} before taking screenshot of ${url}`);
+      await wait(waitBeforeScreenshot);
+    }
     await page.screenshot({ path: outputPath });
     await browser.close();
   }
@@ -171,4 +181,5 @@ function MetaService ({ imageService }) {
 
   return { getMetadata, getHtml, parseHtml, screenshotWebsite }
 }
+
 module.exports = MetaService;

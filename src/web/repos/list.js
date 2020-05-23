@@ -54,8 +54,8 @@ async function exists (uid) {
 }
 
 async function removeAll () {
-  await getRepository(List).query('DELETE FROM list WHERE 1=1');
   await getRepository(Link).query('DELETE FROM link WHERE 1=1');
+  await getRepository(List).query('DELETE FROM list WHERE 1=1');
   await getRepository(Repository).query('DELETE FROM repository WHERE 1=1');
   await getRepository(Website).query('DELETE FROM website WHERE 1=1');
 }
