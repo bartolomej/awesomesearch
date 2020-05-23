@@ -33,6 +33,19 @@ describe('Link repository tests', function () {
     expect(fetchedList).toEqual(list);
   });
 
+  it('should overwrite saved link model', async function () {
+    const link0 = exampleLink('https://github.com/bartolomej/bookmarks');
+    const link1 = exampleLink('https://github.com/bartolomej/bookmarks');
+    link1.author = 'example';
+    const savedLink = await linkRepository.save(link0);
+    const overwrittenLink = await linkRepository.save(link1);
+    const fetchedLink = await linkRepository.get(link1.uid);
+
+    expect(savedLink).toEqual(link0);
+    expect(overwrittenLink).toEqual(link1);
+    expect(fetchedLink).toEqual(link1);
+  });
+
   it('should fetch list that doesnt exist', async function () {
     try {
       await listRepository.get('invalidUid');

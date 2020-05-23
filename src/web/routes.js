@@ -132,7 +132,8 @@ function Routes ({ webService, listRepository, linkRepository }) {
           result: searchRes.result.map(e => e.serialize().toShortVersion())
         });
       } else {
-        next(new Error('Please provide a query'))
+        // return empty array if q param not provided or is empty
+        res.send([]);
       }
     } catch (e) {
       next(e);

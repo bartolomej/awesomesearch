@@ -121,11 +121,19 @@ function MetaService ({ imageService }) {
       fs.mkdirSync(cachePath);
     }
     const screenshotPath = path.join(cachePath, `${uuid()}.png`);
-    await screenshotWebsite(website.url, screenshotPath, waitBeforeScreenshot);
-    const response = await imageService.upload(screenshotPath, website.uid)
-    return {
-      url: response.secure_url,
-      id: response.public_id
+    try {
+      await screenshotWebsite(website.url, screenshotPath, waitBeforeScreenshot);
+    } catch (e) {
+      logger.error(`Error while taking a screenshot: ${e}`)
+    }
+    try {
+      const response = await imageService.upload(screenshotPath, website.uid)
+      return {
+        url: response.secure_url,
+        id: response.public_id
+      }
+    } catch (e) {
+      logger.error(`Error while uploading to image store: ${e}`);
     }
   }
 
@@ -134,7 +142,8 @@ function MetaService ({ imageService }) {
       resolve => setTimeout(resolve, ms)
     );
     const browser = await puppeteer.launch({
-      headless: env.isProduction
+      headless: env.isProduction,
+      args: ['--no-sandbox']
     });
     const page = await browser.newPage();
     await page.setViewport({
@@ -147,7 +156,7 @@ function MetaService ({ imageService }) {
     await page.goto(url, { waitUntil: ['networkidle2'] });
     if (waitBeforeScreenshot > 0) {
       // wait if there is some loading animation
-      logger.debug(`Waiting for ${waitBeforeScreenshot} before taking screenshot of ${url}`);
+      logger.debug(`Waiting for ${waitBeforeScreenshot}ms before taking screenshot of ${url}`);
       await wait(waitBeforeScreenshot);
     }
     await page.screenshot({ path: outputPath });

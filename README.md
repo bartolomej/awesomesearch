@@ -10,55 +10,24 @@
 
 Awesome web service indexes [store](https://awesome.com/sindresorhus/awesome) list collections and exposes external search REST API.
 
-After deploying to Heroku, you will need to [manualy scale worker process](https://devcenter.heroku.com/articles/procfile#scaling-a-process-type) with heroku cli command: 
-```
+
+## Deploying to Heroku
+
+After deploying to Heroku, you will need to [manually scale worker process](https://devcenter.heroku.com/articles/procfile#scaling-a-process-type) with heroku cli command: 
+```bash
 $ heroku ps:scale worker=1 --app <appname>
 ```
-
-
-## API docs
-
-#### Search by word query:
-Returns array of results, sorted by relevance.
-- `{query}` - words to search
-- `{items_per_page}` - number of items per request
-- `{page_index}` - enter page index for pagination (returned `null` if no next available)
-
-Request syntax:
-```
-/search?q={query}&p={page_index}&limit={items_per_page}
-```
-
-Example response:
-```json
-{
-"page": 0,
-"next": 15,
-"result": [
-    {
-        "object_type": "link",
-        "title": "Level Out",
-        "website_name": null,
-        "url": "http://level-out.com",
-        "image": "https://level-out.com/assets/images/og-image.png",
-        "tags": [
-          "Level Out",
-          "Luke Hedger",
-          "Software Engineer"
-        ],
-        "source": "amnashanwar/store-portfolios",
-        "website_type": "website",
-        "description": "The world needs software that is modern yet stable, balanced skillfully between innovation and standards",
-        "author": "Luke Hedger"
-    },
-    ...
-]
+In order to run [puppeteer](https://pptr.dev/) for website screenshots feature, you need to add the following [buildpack](https://devcenter.heroku.com/articles/buildpacks):
+```bash
+$ heroku buildpacks:add jontewks/puppeteer --app <appname>
 ```
 
 ## Architecture
 App consists of two separate processes:
 - `web`: receives HTTP requests from clients, performs search queries, stores data
 - `worker`: performs longer running tasks (website scraping, repository parsing,..)
+
+![Architecture Diagram](architecture.png)
 
 Define number of each processes with environmental variables`WEB_CONCURRENCY` and `WEB_WORKERS`.
 To start both just run `npm start`.
