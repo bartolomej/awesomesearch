@@ -39,8 +39,6 @@ App consists of two separate processes:
 You can configure the number of instances for each processes with environmental variables `WEB_CONCURRENCY` (for web process) and `WEB_WORKERS` (for worker process).
 To start both processes in production just run `npm start`.
 
-![Architecture Diagram](architecture.png)
-
 <div align="center">
     <img src="architecture.png" width="500" />
 </div>
