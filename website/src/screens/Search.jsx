@@ -10,6 +10,7 @@ import { theme } from "../colors";
 import { useInView } from "react-intersection-observer";
 import ResultItem from "../components/ResultItem";
 import HeaderBar from "../components/HeaderBar";
+import { LinksContainer } from "../styles";
 
 
 const search = new SearchEngine();
@@ -53,7 +54,7 @@ export default function Search () {
           onChange={query => fetchResults(query)}
         />
       </HeaderBar>
-      <Body>
+      <LinksContainer top={'7vh'}>
         {loading && (
           <MessageWrapper>
             {/* https://www.davidhu.io/react-spinners/ */}
@@ -94,7 +95,7 @@ export default function Search () {
             styles={i === 0 ? 'margin-top: 50px !important;' : ''}
           />
         ))}
-      </Body>
+      </LinksContainer>
     </Container>
   );
 }
@@ -104,30 +105,6 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
-`;
-
-const Body = styled.div`
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  flex-wrap: wrap;
-  padding-top: 20px;
-  position: fixed;
-  bottom: 0;
-  top: 7vh;
-  overflow-y: scroll;
-  justify-content: center;
-  width: 70%;
-  margin: 0 auto;
-  @media (max-width: 1300px) {
-    width: 100%;
-  }
-  @media (max-width: 500px) {
-    top: 10vh;
-  }
-  &::-webkit-scrollbar {
-    display: none;
-  }
 `;
 
 const SearchIcon = styled(searchIcon)`

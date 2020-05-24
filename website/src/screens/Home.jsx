@@ -34,7 +34,7 @@ export default function Home () {
           Search engine for discovering more relevant awesome stuff from <a href="https://awesome.re/">Awesome
           Lists.</a> Includes over {linkCount} indexed awesome links from {repoCount} awesome lists.
         </Description>
-        <SearchLink to="/search">
+        <SearchLink to="/discover">
           Go to Search
           <UseAnimations
             animationKey="arrowDown"

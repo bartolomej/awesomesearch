@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 
 export default function ResultItem ({ innerRef, sourceUid, styles, type, title, description, tags, url, image, screenshot }) {
@@ -26,7 +27,7 @@ export default function ResultItem ({ innerRef, sourceUid, styles, type, title, 
         {source && (
           <SourceWrapper>
             <SourceImage src={source.image_url} alt={source.title} />
-            <SourceLink target="_blank" href={source.url}>{source.title}</SourceLink>
+            <SourceLink to={`/list/${sourceUid}`}>{source.title}</SourceLink>
           </SourceWrapper>
         )}
       </DescriptionContainer>
@@ -49,6 +50,11 @@ const Container = styled.div`
   padding: 20px;
   margin: 20px;
   border-radius: 10px;
+  animation: 0.2s fadeUp ease-in forwards;
+  @keyframes fadeUp {
+    0% { opacity: 0 }
+    100% { opacity: 1 }
+  }
 `;
 
 const PreviewContainer = styled.a`
@@ -56,6 +62,7 @@ const PreviewContainer = styled.a`
   height: 70%;
   display: flex;
   justify-content: center;
+  border-radius: 5px;
 `;
 
 const DescriptionContainer = styled.div`
@@ -96,9 +103,9 @@ const SourceImage = styled.img`
   border-radius: 50%;
 `
 
-const SourceLink = styled.a`
+const SourceLink = styled(Link)`
   color: ${props => props.theme.secondary};
   font-weight: bold;
-  font-size: 0.7em;
-  margin-left: 8px;
+  font-size: 0.8em;
+  margin-left: 12px;
 `;

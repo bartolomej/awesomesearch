@@ -5,6 +5,7 @@ import Search from "./screens/Search";
 import { ThemeProvider } from "styled-components";
 import { theme } from "./colors";
 import styled from "styled-components";
+import List from "./screens/List";
 
 
 export default function App () {
@@ -15,7 +16,8 @@ export default function App () {
         <AppContainer>
           <Switch>
             <Route path="/" exact component={Home}/>
-            <Route path="/search" component={Search}/>
+            <Route path="/discover" component={Search}/>
+            <Route path="/list/:uid" component={List}/>
           </Switch>
         </AppContainer>
       </Router>
