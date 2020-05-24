@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import SearchBar from "../components/SearchBar";
-import { ReactComponent as searchIcon } from "../assets/telescope.svg";
+import { ReactComponent as searchIcon } from "../assets/unbox.svg";
 import { ReactComponent as errorIcon } from "../assets/cancel.svg";
 import SearchEngine from "../search";
 import { MessageText, MessageWrapper } from "../components/ui";
@@ -19,10 +19,7 @@ export default function Search () {
   const [result, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const [ref, inView, entry] = useInView({
-    /* Optional options */
-    threshold: 0,
-  });
+  const [ref, inView, entry] = useInView({ threshold: 0 });
 
   useEffect(() => {
     if (inView === true) {
@@ -76,8 +73,7 @@ export default function Search () {
         {(!loading && !error && getResults().length === 0) && (
           <MessageWrapper>
             <SearchIcon/>
-            <MessageText>Wow such empty!</MessageText>
-            <MessageText>Search the largest collection of awesome resources.</MessageText>
+            <MessageText>Discover Awesome collection !</MessageText>
           </MessageWrapper>
         )}
         {!loading && getResults().map((r, i) => (
@@ -88,6 +84,9 @@ export default function Search () {
             screenshot={r.screenshot_url}
             url={r.url}
             image={r.image_url}
+            sourceUrl={'http://api.awesomesearch.in/list/amnashanwar.awesome-portfolios'}
+            sourceImage={'https://avatars3.githubusercontent.com/u/31182732?v=4'}
+            sourceUid={r.source_list}
             title={r.title}
             tags={r.tags}
             topics={r.topics}
@@ -113,14 +112,21 @@ const Body = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   padding-top: 20px;
-  width: 100vw;
   position: fixed;
   bottom: 0;
   top: 7vh;
   overflow-y: scroll;
   justify-content: center;
+  width: 70%;
+  margin: 0 auto;
+  @media (max-width: 1300px) {
+    width: 100%;
+  }
   @media (max-width: 500px) {
     top: 10vh;
+  }
+  &::-webkit-scrollbar {
+    display: none;
   }
 `;
 
