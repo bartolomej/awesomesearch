@@ -124,7 +124,8 @@ function MetaService ({ imageService }) {
     try {
       await screenshotWebsite(website.url, screenshotPath, waitBeforeScreenshot);
     } catch (e) {
-      logger.error(`Error while taking a screenshot: ${e}`)
+      logger.error(`Error while taking a screenshot: ${e.message}`)
+      throw e;
     }
     try {
       const response = await imageService.upload(screenshotPath, website.uid)
@@ -133,7 +134,8 @@ function MetaService ({ imageService }) {
         id: response.public_id
       }
     } catch (e) {
-      logger.error(`Error while uploading to image store: ${e}`);
+      logger.error(`Error while uploading to image store: ${e.message}`);
+      throw e;
     }
   }
 

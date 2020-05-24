@@ -1,5 +1,5 @@
 <div align="center">
-	<img width="400" src="https://api.awesomesearch.in/logo.png" alt="Awesome Node.js">
+	<img width="250" src="https://api.awesomesearch.in/logo.png" alt="Awesome Node.js">
 </div>
 <br>
 <hr>
@@ -8,7 +8,9 @@
 [![Awesome](https://awesome.re/badge-flat2.svg)](https://awesome.re)
 <br>
 
-Awesome web service indexes [store](https://awesome.com/sindresorhus/awesome) list collections and exposes external search REST API.
+Awesome web service indexes [awesome](https://awesome.com/sindresorhus/awesome) list collections and exposes search via REST API.
+
+I've also made a [website](https://github.com/bartolomej/awesomesearch-web) and an experimental [Android app](https://github.com/bartolomej/awesomesearch-web).
 
 
 ## Deploying to Heroku
@@ -24,10 +26,17 @@ $ heroku buildpacks:add jontewks/puppeteer --app <appname>
 
 ## Architecture
 App consists of two separate processes:
-- `web`: receives HTTP requests from clients, performs search queries, stores data
-- `worker`: performs long running asynchronous tasks (website scraping, parsing,..)
+- `web` (entry file `src/web/index.js`): 
+    - receives HTTP requests from clients
+    - dispatches jobs to redis queue
+    - performs search queries
+    - stores data
+- `worker` (entry file `src/worker.js`): 
+    - performs website scraping
+    - list parsing
+    - website screenshots
 
-You can configure the number of instances of each processes with environmental variables `WEB_CONCURRENCY` (for web process) and `WEB_WORKERS` (for worker process).
+You can configure the number of instances for each processes with environmental variables `WEB_CONCURRENCY` (for web process) and `WEB_WORKERS` (for worker process).
 To start both processes in production just run `npm start`.
 
 ![Architecture Diagram](architecture.png)
@@ -37,8 +46,9 @@ To start both processes in production just run `npm start`.
 </div>
 
 ## Some libraries used
-- [FlexSearch](https://github.com/nextapps-de/flexsearch) - Next-Generation full text search library for Browser and Node.js
+- [flexsearch](https://github.com/nextapps-de/flexsearch) - Next-Generation full text search library for Browser and Node.js
 - [bull](https://github.com/OptimalBits/bull) - Premium Queue package for handling distributed jobs and messages in NodeJS
+- [typeorm](https://typeorm.io/) - ORM for TypeScript and JavaScript
 
 ## Developing
 

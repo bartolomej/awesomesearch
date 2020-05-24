@@ -4,12 +4,19 @@ const List = require('../../models/list');
 const Website = require('../../models/website');
 const Repository = require('../../models/repository');
 const utils = require('./utils');
+const logger = require('../../logger')('list-repo');
 const AwesomeError = require('../../errors');
 
 async function save (list) {
   await getRepository(Repository)
     .save(utils.serializeRepo(list.repository))
-    .catch();
+    .catch(e => {
+      if (/ER_DUP_ENTRY/.test(e.message)) {
+        logger.info(`Repository ${list.repository.uid} exists in db.`);
+      } else {
+        throw e;
+      }
+    });
   return getRepository(List).save(list);
 }
 
