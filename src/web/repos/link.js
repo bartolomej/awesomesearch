@@ -53,7 +53,7 @@ async function getAll (pageLimit = 10, pageNumber = 0, source = null) {
     .leftJoinAndSelect('link.repository', 'repository')
     .leftJoinAndSelect('link.website', 'website')
   if (source) {
-    query.where('link.source =: source', { source })
+    query.where('link.source = :source', { source })
   }
   query
     .skip(pageNumber * pageLimit)
@@ -61,9 +61,9 @@ async function getAll (pageLimit = 10, pageNumber = 0, source = null) {
   return (await query.getMany()).map(utils.deserializeLink);
 }
 
-async function getCount () {
+async function getCount (sourceUid) {
   const result = await getRepository(Link)
-    .query('SELECT COUNT(*) as c FROM link');
+    .query(`SELECT COUNT(*) as c FROM link ${sourceUid ? `WHERE source = '${sourceUid}'` : ''}`);
   return parseInt(result[0].c);
 }
 

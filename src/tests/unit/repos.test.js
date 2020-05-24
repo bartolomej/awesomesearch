@@ -109,6 +109,29 @@ describe('Link repository tests', function () {
     expect(random.website).not.toBeNull();
   });
 
+  it('should fetch links that belong to list', async function () {
+    const sourceList = exampleList('.test');
+    const link1 = exampleLink(1);
+    link1.source = sourceList.uid;
+    const link2 = exampleLink(2);
+    link2.source = sourceList.uid;
+
+    await listRepository.save(sourceList);
+    await linkRepository.save(link1);
+    await linkRepository.save(link2);
+    // unrelated link
+    await linkRepository.save(exampleLink(3));
+
+    const links = await linkRepository.getAll(10, 0, sourceList.uid);
+    const count = await linkRepository.getCount(sourceList.uid);
+
+    expect(links.length).toBe(2);
+    expect(count).toBe(2);
+    expect(links[0]).toEqual(link1);
+    expect(links[1]).toEqual(link2);
+  });
+
+
 });
 
 function exampleLink (urlPostfix = '') {
