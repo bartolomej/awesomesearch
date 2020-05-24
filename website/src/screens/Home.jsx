@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import RandomItem from "../components/RandomItem";
 import { GithubLink, MessageWrapper } from "../components/ui";
 import { theme } from "../colors";
+import { getRandomObjects, getStats } from "../api";
 
 
 export default function Home () {
@@ -14,15 +15,15 @@ export default function Home () {
   const [repoCount, setRepoCount] = useState('...');
 
   useEffect(() => {
-    fetch(process.env.REACT_APP_API_HOST + '/random')
-      .then(res => res.json())
+    getRandomObjects()
       .then(setRandomPics)
-    fetch(process.env.REACT_APP_API_HOST + '/stats')
-      .then(res => res.json())
+      .catch(console.error)
+    getStats()
       .then(s => {
         setLinkCount(s.link_count);
         setRepoCount(s.repo_count);
       })
+      .catch(console.error)
   }, []);
 
   return (

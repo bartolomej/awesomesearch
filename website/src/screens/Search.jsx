@@ -54,7 +54,7 @@ export default function Search () {
           onChange={query => fetchResults(query)}
         />
       </HeaderBar>
-      <LinksContainer top={'7vh'}>
+      <ResultsContainer>
         {loading && (
           <MessageWrapper>
             {/* https://www.davidhu.io/react-spinners/ */}
@@ -87,7 +87,7 @@ export default function Search () {
             image={r.image_url}
             sourceUrl={'http://api.awesomesearch.in/list/amnashanwar.awesome-portfolios'}
             sourceImage={'https://avatars3.githubusercontent.com/u/31182732?v=4'}
-            sourceUid={r.source_list}
+            source={r.source}
             title={r.title}
             tags={r.tags}
             topics={r.topics}
@@ -95,7 +95,7 @@ export default function Search () {
             styles={i === 0 ? 'margin-top: 50px !important;' : ''}
           />
         ))}
-      </LinksContainer>
+      </ResultsContainer>
     </Container>
   );
 }
@@ -105,6 +105,12 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
+`;
+
+const ResultsContainer = styled.div`
+  ${LinksContainer};
+  top: 7vh; 
+  @media (max-width: 500px) { top: 10vh; }
 `;
 
 const SearchIcon = styled(searchIcon)`

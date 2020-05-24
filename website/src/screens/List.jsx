@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useParams } from 'react-router-dom';
 import ResultItem from "../components/ResultItem";
 import { LinksContainer } from "../styles";
+import { getLinks, getList } from "../api";
 
 
 export default function List () {
@@ -11,12 +12,8 @@ export default function List () {
   const [links, setLinks] = useState(null);
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_HOST}/list/${uid}`)
-      .then(res => res.json())
-      .then(setList);
-    fetch(`${process.env.REACT_APP_API_HOST}/list/${uid}/link`)
-      .then(res => res.json())
-      .then(setLinks);
+    getList(uid).then(setList).catch(console.error);
+    getLinks(uid).then(setLinks).catch(console.error);
   }, []);
 
   return (
@@ -32,7 +29,7 @@ export default function List () {
           </WebsiteLink>
         </Header>
       )}
-      <LinksContainer top={'30vh'}>
+      <ResultsContainer>
         {links && links.map((r, i) => (
           <ResultItem
             key={i}
@@ -49,7 +46,7 @@ export default function List () {
             styles={i === 0 ? 'margin-top: 50px !important;' : ''}
           />
         ))}
-      </LinksContainer>
+      </ResultsContainer>
     </Container>
   )
 }
@@ -57,6 +54,11 @@ export default function List () {
 const Container = styled.div`
   background: ${props => props.theme.background};
   height: 100vh;
+`;
+
+const ResultsContainer = styled.div`
+  ${LinksContainer};
+  top: 30vh; 
 `;
 
 const Header = styled.div`
@@ -69,6 +71,7 @@ const Header = styled.div`
   width: 100vw;
   height: 30vh;
   z-index: 3;
+  background: ${props => props.theme.background};
   box-shadow: 0 0 15px 40px ${props => props.theme.background};
 `;
 
@@ -79,8 +82,9 @@ const Title = styled.h1`
 `;
 
 const Description = styled.p`
-  font-size: 1.2em;
+  font-size: 1em;
   margin: 10px 0;
+  text-align: center;
   color: ${props => props.theme.primary};
 `;
 

@@ -1,7 +1,7 @@
-import styled from "styled-components";
+import {css} from "styled-components";
 
 
-export const LinksContainer = styled.div`
+export const LinksContainer = css`
   display: flex;
   align-items: center;
   flex-direction: row;
@@ -9,16 +9,13 @@ export const LinksContainer = styled.div`
   padding-top: 20px;
   position: fixed;
   bottom: 0;
-  top: ${props => props.top};
+  ${props => props.custom};
   overflow-y: scroll;
   justify-content: center;
   width: 70%;
   margin: 0 auto;
   @media (max-width: 1300px) {
     width: 100%;
-  }
-  @media (max-width: 500px) {
-    top: 10vh;
   }
   &::-webkit-scrollbar {
     display: none;

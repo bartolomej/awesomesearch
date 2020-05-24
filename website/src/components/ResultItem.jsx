@@ -1,20 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 
-export default function ResultItem ({ innerRef, sourceUid, styles, type, title, description, tags, url, image, screenshot }) {
-  const [source, setSource] = useState(null);
+export default function ResultItem ({ innerRef, source, styles, type, title, description, tags, url, image, screenshot }) {
   const maxDescriptionLength = 70;
   const maxTitleLength = 50;
-
-  // TODO: remove call and instead embed info in search response
-  useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_HOST}/list/${sourceUid}`)
-      .then(res => res.json())
-      .then(setSource)
-      .catch(console.error);
-  }, []);
 
   return (
     <Container ref={innerRef}>
@@ -26,8 +17,8 @@ export default function ResultItem ({ innerRef, sourceUid, styles, type, title, 
         <Description>{cropText(description, maxDescriptionLength)}</Description>
         {source && (
           <SourceWrapper>
-            <SourceImage src={source.image_url} alt={source.title} />
-            <SourceLink to={`/list/${sourceUid}`}>{source.title}</SourceLink>
+            <SourceImage src={source.image_url} alt={source.title}/>
+            <SourceLink to={`/list/${source.uid}`}>{source.title}</SourceLink>
           </SourceWrapper>
         )}
       </DescriptionContainer>
