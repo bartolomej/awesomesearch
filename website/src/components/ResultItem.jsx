@@ -1,117 +1,64 @@
 import React from 'react';
 import styled from "styled-components";
-import Tag from "./Tag";
 
 
-export default function ResultItem ({ innerRef, styles, type, title, description, tags, url, image }) {
+export default function ResultItem ({ innerRef, styles, type, title, description, tags, url, image, screenshot }) {
   const maxDescriptionLength = 70;
+  const maxTitleLength = 50;
 
   return (
-    <Container ref={innerRef} styles={styles} href={url} target="_blank">
-      <LeftWrapper>
-        <ImageWrapper>
-          <Image src={image}/>
-        </ImageWrapper>
-        <TextWrapper>
-          <Title>{title ? (title.length === 0 ? url : title) : url}</Title>
-          <Description>
-            {
-              description &&
-              description.substring(0, maxDescriptionLength) +
-              `${description.length > maxDescriptionLength ? '...' : ''}`
-            }
-          </Description>
-        </TextWrapper>
-      </LeftWrapper>
-      <RightWrapper>
-        {tags.slice(0, window.isMobile() ? 2 : 6).map(t => <Tag key={t} text={t}/>)}
-      </RightWrapper>
+    <Container ref={innerRef}>
+      <PreviewContainer>
+        <Image src={screenshot || image} alt={title}/>
+      </PreviewContainer>
+      <DescriptionContainer>
+        <Title>{cropText(title, maxTitleLength)}</Title>
+        <Description>{cropText(description, maxDescriptionLength)}</Description>
+      </DescriptionContainer>
     </Container>
   )
 }
 
-const Container = styled.a`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding: 13px;
-  margin-top: 20px;
-  width: 70%;
-  outline: none;
-  text-decoration: none;
-  transition: all 0.1s ease-out;
-  border-radius: 22px;
-  &:hover {
-    transform: scale(1.01);
-    box-shadow:  7px 7px 14px #d0d2d5, 
-             -7px -7px 14px #ffffff;
-  }
-  @media (max-width: 500px) {
-    flex-direction: column;
-    margin: 0;
-    width: 90%;
-    padding: 10px;
-  }
-  ${props => props.styles}
-`;
+function cropText (text, maxSize) {
+  return text &&
+    text.substring(0, maxSize) +
+    `${text.length > maxSize ? '...' : ''}`
+}
 
-const LeftWrapper = styled.div`
-  flex: 2;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  @media (max-width: 500px) {
-    flex-direction: row;
-    align-items: center;
-  }
-`;
-
-const RightWrapper = styled.div`
-  flex: 1;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: center;
-  padding-right: 10px;
-  flex-wrap: wrap;
-  @media (max-width: 500px) {
-    justify-content: center;
-  }
-`;
-
-const Title = styled.span`
-  font-size: 18px;
-  font-weight: bold;
-  color: ${props => props.theme.primary};
-`;
-
-const Description = styled.span`
-  font-size: 14px;
-  font-weight: lighter;
-  color: grey;
-`;
-
-const ImageWrapper = styled.div`
-  width: 100px;
-  display: flex;
-  justify-content: center;
-  @media (max-width: 500px) {
-    margin-bottom: 10px;
-    flex: 1;
-  }
-`;
-
-const TextWrapper = styled.div`
+const Container = styled.div`
   display: flex;
   flex-direction: column;
-  margin-left: 40px;
-  @media (max-width: 500px) {
-    flex: 4;
-    margin: 0 0 0 8px;
-  }
+  width: 300px;
+  height: 400px;
+  background: ${props => props.theme.white};
+  padding: 20px;
+  margin: 20px;
+  border-radius: 10px;
+`;
+
+const PreviewContainer = styled.div`
+  overflow: hidden;
+  height: 70%;
+  display: flex;
+  justify-content: center;
+`;
+
+const DescriptionContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 30%;
 `;
 
 const Image = styled.img`
-  width: 60px;
-  border-radius: 8px;
+  height: 100%;
+`
+
+const Title = styled.h3`
+  color: ${props => props.theme.primary};
+  margin-bottom: 5px;
+`;
+
+const Description = styled.p`
+  color: ${props => props.theme.primary};
 `;

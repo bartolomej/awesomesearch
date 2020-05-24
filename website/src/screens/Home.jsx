@@ -61,7 +61,7 @@ export default function Home () {
               key={item.url}
               url={item.url}
               image={item.image_url}
-              title={item.title}
+              title={item.title || item.uid}
               repoId={item.source}
               repoUrl={`https://github.com/${item.source}`}
             />

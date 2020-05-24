@@ -10,7 +10,7 @@ export default function ({ image, title, repoId, repoUrl, url }) {
         <Image alt={title} src={image} />
       </ImageWrapper>
       <TextWrapper>
-        <Title>{title.substring(0, 55)}...</Title>
+        <Title>{title.length >= 55 ? `${title.substring(0, 55)}...` : title}</Title>
         <RepoLink>{repoId}</RepoLink>
       </TextWrapper>
     </Container>

@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import SearchBar from "../components/SearchBar";
-import ResultItem from "../components/ResultItem";
 import { ReactComponent as searchIcon } from "../assets/telescope.svg";
 import { ReactComponent as errorIcon } from "../assets/cancel.svg";
-import { ReactComponent as logo } from "../assets/logo.svg";
 import SearchEngine from "../search";
-import { GithubLink, MessageText, MessageWrapper } from "../components/ui";
+import { MessageText, MessageWrapper } from "../components/ui";
 import UseAnimations from "react-useanimations";
-import { Link } from "react-router-dom";
 import { theme } from "../colors";
 import { useInView } from "react-intersection-observer";
+import ResultItem from "../components/ResultItem";
+import HeaderBar from "../components/HeaderBar";
 
 
 const search = new SearchEngine();
@@ -40,10 +39,7 @@ export default function Search () {
   async function fetchResults (query) {
     try {
       setLoading(true);
-      const results = await search.run(query);
-      if (results !== null) {
-        setResults(results);
-      }
+      setResults(await search.run(query));
     } catch (e) {
       setError(e);
       console.log(e);
@@ -53,18 +49,13 @@ export default function Search () {
 
   return (
     <Container>
-      <Header>
-        <HeaderWrapper>
-          <AwesomeLink to="/">
-            <AwesomeLogo/>
-          </AwesomeLink>
-          <SearchBar
-            results={getResults().length}
-            placeholder={"Enter search term..."}
-            onChange={query => fetchResults(query)}
-          />
-        </HeaderWrapper>
-      </Header>
+      <HeaderBar>
+        <SearchBar
+          results={getResults().length}
+          placeholder={"Enter search term..."}
+          onChange={query => fetchResults(query)}
+        />
+      </HeaderBar>
       <Body>
         {loading && (
           <MessageWrapper>
@@ -94,6 +85,7 @@ export default function Search () {
             key={i}
             innerRef={i === getResults().length - 5 ? ref : null}
             type={r.object_type}
+            screenshot={r.screenshot_url}
             url={r.url}
             image={r.image_url}
             title={r.title}
@@ -115,59 +107,21 @@ const Container = styled.div`
   min-height: 100vh;
 `;
 
-const Header = styled.header`
-  height: 30vh;
-  width: 100vw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  position: fixed;
-  box-shadow: 0 0 15px 40px ${props => props.theme.background};
-  z-index: 10;
-  @media (max-width: 500px) {
-    box-shadow: none;
-  }
-`;
-
 const Body = styled.div`
-  height: 70vh;
   display: flex;
   align-items: center;
-  flex-direction: column;
-  margin-top: 10px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding-top: 20px;
   width: 100vw;
   position: fixed;
   bottom: 0;
+  top: 7vh;
   overflow-y: scroll;
-`;
-
-const HeaderWrapper = styled.div`
-  width: 30%;
-  height: 100%;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-evenly;
-  @media (max-width: 700px) {
-    width: 100%;
+  justify-content: center;
+  @media (max-width: 500px) {
+    top: 10vh;
   }
-`;
-
-
-/** LINKS **/
-
-const AwesomeLink = styled(Link)``;
-
-
-/** SVG GRAPHICS **/
-
-// https://codesandbox.io/s/v303jqkyk7?from-embed
-const AwesomeLogo = styled(logo)`
-  height: 6rem;
-  display: inline-block;
-  margin: 0 auto;
 `;
 
 const SearchIcon = styled(searchIcon)`

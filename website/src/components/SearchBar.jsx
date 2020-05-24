@@ -7,8 +7,12 @@ export default function SearchBar ({ results, onChange, placeholder }) {
     const [isFocused, setFocused] = useState(false);
 
   return (
-    <Container isFocused={isFocused}>
-      <SearchIcon animationKey="searchToX" size={50}/>
+    <Container>
+      <SearchIcon
+        isFocused={isFocused}
+        animationKey="searchToX"
+        size={50}
+      />
       <Input
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
@@ -27,13 +31,10 @@ const Container = styled.div`
   position: relative;
   transition: all ease 0.5s;
   width: 100%;
-  border-radius: 20px;
-  background: white;
   padding: 13px;
   @media (max-width: 700px) {
     width: 80%;
   }
-  ${props => props.isFocused ? 'box-shadow: 4px 4px 10px #d0d2d5, -7px -7px 14px #ffffff;' : ''}
 `;
 
 const Input = styled.input`
@@ -43,6 +44,7 @@ const Input = styled.input`
   padding: 0 10px;
   font-size: 16px;
   flex: 10;
+  background: transparent;
   border-radius: 10px;
   color: ${props => props.theme.primary};
   ::placeholder {
@@ -55,6 +57,6 @@ const SearchIcon = styled(UseAnimations)`
   height: 1.5rem;
   display: inline-block;
   margin: auto 0;
-  color: ${props => props.theme.primary};
+  color: ${props => props.isFocused ? props.theme.secondary : props.theme.primary};
   pointer-events: none;
 `;

@@ -9,12 +9,15 @@ const rawColors = {
 }
 
 export const theme = {
+  ...rawColors,
   primary: rawColors.purpleNavy,
   secondary: rawColors.hotPink,
   lightText: rawColors.manatee,
   background: rawColors.ghostWhite,
   light: colorWithOpacity(rawColors.hotPink, 0.09),
-  vibrant: rawColors.crimson
+  vibrant: rawColors.crimson,
+  border: rawColors.manatee,
+  headerBar: rawColors.white
 }
 
 export function colorWithOpacity (color, opacity) {
