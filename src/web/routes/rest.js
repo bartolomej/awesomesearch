@@ -1,55 +1,12 @@
 const router = require('express').Router();
-const metaService = require('../services/metadata')({ imageService: null });
+const metaService = require('../../services/metadata')({ imageService: null });
+const utils = require('./utils');
 
-function Routes ({ webService, listRepository, linkRepository }) {
-
-  // root endpoint
-  router.get('/', (req, res, next) => {
-    res.render('root', {
-      host: 'https://api.awesomesearch.in',
-      endpoints: [
-        {
-          path: '/stats',
-          examplePath: '/stats',
-          description: 'Returns data statistics.'
-        },
-        {
-          path: '/random',
-          examplePath: '/random',
-          description: 'Returns random indexed links.'
-        },
-        {
-          path: '/list?limit={objects_per_page}&page={page_index}',
-          examplePath: '/list',
-          description: 'Returns indexed lists.'
-        },
-        {
-          path: '/list/{list_uid}',
-          examplePath: '/list/amnashanwar.awesome-portfolios',
-          description: 'Returns information about list object.'
-        },
-        {
-          path: '/link/{link_uid}',
-          examplePath: '/link/shewolfe.co',
-          description: 'Returns information about link object.'
-        },
-        {
-          path: '/search?q={query_string}&p={page_index}&limit={items_per_page}',
-          examplePath: '/search?q=Awesome',
-          description: 'Returns search results sorted by relevance.',
-        },
-        {
-          path: '/meta?url={website_url}',
-          examplePath: '/meta?url=https://www.github.com',
-          description: 'Returns website metadata.'
-        },
-      ]
-    })
-  });
+function RestApi ({ webService, listRepository, linkRepository }) {
 
   router.get('/list/:uid', async (req, res, next) => {
     try {
-      res.send((await webService.getItem(req.params.uid, 'list')).serialize());
+      res.send(utils.serializeList(await webService.getItem(req.params.uid, 'list')));
     } catch (e) {
       next(e);
     }
@@ -57,7 +14,7 @@ function Routes ({ webService, listRepository, linkRepository }) {
 
   router.get('/link/:uid', async (req, res, next) => {
     try {
-      res.send((await webService.getItem(req.params.uid, 'link')).serialize());
+      res.send(utils.serializeLink(await webService.getItem(req.params.uid, 'link')));
     } catch (e) {
       next(e);
     }
@@ -68,7 +25,7 @@ function Routes ({ webService, listRepository, linkRepository }) {
       res.send((await listRepository.getAll(
         req.query.limit || 10,
         req.query.page || 0
-      )).map(l => l.serialize()))
+      )).map(utils.serializeList))
     } catch (e) {
       next(e);
     }
@@ -78,15 +35,12 @@ function Routes ({ webService, listRepository, linkRepository }) {
     try {
       res.send((await linkRepository.getAll(
         req.query.limit || 10,
-        req.query.page || 0
-      )).map(l => l.serialize()));
+        req.query.page || 0,
+        req.params.uid
+      )).map(utils.serializeLink));
     } catch (e) {
       next(e);
     }
-  });
-
-  router.get('/dashboard', async (req, res, next) => {
-    res.render('dash');
   });
 
   /**
@@ -127,10 +81,7 @@ function Routes ({ webService, listRepository, linkRepository }) {
           page: req.query.p || true,
           limit: req.query.limit ? parseInt(req.query.limit) : 15
         });
-        res.send({
-          ...searchRes,
-          result: searchRes.result.map(e => e.serialize().toShortVersion())
-        });
+        res.send(utils.serializeSearchResult(searchRes));
       } else {
         // return empty array if q param not provided or is empty
         res.send([]);
@@ -171,4 +122,4 @@ function Routes ({ webService, listRepository, linkRepository }) {
   return router;
 }
 
-module.exports = Routes;
+module.exports = RestApi;

@@ -27,7 +27,10 @@ async function upload (inputPath, uid) {
       public_id: uid,
       folder: 'awesomesearch',
       overwrite: true, // retrieve predominant colors & color histogram
-      colors: true // retrieve predominant colors & color histogram
+      colors: true, // retrieve predominant colors & color histogram,
+      transformation: [
+        { width: 600 }
+      ]
     }, (error, result) => {
       if (error) {
         reject(error)

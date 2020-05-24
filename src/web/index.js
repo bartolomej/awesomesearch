@@ -2,7 +2,8 @@ const env = require('../env');
 const throng = require('throng');
 const { name } = require('../../package.json');
 const { setQueues } = require('bull-board')
-const routes = require('./routes');
+const RestRoutes = require('./routes/rest');
+const OtherRoutes = require('./routes/other');
 const WebService = require('./service');
 const memoryRepository = require('./repos/memorydb');
 const linkRepository = require('./repos/link');
@@ -32,7 +33,7 @@ async function start () {
     workQueue: Queue('work')
   });
 
-  // build index with stored objects
+  // build index with stored objects if using persistent db
   if (!env.USE_MEMORY_DB) {
     try {
       await execute(`Building search index`, webService.buildIndex());
@@ -42,14 +43,20 @@ async function start () {
 
   }
 
+  // pass queues to 3rd party bull dashboard module
+  setQueues([webService.workQueue]);
+
   try {
-    setQueues([webService.workQueue]);
+    /**
+     * Initialise server with injected routes.
+     */
     await require('./server')([
-      routes({
+      RestRoutes({
         webService,
         linkRepository: linkRepositoryDb,
         listRepository: listRepositoryDb
-      })
+      }),
+      OtherRoutes()
     ]);
     logger.info(`Web process ${process.pid} started 🙌`);
   } catch (e) {

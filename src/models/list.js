@@ -1,7 +1,4 @@
-const Result = require('./result');
 const Repository = require('./repository');
-const IndexObject = require('./index-object');
-
 
 class List {
 
@@ -17,8 +14,12 @@ class List {
     }
   }
 
+  get type () {
+    return 'list';
+  }
+
   get title () {
-    return this.repository ? this.repository.name: null;
+    return this.repository ? this.repository.name : null;
   }
 
   get tags () {
@@ -41,36 +42,20 @@ class List {
     return this.repository ? this.repository.description : null
   }
 
+  get image () {
+    return this.repository ? this.repository.image : null;
+  }
+
+  get websiteName () {
+    return 'Github';
+  }
+
+  get emojis () {
+    return this.repository ? this.repository.emojis : [];
+  }
+
   setUrl () {
     this.uid = Repository.parseUid(this.url);
-  }
-
-  serialize () {
-    return new Result({
-      uid: this.uid,
-      links: this.urls,
-      url: this.url,
-      stars: this.stars,
-      type: Result.type.LIST,
-      forks: this.forks,
-      image: this.repository.avatar,
-      description: this.description,
-      title: this.title,
-      tags: this.tags
-    })
-  }
-
-  serializeToIndex () {
-    return new IndexObject({
-      uid: this.uid,
-      title: this.title,
-      tags: this.tags,
-      description: this.description,
-      author: this.author,
-      websiteName: 'Github',
-      url: this.url,
-      type: 'list'
-    });
   }
 
   static isValidUrl (url, isRoot = false) {
@@ -86,7 +71,6 @@ class List {
     const obj = JSON.parse(json);
     return Object.assign(new List(), obj);
   }
-
 
 }
 

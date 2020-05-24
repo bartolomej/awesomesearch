@@ -27,6 +27,27 @@ class Repository {
     this.uid = Repository.parseUid(url);
   }
 
+  /**
+   * Parses emoji tokens in description.
+   */
+  get emojis () {
+    let results = [];
+    if (!this.description) {
+      return results;
+    }
+    const matches = [...this.description.matchAll(/:*:/g)];
+    for (let i = 0; i <= matches.length - 2; i += 2) {
+      const start = matches[i].index + 1;
+      const end = matches[i + 1].index;
+      results.push(this.description.substring(start, end));
+    }
+    return results;
+  }
+
+  get image () {
+    return this.avatar;
+  }
+
   get user () {
     return this.uid.split('.')[0];
   }

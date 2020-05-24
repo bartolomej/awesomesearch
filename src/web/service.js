@@ -2,7 +2,6 @@ const github = require('../services/github');
 const listService = require('../services/list');
 const Link = require('../models/link');
 const List = require('../models/list');
-const IndexObject = require('../models/index-object');
 const FlexSearch = require("flexsearch");
 const logger = require('../logger')('web-service');
 const AwesomeError = require('../errors');
@@ -25,7 +24,15 @@ function WebService ({ listRepository, linkRepository, workQueue }) {
     tokenize: "reverse",
     doc: {
       id: 'uid',
-      field: IndexObject.fields
+      field: [
+        'id',
+        'title',
+        'url',
+        'websiteName',
+        'description',
+        'author',
+        'tags'
+      ]
     }
   });
 
@@ -42,9 +49,9 @@ function WebService ({ listRepository, linkRepository, workQueue }) {
         await addToIndex(list);
       } catch (e) {
         if (e.message === AwesomeError.types.DUPLICATE_ENTRY) {
-          logger.info(e.description)
+          logger.info(e.message);
         } else {
-          throw e;
+          logger.error(e);
         }
       }
       // post link jobs for found urls
@@ -58,9 +65,9 @@ function WebService ({ listRepository, linkRepository, workQueue }) {
         await addToIndex(link);
       } catch (e) {
         if (e.message === AwesomeError.types.DUPLICATE_ENTRY) {
-          logger.info(e.description)
+          logger.info(e.message)
         } else {
-          throw e;
+          logger.error(e)
         }
       }
     }
@@ -99,19 +106,39 @@ function WebService ({ listRepository, linkRepository, workQueue }) {
   }
 
   async function addToIndex (object) {
+    function serialize (obj) {
+      return {
+        uid: obj.uid,
+        title: obj.title,
+        tags: obj.tags,
+        description: obj.description,
+        author: obj.author,
+        websiteName: obj.websiteName,
+        url: obj.url,
+        type: obj.type
+      }
+    }
     // add serialized string data to search index
     if (object instanceof Link && await linkRepository.exists(object.uid)) {
-      index.add(object.serializeToIndex());
+      index.add(serialize(object));
     }
     if (object instanceof List && await listRepository.exists(object.uid)) {
-      index.add(object.serializeToIndex());
+      index.add(serialize(object));
     }
   }
 
   async function getItem (uid, type) {
     if (type === 'link') {
       try {
-        return await linkRepository.get(uid)
+        const link = await linkRepository.get(uid);
+        if (link.source) {
+          try {
+            link.source = await listRepository.get(link.source);
+          } catch (e) {
+            logger.error(`Error fetching source list ${link.source} for ${uid}: ${e}`);
+          }
+        }
+        return link;
       } catch (e) {
         logger.error(`Error fetching link ${uid} from db: ${e}`);
         throw e;

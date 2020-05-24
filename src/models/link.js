@@ -1,6 +1,4 @@
-const Result = require('./result');
 const Website = require('./website');
-const IndexObject = require('./index-object');
 
 class Link {
 
@@ -14,6 +12,10 @@ class Link {
     if (url) {
       this.setUrl(url);
     }
+  }
+
+  get type () {
+    return 'link';
   }
 
   get image () {
@@ -78,40 +80,13 @@ class Link {
     }
   }
 
+  get emojis () {
+    return this.repository ? this.repository.emojis : [];
+  }
+
   setUrl (url) {
     this.url = Website.normalizeUrl(url);
     this.uid = Website.computeUid(url);
-  }
-
-  serialize () {
-    return new Result({
-      uid: this.uid,
-      type: Result.type.LINK,
-      image: this.image,
-      screenshotImage: this.screenshot,
-      websiteName: this.websiteName,
-      websiteType: this.websiteType,
-      description: this.description,
-      objectType: Result.type.LINK,
-      tags: this.tags,
-      sourceList: this.source,
-      author: this.author,
-      title: this.title,
-      url: this.url
-    })
-  }
-
-  serializeToIndex () {
-    return new IndexObject({
-      uid: this.uid,
-      title: this.title,
-      tags: this.tags,
-      description: this.description,
-      author: this.author,
-      websiteName: this.websiteName,
-      url: this.url,
-      type: 'link'
-    });
   }
 
   static createFromJson (json) {

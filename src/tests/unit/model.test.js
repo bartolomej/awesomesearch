@@ -22,6 +22,13 @@ describe('Repository model tests', function () {
     expect(repo.name).toEqual('awesome-portfolios');
   });
 
+  it('should parse emoji tokens in description', function () {
+    const repo = new Repository('https://github.com/amnashanwar/awesome-portfolios');
+    repo.description = ':zap: Awesome Ethereum :smile: Resources';
+
+    expect(repo.emojis).toEqual(['zap', 'smile']);
+  });
+
 });
 
 
