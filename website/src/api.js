@@ -8,6 +8,10 @@ async function request (path) {
   }
 }
 
+export function search (query, page = 0) {
+  return request(`/search?q=${query}&p=${page}`)
+}
+
 export function getRandomObjects (n = 10) {
   return request(`/random?n=${n}`)
 }
@@ -20,6 +24,6 @@ export function getList (uid) {
   return request(`/list/${uid}`);
 }
 
-export function getLinks (listUid) {
-  return request(`/list/${listUid}/link`);
+export function getLinks (listUid, page = 0) {
+  return request(`/list/${listUid}/link?page=${page}`);
 }

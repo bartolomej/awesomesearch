@@ -1,3 +1,6 @@
+import { search } from "./api";
+
+
 export default class Search {
 
   constructor () {
@@ -14,8 +17,7 @@ export default class Search {
   async nextPage () {
     if (this.result.next !== null) {
       this.page++;
-      const response = await fetch(`${process.env.REACT_APP_API_HOST}/search?q=${this.query}&p=${this.page}`);
-      this.result = await response.json();
+      this.result = await search(this.query, this.page);
       return this.result.result;
     } else {
       return null;
@@ -25,8 +27,7 @@ export default class Search {
   async run (query) {
     this.query = query;
     const fired = Date.now();
-    const response = await fetch(`${process.env.REACT_APP_API_HOST}/search?q=${query}`);
-    this.result = await response.json();
+    this.result = await search(query);
     if (!this.lastResult) {
       this.lastResult = { fired, result: this.result };
       return this.result.result;

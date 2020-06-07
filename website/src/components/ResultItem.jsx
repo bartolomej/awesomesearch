@@ -35,7 +35,7 @@ function cropText (text, maxSize) {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  width: 300px;
+  width: 350px;
   height: 400px;
   background: ${props => props.theme.white};
   padding: 20px;

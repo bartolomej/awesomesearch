@@ -1,57 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
 import SearchBar from "../components/SearchBar";
 import { ReactComponent as searchIcon } from "../assets/unbox.svg";
 import { ReactComponent as errorIcon } from "../assets/cancel.svg";
-import SearchEngine from "../search";
 import { MessageText, MessageWrapper } from "../components/ui";
 import UseAnimations from "react-useanimations";
 import { theme } from "../colors";
 import { useInView } from "react-intersection-observer";
 import ResultItem from "../components/ResultItem";
 import HeaderBar from "../components/HeaderBar";
-import { LinksContainer } from "../styles";
+import { nextPage, search } from "../redux/actions";
 
 
-const search = new SearchEngine();
-
-export default function Search () {
-  const [error, setError] = useState(null);
-  const [result, setResults] = useState([]);
-  const [loading, setLoading] = useState(false);
+function Search ({ search, nextPage, results, loading = false, error = null }) {
 
   const [ref, inView, entry] = useInView({ threshold: 0 });
 
   useEffect(() => {
     if (inView === true) {
-      if (search.isNextPage()) {
-        search.nextPage().then(res => setResults([...result, ...res]));
-      }
+      nextPage();
     }
   }, [inView]);
-
-  function getResults () {
-    return result || [];
-  }
-
-  async function fetchResults (query) {
-    try {
-      setLoading(true);
-      setResults(await search.run(query));
-    } catch (e) {
-      setError(e);
-      console.log(e);
-    }
-    setLoading(false);
-  }
 
   return (
     <Container>
       <HeaderBar>
         <SearchBar
-          results={getResults().length}
+          results={results.length}
           placeholder={"Enter search term..."}
-          onChange={query => fetchResults(query)}
+          onChange={search}
         />
       </HeaderBar>
       <ResultsContainer>
@@ -71,16 +49,16 @@ export default function Search () {
             <MessageText>{error.message}</MessageText>
           </MessageWrapper>
         )}
-        {(!loading && !error && getResults().length === 0) && (
+        {(!loading && !error && results.length === 0) && (
           <MessageWrapper>
             <SearchIcon/>
             <MessageText>Discover Awesome collection !</MessageText>
           </MessageWrapper>
         )}
-        {!loading && getResults().map((r, i) => (
+        {!loading && results.map((r, i) => (
           <ResultItem
             key={i}
-            innerRef={i === getResults().length - 5 ? ref : null}
+            innerRef={i === results.length - 5 ? ref : null}
             type={r.object_type}
             screenshot={r.screenshot_url}
             url={r.url}
@@ -108,7 +86,24 @@ const Container = styled.div`
 `;
 
 const ResultsContainer = styled.div`
-  ${LinksContainer};
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding-top: 20px;
+  position: fixed;
+  bottom: 0;
+  ${props => props.custom};
+  overflow-y: scroll;
+  justify-content: center;
+  width: 70%;
+  margin: 0 auto;
+  @media (max-width: 1300px) {
+    width: 100%;
+  }
+  &::-webkit-scrollbar {
+    display: none;
+  }
   top: 7vh; 
   @media (max-width: 500px) { top: 10vh; }
 `;
@@ -132,3 +127,20 @@ const ErrorLogo = styled(errorIcon)`
   opacity: 0.7;
   margin: 0 auto 20px;
 `;
+
+const mapStateToProps = (state) => {
+  return {
+    results: state.search.results,
+    query: state.search.query,
+  }
+}
+
+const mapDispatchToProps = dispatch => ({
+  search: search(dispatch),
+  nextPage: nextPage(dispatch)
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Search);

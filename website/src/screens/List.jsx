@@ -2,14 +2,24 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useParams } from 'react-router-dom';
 import ResultItem from "../components/ResultItem";
-import { LinksContainer } from "../styles";
 import { getLinks, getList } from "../api";
+import { useInView } from "react-intersection-observer";
 
 
 export default function List () {
   const { uid } = useParams();
   const [list, setList] = useState(null);
   const [links, setLinks] = useState(null);
+  const [linkPage, setLinkPage] = useState(0);
+  const [ref, inView, entry] = useInView({ threshold: 0 });
+
+  useEffect(() => {
+    if (inView === true) {
+      getLinks(uid, linkPage + 1).then(res => setLinks([...links, ...res])).catch(console.error);
+      setLinkPage(linkPage + 1);
+    }
+  }, [inView]);
+
 
   useEffect(() => {
     getList(uid).then(setList).catch(console.error);
@@ -35,6 +45,7 @@ export default function List () {
             key={i}
             type={r.object_type}
             screenshot={r.screenshot_url}
+            innerRef={i === links.length - 5 ? ref : null}
             url={r.url}
             image={r.image_url}
             sourceUrl={'http://api.awesomesearch.in/list/amnashanwar.awesome-portfolios'}
@@ -53,12 +64,6 @@ export default function List () {
 
 const Container = styled.div`
   background: ${props => props.theme.background};
-  height: 100vh;
-`;
-
-const ResultsContainer = styled.div`
-  ${LinksContainer};
-  top: 30vh; 
 `;
 
 const Header = styled.div`
@@ -66,13 +71,27 @@ const Header = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  position: absolute;
-  top: 0;
-  width: 100vw;
-  height: 30vh;
-  z-index: 3;
+  padding: 50px 0;
   background: ${props => props.theme.background};
   box-shadow: 0 0 15px 40px ${props => props.theme.background};
+`;
+
+const ResultsContainer = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  ${props => props.custom};
+  overflow-y: scroll;
+  justify-content: center;
+  width: 70%;
+  margin: 0 auto;
+  @media (max-width: 1300px) {
+    width: 100%;
+  }
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const Title = styled.h1`
