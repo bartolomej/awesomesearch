@@ -67,7 +67,7 @@ function RestApi ({ webService, listRepository, linkRepository }) {
   router.get('/random', async (req, res, next) => {
     try {
       res.send((await linkRepository.getRandomObject(req.query.n || 6))
-        .map(e => e.serialize()));
+        .map(utils.serializeLink));
     } catch (e) {
       next(e);
     }
