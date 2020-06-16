@@ -66,12 +66,4 @@ module.exports = async function (routes = []) {
     logger.info(`Server listening on port ${env.PORT} 🙌`);
   });
 
-  process.on('unhandledRejection', (reason, promise) => {
-    logger.error('Uncaught promise rejection', reason, promise);
-  });
-
-  process.on('uncaughtException', (err, origin) => {
-    logger.error('Uncaught exception', err, origin);
-  });
-
 };

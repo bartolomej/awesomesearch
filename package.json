@@ -8,8 +8,9 @@
   },
   "scripts": {
     "test": "jest",
-    "start": "NODE_ENV=production nf start",
-    "start:web": "NODE_ENV=development nodemon src/web/index.js",
+    "start": "NODE_ENV=production ENV_PATH=.env.production nf start",
+    "start:dev": "NODE_ENV=development ENV_PATH=.env.development nf start",
+    "start:web": "NODE_ENV=development ENV_PATH=.env.development nodemon src/web/index.js",
     "test:unit": "jest src/tests/unit",
     "test:integration": "jest src/tests/integration",
     "coverage": "jest --coverage",

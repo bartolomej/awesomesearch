@@ -45,7 +45,8 @@ function MetaService ({ imageService }) {
     return link;
   }
 
-  // TODO: parse headings titles
+  // TODO: parse headings + paragraphs ?
+  // TODO: index website content ?
   async function parseHtml (html, websiteUrl) {
     const $ = cheerio.load(html);
 

@@ -50,10 +50,10 @@ To start both processes in production just run `npm start`.
 
 ## Developing
 
-Before running, you need to have [Redis](https://redis.io/) installed and running on your machine. 
-Also you need to configure environmental variables defined in `src/env.js` file
-- run `yarn install` or `npm i` command to install dependencies
-- run `yarn start` or `npm start` to start both app processes in production
+1. install and run [Redis](https://redis.io/) server
+2. create `.env.development` file with variables defined in `.env.example`
+3. run `yarn install` or `npm i` command to install dependencies
+4. run `yarn start` or `npm start` to start both app processes in production
 
 ## Scripts
 
@@ -61,6 +61,3 @@ Also you need to configure environmental variables defined in `src/env.js` file
 - `yarn start` - start server in production environment
 - `yarn start:dev` - start server in development environment
 - `node src/scripts/link.js <website-url>` - process website (outputs metadata to `/out`).
-
-## Future Ideas
-- topic / keywords extraction from website text

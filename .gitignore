@@ -9,8 +9,10 @@ out
 CLIPBOARD.txt
 graph.dot.svg
 graph.ddot.svg
-.env
+.env.development
+.env.production
 /TODO.md
 src/tests/res
 cache
 out
+data

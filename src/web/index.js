@@ -68,3 +68,14 @@ throng({
   workers: env.WEB_CONCURRENCY,
   lifetime: Infinity
 }, start);
+
+
+// handle critical uncaught errors
+
+process.on('unhandledRejection', (reason, promise) => {
+  logger.error('Uncaught promise rejection', reason, promise);
+});
+
+process.on('uncaughtException', (err, origin) => {
+  logger.error('Uncaught exception', err, origin);
+});
