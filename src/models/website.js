@@ -11,6 +11,7 @@ class Website {
     this.name = null;
     this.description = null;
     this.author = null;
+    this.icon = null;
     this.image = null;
     this.screenshot = null;
     this.screenshotId = null;

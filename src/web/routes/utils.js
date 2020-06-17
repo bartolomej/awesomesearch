@@ -1,16 +1,16 @@
 const emojiMap = require('../public/emojis.json');
 const List = require('../../models/list');
 
-function serializeSearchResult (response) {
+function serializeSearchResult (response, minify = false) {
   return {
     ...response,
     result: response.result.map(o => (
-      o instanceof List ? serializeList(o) : serializeLink(o)
+      o instanceof List ? serializeList(o, minify) : serializeLink(o, minify)
     ))
   }
 }
 
-function serializeList (list) {
+function serializeList (list, minify) {
   return {
     uid: list.uid,
     object_type: 'list',
@@ -20,13 +20,14 @@ function serializeList (list) {
     url: list.url,
     website_name: list.websiteName,
     image_url: list.image,
+    icon_url: list.icon,
     tags: list.tags,
     stars: list.stars,
     forks: list.forks,
   }
 }
 
-function serializeLink (link) {
+function serializeLink (link, minify) {
   return {
     uid: link.uid,
     object_type: 'link',
@@ -36,6 +37,7 @@ function serializeLink (link) {
     url: link.url,
     website_name: link.websiteName,
     website_type: link.websiteType,
+    icon_url: link.icon,
     image_url: link.image,
     screenshot_url: link.screenshot,
     tags: link.tags,
@@ -64,10 +66,20 @@ function serializeEmojis (emojis) {
   }))
 }
 
+function serializeStats (stats) {
+  return {
+    link_count: stats.linkCount,
+    list_count: stats.listCount,
+    object_index: stats.objectIndex,
+    keywords_index: stats.keywordsIndex
+  }
+}
+
 module.exports = {
   serializeList,
   serializeLink,
   serializeEmojis,
   serializeSource,
+  serializeStats,
   serializeSearchResult,
 }

@@ -33,8 +33,12 @@ describe('Test screenshot feature', function () {
 describe('Test metadata processing flow', function () {
 
   beforeAll(async () => {
-    require('dotenv').config({ path: path.join(__dirname, '..', '..', '..', '.env') })
-    await imageService.init();
+    require('dotenv').config({ path: path.join(__dirname, '..', '..', '..', '.env.development') })
+    await imageService.init(
+      process.env.CLOUDINARY_CLOUD_NAME,
+      process.env.CLOUDINARY_API_KEY,
+      process.env.CLOUDINARY_API_SECRET,
+    );
   });
 
   it('should process metadata for website', async function () {

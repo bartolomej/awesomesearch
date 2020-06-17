@@ -14,6 +14,7 @@ describe('Website metadata parsing tests', function () {
     expect(metadata).toEqual({
       uid: 'glitch.com',
       author: null,
+      icon: 'https://glitch.com/favicon.ico?v=3',
       name: null,
       type: 'website',
       url: 'https://glitch.com',
@@ -31,6 +32,7 @@ describe('Website metadata parsing tests', function () {
     expect(metadata).toEqual({
       uid: 'reactnative.dev',
       author: null,
+      icon: 'https://reactnative.dev/favicon.ico',
       name: null,
       type: 'website',
       url: 'https://reactnative.dev',
@@ -50,30 +52,6 @@ describe('Website service tests', function () {
   const metaService = MetaService({ imageService: console.log });
 
   beforeEach(fetchMock.reset);
-
-  it('should scrape website given url', async function () {
-    fetchMock.get(
-      'https://reactnative.dev',
-      data.reactNativeHtml
-    );
-
-    const html = await metaService.getHtml('https://reactnative.dev');
-    const website = await metaService.parseHtml(html, 'https://reactnative.dev');
-
-    expect(website).toEqual({
-      uid: 'reactnative.dev',
-      author: null,
-      name: null,
-      type: 'website',
-      url: 'https://reactnative.dev',
-      title: 'React Native · A framework for building native apps using React',
-      image: 'https://reactnative.dev/img/logo-og.png',
-      keywords: [],
-      description: 'A framework for building native apps using React',
-      screenshot: null,
-      screenshotId: null
-    });
-  });
 
   it('should throw error given invalid url', async function () {
     fetchMock.get(

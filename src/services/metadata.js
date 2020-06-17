@@ -72,6 +72,7 @@ function MetaService ({ imageService }) {
 
     // TODO: provide separate fields for favicon and meta images
     const website = new Website(websiteUrl);
+    website.icon = joinUrls(websiteUrl, $(`link[rel="icon"]`).attr('href'));
     website.image = null;
     website.title = getMetaTag('title') || $('title').first().text();
     website.url = normalizeUrl(websiteUrl || getMetaTag('url'));
@@ -88,7 +89,6 @@ function MetaService ({ imageService }) {
 
     const imageMetaTagsList = [
       ...metaTagsList,
-      () => $('link[rel=icon]').attr('href'),
       () => $('link[rel="shortcut icon"]').attr('href'),
       () => $('link[rel=shortcut-icon]').attr('href'),
       () => $('link[rel=mack-icon]').attr('href'),
@@ -135,7 +135,7 @@ function MetaService ({ imageService }) {
         id: response.public_id
       }
     } catch (e) {
-      logger.error(`Error while uploading to image store: ${e.message}`);
+      logger.error(`Error while uploading to image store: ${e}`);
       throw e;
     }
   }

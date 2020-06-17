@@ -18,6 +18,14 @@ class Link {
     return 'link';
   }
 
+  get icon () {
+    if (this.website) {
+      return this.website.icon;
+    } else {
+      return null;
+    }
+  }
+
   get image () {
     if (this.website) {
       return this.website.image;

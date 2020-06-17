@@ -31,6 +31,10 @@ module.exports = new EntitySchema({
       type: "varchar",
       nullable: true
     },
+    icon: {
+      type: "longtext",
+      nullable: true
+    },
     image: {
       type: "longtext",
       nullable: true

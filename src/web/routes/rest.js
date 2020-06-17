@@ -73,6 +73,24 @@ function RestApi ({ webService, listRepository, linkRepository }) {
     }
   });
 
+  router.get('/suggest', async (req, res, next) => {
+    try {
+      if (req.query.q) {
+        const searchRes = await webService.suggest({
+          query: req.query.q,
+          page: req.query.p || true,
+          limit: req.query.limit ? parseInt(req.query.limit) : 10
+        });
+        res.send(searchRes);
+      } else {
+        // return empty array if q param not provided or is empty
+        res.send([]);
+      }
+    } catch (e) {
+      next(e);
+    }
+  });
+
   router.get('/search', async (req, res, next) => {
     try {
       if (req.query.q) {
@@ -94,11 +112,7 @@ function RestApi ({ webService, listRepository, linkRepository }) {
   router.get('/stats', async (req, res, next) => {
     try {
       const stats = await webService.getStats();
-      res.send({
-        link_count: stats.linkCount,
-        list_count: stats.listCount,
-        search_index: stats.searchIndex
-      })
+      res.send(utils.serializeStats(stats))
     } catch (e) {
       next(e);
     }

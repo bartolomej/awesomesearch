@@ -18,8 +18,10 @@ function WebService ({ listRepository, linkRepository, workQueue }) {
     throw new Error('List repository not provided');
   }
 
-  // https://github.com/nextapps-de/flexsearch
-  const index = new FlexSearch({
+  /**
+   * Indexes link + list objects.
+   */
+  const objectIndex = new FlexSearch({
     encode: "advanced",
     tokenize: "reverse",
     doc: {
@@ -33,6 +35,28 @@ function WebService ({ listRepository, linkRepository, workQueue }) {
         'author',
         'tags'
       ]
+    }
+  });
+
+  /**
+   * Keywords / topics index.
+   * Used for search suggestions.
+   */
+  const keywordIndex = new FlexSearch({
+    encode: "advanced",
+    tokenize: "reverse",
+    suggest: true,
+    cache: true
+  });
+
+  /**
+   * Handle redis queue error events.
+   */
+  workQueue.on('error', error => {
+    if (error.code === 'ECONNREFUSED') {
+      logger.error(`Redis connection not available: ${error}`)
+    } else {
+      logger.error(error);
     }
   });
 
@@ -73,9 +97,18 @@ function WebService ({ listRepository, linkRepository, workQueue }) {
     }
   });
 
+  function suggest ({ query, page = true, limit = 15 }) {
+    const searchRes = keywordIndex.search({ limit, page, query, suggest: true });
+    return {
+      page: parseInt(searchRes.page),
+      next: searchRes.next ? parseInt(searchRes.next) : null,
+      result: searchRes.result
+    };
+  }
+
   // TODO: implement field search
   async function search ({ query, page = true, limit = 15 }) {
-    const searchRes = await index.search({ limit, page, query, suggest: true });
+    const searchRes = await objectIndex.search({ limit, page, query, suggest: true });
     const result = searchRes.result ?
       await Promise.all(searchRes.result.map(obj => getItem(obj.uid, obj.type))) : [];
     return {
@@ -85,6 +118,10 @@ function WebService ({ listRepository, linkRepository, workQueue }) {
     };
   }
 
+  /**
+   * Builds in-memory object search index.
+   * Call on server restarts.
+   */
   async function buildIndex (itemsPerBatch = 50) {
     let linkBatchSize = 0;
     let linkPageIndex = 0;
@@ -106,6 +143,12 @@ function WebService ({ listRepository, linkRepository, workQueue }) {
   }
 
   async function addToIndex (object) {
+    // adds keywords / tags to keywords index
+    function addTags (tags) {
+      for (let tag of tags) {
+        keywordIndex.add(tag, tag);
+      }
+    }
     function serialize (obj) {
       return {
         uid: obj.uid,
@@ -120,10 +163,12 @@ function WebService ({ listRepository, linkRepository, workQueue }) {
     }
     // add serialized string data to search index
     if (object instanceof Link && await linkRepository.exists(object.uid)) {
-      index.add(serialize(object));
+      objectIndex.add(serialize(object));
+      addTags(object.tags);
     }
     if (object instanceof List && await listRepository.exists(object.uid)) {
-      index.add(serialize(object));
+      objectIndex.add(serialize(object));
+      addTags(object.tags);
     }
   }
 
@@ -166,7 +211,8 @@ function WebService ({ listRepository, linkRepository, workQueue }) {
     return {
       linkCount: await linkRepository.getCount(),
       listCount: await listRepository.getCount(),
-      searchIndex: index.info()
+      objectIndex: objectIndex.info(),
+      keywordsIndex: keywordIndex.info()
     }
   }
 
@@ -183,10 +229,11 @@ function WebService ({ listRepository, linkRepository, workQueue }) {
 
   return {
     search,
+    suggest,
     scrapeFromRoot,
     scrapeLink,
     getItem,
-    buildIndex,
+    buildIndex: buildIndex,
     scrapeList,
     getStats,
     workQueue,

@@ -8,7 +8,12 @@ const env = require('./env');
 const workQueue = Queue('work');
 
 function start () {
-  imageService.init();
+  imageService.init(
+    env.CLOUDINARY_CLOUD_NAME,
+    env.CLOUDINARY_API_KEY,
+    env.CLOUDINARY_API_SECRET,
+  );
+
   const linkService = MetaService({ imageService });
 
   /**

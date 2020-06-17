@@ -142,6 +142,7 @@ module.exports.reactNativeHtml = `
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>React Native · A framework for building native apps using React</title>
         <meta name="viewport" content="width=device-width">
+        <link rel="icon" href="https://reactnative.dev/favicon.ico" />
         <meta name="generator" content="Docusaurus">
         <meta name="description" content="A framework for building native apps using React">
         <meta property="og:title" content="React Native · A framework for building native apps using React">
@@ -174,6 +175,7 @@ module.exports.nodejsHtml = `
               href="https://cloud.webtype.com/css/3a8e55c6-b1f3-4659-99eb-125ae72bd084.css">
         <link class="theme" type="text/css" href="themes/cosmos.version.5b347a3ad6eb656473c0.css">
         <link class="theme" rel="stylesheet" type="text/css" href="themes/sugar.version.818425b8a25a3a6ee721.css">
+        <link rel="icon" href="https://glitch.com/favicon.ico" />
         <title>server.js – nodejs-dev-0001-01</title>
         <noscript>
             <title>Glitch</title>
@@ -199,27 +201,6 @@ module.exports.nodejsHtml = `
     </head>
     </html>
 `;
-
-module.exports.kotlinHtml = `
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <link rel="Shortcut Icon" href="/assets/images/favicon.ico" type="image/x-icon">
-        <link rel="stylesheet" href="/_assets/styles.css?&amp;v=d8b80d53134a6b022602a0d7d791f9b6">
-        <meta property="og:title" content="">
-        <meta property="og:type" content="website">
-        <meta property="og:url" content="https://kotlinlang.org/">
-        <meta property="og:image" content="https://kotlinlang.org/assets/images/open-graph/kotlin_250x250.png">
-        <meta property="og:description" content="">
-        <meta property="og:site_name" content="Kotlin">
-        <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:site" content="@kotlin">
-        <meta name="twitter:title" content="">
-        <meta name="twitter:description" content="">
-        <meta name="twitter:image:src" content="https://kotlinlang.org/assets/images/twitter-card/kotlin_800x320.png">
-        <link rel="stylesheet" href="/_assets/index.css?&amp;v=f75d3e5ee520bcf5816b96ba8bdf0f18">
-        <title>Kotlin Programming Language</title>
-    </head>`;
 
 module.exports.awesomeRootMarkdown = `
 <div align="center">

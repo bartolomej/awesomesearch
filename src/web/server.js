@@ -61,7 +61,7 @@ module.exports = async function (routes = []) {
   });
 
   // start the server on port <PORT> or 3000
-  app.listen(process.env.PORT, error => {
+  app.listen(env.PORT, error => {
     if (error) throw error;
     logger.info(`Server listening on port ${env.PORT} 🙌`);
   });

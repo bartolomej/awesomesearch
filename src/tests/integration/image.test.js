@@ -5,8 +5,13 @@ const path = require('path');
 describe('Image service tests', function () {
 
   beforeAll(async () => {
-    require('dotenv').config({ path: path.join(__dirname, '..', '..', '..', '.env') })
-    await imageService.init();
+    require('dotenv').config({ path: path.join(__dirname, '..', '..', '..', '.env.development') })
+    jest.setTimeout(20000);
+    await imageService.init(
+      process.env.CLOUDINARY_CLOUD_NAME,
+      process.env.CLOUDINARY_API_KEY,
+      process.env.CLOUDINARY_API_SECRET,
+    );
   });
 
   it('should upload and remove image', async function () {
