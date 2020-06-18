@@ -5,7 +5,7 @@ const Website = require('../../models/website');
 const Repository = require('../../models/repository');
 const utils = require('./utils');
 const logger = require('../../logger')('list-repo');
-const AwesomeError = require('../../errors');
+const AwesomeError = require('../../error');
 
 async function save (list) {
   await getRepository(Repository)

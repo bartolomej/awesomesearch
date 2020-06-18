@@ -1,29 +1,22 @@
-const { describe, expect, it, beforeEach, afterEach, beforeAll } = require("@jest/globals");
+const { describe, expect, it, beforeEach, beforeAll } = require("@jest/globals");
 const MetaService = require('../../services/metadata');
 const imageService = require('../../services/image');
 const path = require('path');
-const rimraf = require('rimraf');
 const fs = require('fs');
-
+const env = require('../../env');
+const { removeDir, makeDir } = require('../../utils');
+const { CACHE_DIR_PATH } = require('../../global');
 
 describe('Test screenshot feature', function () {
 
-  beforeEach(() => {
-    const dir = path.join(__dirname, 'res');
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir);
-    }
-  });
-
-  afterEach(() => {
-    rimraf.sync(path.join(__dirname, 'res'));
-  });
+  beforeEach(async () => await makeDir(CACHE_DIR_PATH));
+  afterAll(async () => await removeDir(CACHE_DIR_PATH));
 
   it('should screenshot website with intro animation', async function () {
     jest.setTimeout(30000);
     const metaService = MetaService({ imageService });
 
-    const out = path.join(__dirname, 'res', 'uix.png');
+    const out = path.join(CACHE_DIR_PATH, 'uix.png');
     await metaService.screenshotWebsite('https://uix.me/', out);
     expect(fs.existsSync(out)).toBeTruthy();
   });
@@ -32,6 +25,7 @@ describe('Test screenshot feature', function () {
 
 describe('Test metadata processing flow', function () {
 
+  afterAll(async () => await removeDir(CACHE_DIR_PATH));
   beforeAll(async () => {
     require('dotenv').config({ path: path.join(__dirname, '..', '..', '..', '.env.development') })
     await imageService.init(

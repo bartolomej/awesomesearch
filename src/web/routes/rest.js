@@ -1,6 +1,8 @@
 const router = require('express').Router();
 const metaService = require('../../services/metadata')({ imageService: null });
+const githubService = require('../../services/github');
 const utils = require('./utils');
+const AwesomeError = require('../../error');
 
 function RestApi ({ webService, listRepository, linkRepository }) {
 
@@ -33,11 +35,18 @@ function RestApi ({ webService, listRepository, linkRepository }) {
 
   router.get('/list/:uid/link', async (req, res, next) => {
     try {
-      res.send((await linkRepository.getAll(
+      const links = await linkRepository.getAll(
         req.query.limit || 10,
         req.query.page || 0,
         req.params.uid
-      )).map(utils.serializeLink));
+      );
+      if (links.length === 0) {
+        return next(new AwesomeError(
+          AwesomeError.types.NOT_FOUND,
+          `No links found for requested list`
+        ));
+      }
+      res.send(links.map(utils.serializeLink));
     } catch (e) {
       next(e);
     }
@@ -64,7 +73,7 @@ function RestApi ({ webService, listRepository, linkRepository }) {
     }
   });
 
-  router.get('/random', async (req, res, next) => {
+  router.get('/link/random', async (req, res, next) => {
     try {
       res.send((await linkRepository.getRandomObject(req.query.n || 6))
         .map(utils.serializeLink));
@@ -113,6 +122,17 @@ function RestApi ({ webService, listRepository, linkRepository }) {
     try {
       const stats = await webService.getStats();
       res.send(utils.serializeStats(stats))
+    } catch (e) {
+      next(e);
+    }
+  });
+
+  router.get('/admin/stats', async (req, res, next) => {
+    try {
+      const rateLimit = await githubService.rateLimit();
+      res.send({
+        rate_limit: rateLimit
+      })
     } catch (e) {
       next(e);
     }

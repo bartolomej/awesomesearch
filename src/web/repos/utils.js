@@ -2,7 +2,7 @@ const Link = require('../../models/link');
 const List = require('../../models/list');
 const Website = require('../../models/website');
 const Repository = require('../../models/repository');
-const AwesomeError = require('../../errors');
+const AwesomeError = require('../../error');
 
 function deserializeLink (link) {
   if (!link) {

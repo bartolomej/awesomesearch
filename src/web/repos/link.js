@@ -3,7 +3,7 @@ const utils = require('./utils');
 const Link = require('../../models/link');
 const Website = require('../../models/website');
 const Repository = require('../../models/repository');
-const AwesomeError = require('../../errors');
+const AwesomeError = require('../../error');
 
 async function save (link) {
   if (link.website) {

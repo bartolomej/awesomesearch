@@ -4,7 +4,7 @@ const Link = require('../models/link');
 const List = require('../models/list');
 const FlexSearch = require("flexsearch");
 const logger = require('../logger')('web-service');
-const AwesomeError = require('../errors');
+const AwesomeError = require('../error');
 
 function WebService ({ listRepository, linkRepository, workQueue }) {
 

@@ -10,7 +10,7 @@ function serializeSearchResult (response, minify = false) {
   }
 }
 
-function serializeList (list, minify) {
+function serializeList (list) {
   return {
     uid: list.uid,
     object_type: 'list',
@@ -27,7 +27,7 @@ function serializeList (list, minify) {
   }
 }
 
-function serializeLink (link, minify) {
+function serializeLink (link) {
   return {
     uid: link.uid,
     object_type: 'link',

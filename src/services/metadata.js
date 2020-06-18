@@ -6,13 +6,13 @@ const fetch = require('node-fetch');
 const normalizeUrl = require('normalize-url');
 const { execute } = require('../utils');
 const puppeteer = require('puppeteer');
-const fs = require('fs');
+const {makeDir} = require('../utils');
 const path = require('path');
+const { CACHE_DIR_PATH } = require('../global');
 const Link = require('../models/link');
 const Repository = require('../models/repository');
 const Website = require('../models/website');
 const githubService = require('../services/github');
-
 
 function MetaService ({ imageService }) {
 
@@ -117,11 +117,8 @@ function MetaService ({ imageService }) {
 
   async function processScreenshot (website, waitBeforeScreenshot = 0) {
     // take a screenshot and upload it to image store
-    const cachePath = path.join(__dirname, '..', '..', 'cache');
-    if (!fs.existsSync(cachePath)) {
-      fs.mkdirSync(cachePath);
-    }
-    const screenshotPath = path.join(cachePath, `${uuid()}.png`);
+    await makeDir(CACHE_DIR_PATH);
+    const screenshotPath = path.join(CACHE_DIR_PATH, `${uuid()}.png`);
     try {
       await screenshotWebsite(website.url, screenshotPath, waitBeforeScreenshot);
     } catch (e) {

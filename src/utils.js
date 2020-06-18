@@ -1,5 +1,7 @@
 const { performance } = require('perf_hooks');
 const logger = require('./logger')('utils');
+const fs = require('fs');
+const rimraf = require('rimraf');
 
 
 const isRelativeUrl = url => (
@@ -34,7 +36,43 @@ async function execute (name, promises) {
   return result;
 }
 
+async function makeDir (path) {
+  return new Promise(async (resolve, reject) => {
+    if (await fileExists(path)) {
+      return resolve();
+    }
+    fs.mkdir(path, err => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve();
+      }
+    })
+  })
+}
+
+async function removeDir (path) {
+  return new Promise((resolve, reject) => {
+    rimraf(path, err => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(err);
+      }
+    })
+  })
+}
+
+async function fileExists (path) {
+  return new Promise(resolve => {
+    fs.access(path, error => resolve(!error));
+  });
+}
+
 module.exports = {
   joinUrls,
   execute,
+  fileExists,
+  removeDir,
+  makeDir
 }

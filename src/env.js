@@ -10,7 +10,9 @@ module.exports = envalid.cleanEnv(process.env, {
   CLOUDINARY_CLOUD_NAME: str(),
   CLOUDINARY_API_KEY: str(),
   CLOUDINARY_API_SECRET: str(),
-  USE_MEMORY_DB: bool({ default: false })
+  USE_MEMORY_DB: bool({ default: false }),
+  GH_USERNAME: str(),
+  GH_TOKEN: str()
 }, {
   // path to different .env file if provided (such as .env.development)
   dotEnvPath: process.env.ENV_PATH || join(__dirname, '..', '.env.development')

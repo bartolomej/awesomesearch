@@ -1,7 +1,10 @@
-global.fetch = require('node-fetch');
+const fetch = require('node-fetch');
 const Repository = require('../models/repository');
 const logger = require('../logger')('github-service');
 const { execute } = require('../utils');
+const env = require('../env');
+
+const API_HOST = 'https://api.github.com';
 
 async function getRepository (url, fetchReadme = false) {
   const repository = new Repository(url);
@@ -37,7 +40,7 @@ async function getRepository (url, fetchReadme = false) {
 }
 
 async function getRepositoryInfo (repo, user) {
-  const url = `https://api.github.com/repos/${repo}/${user}`;
+  const url = `${API_HOST}/repos/${repo}/${user}`;
   const response = await request('GET', url);
   return {
     avatar: response.owner.avatar_url,
@@ -50,7 +53,7 @@ async function getRepositoryInfo (repo, user) {
 
 // https://developer.github.com/v3/repos/#get-all-repository-topics
 async function getRepositoryTopics (user, repo) {
-  const url = `https://api.github.com/repos/${user}/${repo}/topics`;
+  const url = `${API_HOST}/repos/${user}/${repo}/topics`;
   const response = await request('GET', url, 'preview');
   return response.names;
 }
@@ -59,20 +62,26 @@ async function getRepositoryTopics (user, repo) {
 // https://github.community/t5/GitHub-API-Development-and/Get-contributor-count-with-the-graphql-api/td-p/18593
 
 async function getReadme (user, repo) {
-  const url = `https://api.github.com/repos/${user}/${repo}/readme`;
+  const url = `${API_HOST}/repos/${user}/${repo}/readme`;
   return await request('GET', url, 'raw');
 }
 
+async function rateLimit () {
+  const url = `${API_HOST}/rate_limit`;
+  return await request('GET', url);
+}
+
 async function request (method = 'GET', url, type = 'json', body = undefined) {
-  const response = await fetch(url, {
-    headers: {
-      'Accept': type === 'preview'
-        ? 'application/vnd.github.mercy-preview+json'
-        : `application/vnd.github.VERSION.${type}`
-    },
-    method,
-    body,
-  });
+  const headers = new fetch.Headers();
+  // authorize request to enable 5000 requests/hour rate limit
+  headers.set('Authorization', 'Basic ' +
+    Buffer.from(env.GH_USERNAME + ":" + env.GH_TOKEN).toString('base64')
+  );
+  headers.set('Accept', type === 'preview'
+    ? 'application/vnd.github.mercy-preview+json'
+    : `application/vnd.github.VERSION.${type}`
+  )
+  const response = await fetch(url, { headers, method, body, });
   if (!response.ok) {
     throw new Error(response.statusText);
   }
@@ -87,5 +96,6 @@ module.exports = {
   getReadme,
   getRepositoryInfo,
   getRepositoryTopics,
-  getRepository
+  getRepository,
+  rateLimit
 };
