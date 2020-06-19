@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import search from "../store/search";
 import Result from "../components/result";
 import { useInView } from "react-intersection-observer";
+import UseAnimations from "react-useanimations";
 // icons
 import line from '../assets/line.svg';
 import triangle from '../assets/triangle.svg';
@@ -33,7 +34,10 @@ const IndexPage = ({ results, suggestions, search, suggest, loading, nextPage, n
 
   return (
     <Layout>
-      <SEO title="Home" keywords={[`gatsby`, `application`, `react`]}/>
+      <SEO
+        title="Home"
+        keywords={[`awesome`, `awesome-list`, `search`, `resources`, `learning`]}
+      />
       <Header ref={headerRef}>
         {/*{new Array(nShapes).fill(0).map((e, i) => {*/}
         {/*  if (i % 2 === 0) {*/}
@@ -59,7 +63,10 @@ const IndexPage = ({ results, suggestions, search, suggest, loading, nextPage, n
       <Body>
         {loading && (
           <LoadingWrapper>
-            Loading ...
+            <UseAnimations
+              animationKey="infinity"
+              size={150}
+            />
           </LoadingWrapper>
         )}
         {results.map((r, i) => (
@@ -135,8 +142,14 @@ const LoadingWrapper = styled.div`
   bottom: 0;
   display: flex;
   justify-content: center;
-  align-items: center;
-  backdrop-filter: blur(3px);
+  backdrop-filter: blur(7px);
+  svg:only-child {
+    height: 150px !important;
+    width: 150px !important;
+    margin-top: 100px;
+    color: ${p => p.theme.color.red};
+    filter: glow(1);
+  }
 `;
 
 const mapStateToProps = state => ({

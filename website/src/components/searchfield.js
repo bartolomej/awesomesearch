@@ -44,6 +44,11 @@ const SearchField = ({ placeholder, onChange, onSubmit, suggestions }) => {
     onSubmit(s);
   }
 
+  function onSubmitClick () {
+    onSubmit(text);
+    setSuggestionList([]);
+  }
+
   return (
     <Container ref={containerRef}>
       <InnerContainer>
@@ -57,9 +62,7 @@ const SearchField = ({ placeholder, onChange, onSubmit, suggestions }) => {
             onChange(e.target.value);
           }}
         />
-        <Submit onClick={() => onSubmit(text)}>
-          Search
-        </Submit>
+        <Submit onClick={onSubmitClick}>Search</Submit>
       </InnerContainer>
       {suggestionList.length > 0 && (
         <SuggestionContainer>
@@ -82,7 +85,7 @@ function insertMarks (s, t) {
 }
 
 const Container = styled.div`
-  width: 50%;
+  width: 600px;
   position: relative;
   @media (max-width: 700px) {
     width: 90%;
@@ -113,11 +116,13 @@ const Icon = styled(searchIcon)`
 const Field = styled.input`
   flex: 1;
   margin: 0 20px;
+  width: 70%;
   padding: 10px 0;
   color: ${p => p.theme.color.dark};
   font-size: ${p => p.theme.size(1.1)};
   @media (max-width: 700px) {
     margin: 0 5px;
+    font-size: ${p => p.theme.size(1)};
   }
 `;
 
@@ -133,6 +138,9 @@ const Submit = styled.button`
     p.theme.color.white,
     p.theme.color.white
   )};
+  &:active {
+    transform: scale(1.1);
+  }
 `
 
 const SuggestionContainer = styled.div`

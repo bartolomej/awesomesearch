@@ -64,7 +64,7 @@ const suggest = dispatch => query => {
 }
 
 const search = dispatch => query => {
-  dispatch(store.actions.suggestPending());
+  dispatch(store.actions.searchPending());
   api.search(query)
     .then(res => dispatch(store.actions.searchSuccess(res)))
     .catch(error => dispatch(store.actions.searchFailed(error)))
