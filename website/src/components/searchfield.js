@@ -6,11 +6,27 @@ import searchIcon from '../assets/search.svg';
 const SearchField = ({ placeholder, onChange, onSubmit, suggestions }) => {
   const [text, setText] = useState('');
   const [suggestionList, setSuggestionList] = useState([]);
+  const containerRef = React.useRef();
+
+  useEffect(() => {
+    window.addEventListener('click', e => {
+      if (!containerRef.current) return;
+      if (!containerRef.current.contains(e.target)) {
+        setSuggestionList([]);
+      } else {
+        setSuggestionList(suggestions);
+      }
+    });
+    window.addEventListener('keypress', e => {
+      if (e.key === 'Enter') {
+        onSubmit(text);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     setSuggestionList(suggestions);
   }, [suggestions]);
-
 
   function onSuggestionClick (s) {
     setText(s);
@@ -18,22 +34,29 @@ const SearchField = ({ placeholder, onChange, onSubmit, suggestions }) => {
   }
 
   return (
-    <Container>
+    <Container ref={containerRef}>
       <InnerContainer>
         <Icon/>
-        <Field type="text" value={text} onChange={e => {
-          setText(e.target.value);
-          onChange(e.target.value)
-        }}/>
+        <Field
+          type="text"
+          value={text}
+          placeholder={placeholder}
+          onChange={e => {
+            setText(e.target.value);
+            onChange(e.target.value);
+          }}
+        />
         <Submit onClick={() => onSubmit(text)}>
           Search
         </Submit>
       </InnerContainer>
-      {suggestionList.length > 0 && <SuggestionContainer>
-        {suggestionList.map(s => (
-          <SuggestionItem onClick={() => onSuggestionClick(s)}>{s}</SuggestionItem>
-        ))}
-      </SuggestionContainer>}
+      {suggestionList.length > 0 && (
+        <SuggestionContainer>
+          {suggestionList.map(s => (
+            <SuggestionItem key={s} onClick={() => onSuggestionClick(s)}>{s}</SuggestionItem>
+          ))}
+        </SuggestionContainer>
+      )}
     </Container>
   )
 }
@@ -41,7 +64,7 @@ const SearchField = ({ placeholder, onChange, onSubmit, suggestions }) => {
 const BORDER_RADIUS = 10;
 
 const Container = styled.div`
-  border-radius: ${BORDER_RADIUS * 1.8}px;
+  border-radius: ${BORDER_RADIUS * 1.7}px;
   border: 3px solid transparent;
   &:focus-within {
     border: 3px solid ${p => p.theme.color.orange};
@@ -51,28 +74,37 @@ const Container = styled.div`
 `;
 
 const InnerContainer = styled.div`
-  padding: 12px;
+  padding: 8px ;
   margin: 3px;
   border-radius: ${BORDER_RADIUS}px;
   display: flex;
   background: white;
   justify-content: space-between;
+  align-items: center;
 `;
 
 const Icon = styled(searchIcon)`
-  width: 30px;
+  width: 25px;
+  margin-left: 10px;
 `;
 
 const Field = styled.input`
   flex: 1;
-  margin: 0 10px;
+  margin: 0 20px;
+  color: ${p => p.theme.color.dark};
   font-size: ${p => p.theme.size(1.1)};
 `;
 
-const Submit = styled.button``
+const Submit = styled.button`
+  padding: 15px 20px;
+  background: ${p => p.theme.color.red};
+  color: ${p => p.theme.color.white};
+  border-radius: 8px;
+`
 
 const SuggestionContainer = styled.div`
   position: absolute;
+  z-index: 10;
   display: flex;
   width: 100%;
   background: white;

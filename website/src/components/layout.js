@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { graphql, StaticQuery, Link } from 'gatsby';
+import { graphql, StaticQuery, Link as GLink } from 'gatsby';
 import styled from '@emotion/styled';
 import { ThemeProvider } from 'emotion-theming';
 import theme from '../style/theme';
@@ -37,12 +37,21 @@ const Layout = ({ children }) => (
 
 const Container = styled.main`
   width: 100vw;
+  background: ${p => p.theme.color.light};
 `;
 
 const NavigationRow = styled.div`
   width: 100vw;
   height: 5vh;
   position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+`;
+
+const Link = styled(GLink)`
+  color: ${p => p.theme.color.white};
+  margin-right: 20px;
 `;
 
 Layout.propTypes = {
