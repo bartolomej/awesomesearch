@@ -3,17 +3,22 @@
   "description": "A simple starter with Redux to get up and developing quickly with Gatsby",
   "version": "0.0.1",
   "author": "Carl-Johan Kihl <carljohan.kihl@gmail.com>",
-  "contributors": ["Kyle Mathews <mathews.kyle@gmail.com>"],
+  "contributors": [
+    "Kyle Mathews <mathews.kyle@gmail.com>"
+  ],
   "dependencies": {
     "@emotion/core": "^10.0.7",
     "@emotion/styled": "^10.0.7",
+    "@reduxjs/toolkit": "1.3.6",
     "emotion-theming": "^10.0.7",
     "gatsby": "^2.1.4",
     "gatsby-image": "^2.0.29",
     "gatsby-plugin-emotion": "^4.0.3",
+    "gatsby-plugin-google-fonts": "1.0.1",
     "gatsby-plugin-manifest": "^2.0.17",
     "gatsby-plugin-offline": "^2.0.23",
     "gatsby-plugin-react-helmet": "^3.0.6",
+    "gatsby-plugin-react-svg": "3.0.0",
     "gatsby-plugin-sharp": "^2.0.20",
     "gatsby-source-filesystem": "^2.0.20",
     "gatsby-transformer-sharp": "^2.1.13",
@@ -25,7 +30,9 @@
     "redux": "^4.0.1"
   },
   "keywords": [
-    "gatsby", "redux", "emotion"
+    "gatsby",
+    "redux",
+    "emotion"
   ],
   "license": "MIT",
   "scripts": {

@@ -1,8 +1,8 @@
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Default Starter`,
-    description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
-    author: `@gatsbyjs`,
+    title: `AwesomeSearch`,
+    description: `User friendly search engine for Awesome lists curated collections.`,
+    author: `@bartolomejkozorog`,
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
@@ -31,5 +31,22 @@ module.exports = {
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.app/offline
     // 'gatsby-plugin-offline',
+    {
+      resolve: "gatsby-plugin-react-svg",
+      options: {
+        rule: {
+          include: /assets/
+        }
+      }
+    },
+    {
+      resolve: `gatsby-plugin-google-fonts`,
+      options: {
+        fonts: [
+          `montserrat:500,600,700,900` // you can also specify font weights and styles
+        ],
+        display: 'swap'
+      }
+    }
   ],
 };

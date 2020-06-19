@@ -2,16 +2,13 @@
  * Basic theme
  */
 
-const palette = {
-  primary: {
-    contrast: 'white',
-    main: '#6c2e9c',
-  },
-  secondary: {
-    contrast: '#aaa',
-    main: '#242424',
-    dark: '#181818',
-  },
+const color = {
+  light: '#F5F7FB',
+  dark: '#2A363B',
+  orange: '#FF847C',
+  red: '#E84A5F',
+  gold: '#FECEA8',
+  white: 'white'
 };
 
 const baseSize = 16;
@@ -28,8 +25,9 @@ const zIndex = {
 };
 
 export default {
-  palette,
+  color,
   typography,
   zIndex,
   size: size => `${size * baseSize}px`,
+  opacity: (hexColor, value) => `${hexColor}${value.toString(16)}`
 };
