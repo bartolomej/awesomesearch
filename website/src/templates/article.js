@@ -18,13 +18,17 @@ export default function BlogPost ({ data }) {
 }
 
 const Container = styled.div`
-  width: 60%;
+  width: 50%;
   margin: 0 auto;
   padding: 100px 0;
   
   p {
     color: ${p => p.theme.color.dark};
     margin: 20px 0;
+    line-height: 1.5;
+  }
+  @media (max-width: 700px) {
+    width: 95%;
   }
 `;
 

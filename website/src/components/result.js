@@ -39,7 +39,10 @@ function Result ({ innerRef, title, description, screenshot, source, url, type, 
 const Container = styled.div`
   width: 300px;
   min-height: 400px;
-  margin-bottom: 50px;
+  margin: 0 20px 50px 20px;
+  @media (max-width: 700px) {
+    margin: 0 0 50px 0;
+  }
 `;
 
 const PreviewWrapper = styled.a`

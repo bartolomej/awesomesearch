@@ -1,1 +1,1 @@
-export { default as wrapRootElement } from './src/store/ReduxWrapper';
+export { default as wrapRootElement } from './src/store/reduxWrapper';
