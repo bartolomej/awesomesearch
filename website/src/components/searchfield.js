@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import searchIcon from '../assets/search.svg';
+import { LinkCss } from "../style/ui";
 
 
 const SearchField = ({ placeholder, onChange, onSubmit, suggestions }) => {
@@ -9,28 +10,38 @@ const SearchField = ({ placeholder, onChange, onSubmit, suggestions }) => {
   const containerRef = React.useRef();
 
   useEffect(() => {
-    window.addEventListener('click', e => {
-      if (!containerRef.current) return;
-      if (!containerRef.current.contains(e.target)) {
-        setSuggestionList([]);
-      } else {
-        setSuggestionList(suggestions);
-      }
-    });
-    window.addEventListener('keypress', e => {
-      if (e.key === 'Enter') {
-        onSubmit(text);
-      }
-    });
-  }, []);
+    window.addEventListener('click', onClick);
+    window.addEventListener('keypress', onKeyPress);
+    return () => {
+      window.removeEventListener('click', onClick)
+      window.removeEventListener('keypress', onKeyPress)
+    }
+  }, [text]);
 
   useEffect(() => {
     setSuggestionList(suggestions);
   }, [suggestions]);
 
+  function onClick (e) {
+    if (!containerRef.current) return;
+    if (!containerRef.current.contains(e.target)) {
+      setSuggestionList([]);
+    } else {
+      setSuggestionList(suggestions);
+    }
+  }
+
+  function onKeyPress (e) {
+    if (e.key === 'Enter') {
+      onSubmit(text);
+      setSuggestionList([]);
+    }
+  }
+
   function onSuggestionClick (s) {
     setText(s);
     setSuggestionList([]);
+    onSubmit(s);
   }
 
   return (
@@ -53,7 +64,12 @@ const SearchField = ({ placeholder, onChange, onSubmit, suggestions }) => {
       {suggestionList.length > 0 && (
         <SuggestionContainer>
           {suggestionList.map(s => (
-            <SuggestionItem key={s} onClick={() => onSuggestionClick(s)}>{s}</SuggestionItem>
+            <SuggestionItem
+              key={s}
+              dangerouslySetInnerHTML={{
+                __html: insertMarks(s, text)
+              }}
+              onClick={() => onSuggestionClick(s)} />
           ))}
         </SuggestionContainer>
       )}
@@ -61,26 +77,32 @@ const SearchField = ({ placeholder, onChange, onSubmit, suggestions }) => {
   )
 }
 
-const BORDER_RADIUS = 10;
+function insertMarks (s, t) {
+  return s.replace(t, `<mark>${t}</mark>`);
+}
 
 const Container = styled.div`
-  border-radius: ${BORDER_RADIUS * 1.7}px;
-  border: 3px solid transparent;
-  &:focus-within {
-    border: 3px solid ${p => p.theme.color.orange};
-  }
   width: 50%;
   position: relative;
+  @media (max-width: 700px) {
+    width: 90%;
+  }
 `;
 
 const InnerContainer = styled.div`
   padding: 8px ;
   margin: 3px;
-  border-radius: ${BORDER_RADIUS}px;
+  border-radius: 10px;
   display: flex;
   background: white;
   justify-content: space-between;
   align-items: center;
+  transition: 0.2s ease-in-out all;
+  &:focus-within {
+    box-shadow: 
+      ${p => p.theme.opacity(p.theme.color.red, 150)} 4px 4px 16px, 
+      ${p => p.theme.opacity(p.theme.color.red, 150)} -4px -4px 16px;
+  }
 `;
 
 const Icon = styled(searchIcon)`
@@ -91,15 +113,26 @@ const Icon = styled(searchIcon)`
 const Field = styled.input`
   flex: 1;
   margin: 0 20px;
+  padding: 10px 0;
   color: ${p => p.theme.color.dark};
   font-size: ${p => p.theme.size(1.1)};
+  @media (max-width: 700px) {
+    margin: 0 5px;
+  }
 `;
 
 const Submit = styled.button`
-  padding: 15px 20px;
+  padding: 12px 20px;
   background: ${p => p.theme.color.red};
   color: ${p => p.theme.color.white};
-  border-radius: 8px;
+  border-radius: 8px !important;
+  font-size: ${p => p.theme.size(0.9)};
+  ${p => LinkCss(
+    p.theme.color.red,
+    p.theme.color.gold,
+    p.theme.color.white,
+    p.theme.color.white
+  )};
 `
 
 const SuggestionContainer = styled.div`
@@ -117,11 +150,16 @@ const SuggestionContainer = styled.div`
 `;
 
 const SuggestionItem = styled.button`
-  padding: 8px 4px;
+  padding: 8px;
+  color: ${p => p.theme.opacity(p.theme.color.dark, 10)};
   width: 100%;
   text-align: start;
+  border-radius: 8px;
   &:hover {
     background: ${p => p.theme.color.light};
+  }
+  mark {
+    background: ${p => p.theme.color.gold};
   }
 `;
 

@@ -17,15 +17,12 @@ const store = createSlice({
   initialState,
   reducers: {
     suggestPending (state) {
-      state.loading = true;
       state.error = null
     },
     suggestSuccess (state, action) {
-      state.loading = false;
       state.suggestions = action.payload.result || []
     },
     suggestFailed (state, action) {
-      state.loading = false;
       state.error = action.payload;
     },
     searchPending (state) {
@@ -43,11 +40,9 @@ const store = createSlice({
       state.error = action.payload;
     },
     nextPagePending (state) {
-      state.loading = true;
       state.error = null;
     },
     nextPageSuccess (state, action) {
-      state.loading = false;
       state.currentPage = action.payload.page;
       state.nextPage = action.payload.next;
       state.results = [
@@ -56,7 +51,6 @@ const store = createSlice({
       ]
     },
     nextPageFailed (state, action) {
-      state.loading = false;
       state.error = action.payload;
     },
   }
