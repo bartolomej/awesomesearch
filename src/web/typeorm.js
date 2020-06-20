@@ -4,6 +4,7 @@ const Link = require("./entity/link");
 const List = require("./entity/list");
 const Repository = require("./entity/repository");
 const Website = require("./entity/website");
+const SearchLog = require("./entity/searchlog");
 const env = require('../env');
 
 let connection;
@@ -20,7 +21,8 @@ async function create () {
       Link,
       List,
       Repository,
-      Website
+      Website,
+      SearchLog
     ],
     synchronize: true,
     logging: false,

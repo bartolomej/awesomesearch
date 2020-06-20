@@ -233,7 +233,7 @@ function WebService ({ listRepository, linkRepository, workQueue }) {
     scrapeFromRoot,
     scrapeLink,
     getItem,
-    buildIndex: buildIndex,
+    buildIndex,
     scrapeList,
     getStats,
     workQueue,

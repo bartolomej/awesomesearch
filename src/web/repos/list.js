@@ -36,7 +36,7 @@ async function getAll (pageLimit = 10, pageNumber = 0, orderBy = 'stars') {
     .leftJoinAndSelect('list.repository', 'repository')
     // .orderBy(`list.${orderBy}`, 'DESC')
     // https://github.com/typeorm/typeorm/issues/4270
-    .skip(pageNumber)
+    .skip(pageLimit * pageNumber)
     .take(pageLimit)
     .getMany()).map(utils.deserializeList);
 }

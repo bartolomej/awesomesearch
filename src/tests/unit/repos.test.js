@@ -2,16 +2,18 @@ const { describe, expect, it, beforeAll, afterAll, afterEach } = require("@jest/
 const path = require('path');
 const linkRepository = require('../../web/repos/link');
 const listRepository = require('../../web/repos/list');
+const searchLogRepository = require('../../web/repos/searchlog');
 const Link = require('../../models/link');
 const List = require('../../models/list');
 const Website = require('../../models/website');
+const SearchLog = require('../../models/searchlog');
 const Repository = require('../../models/repository');
 const typeorm = require('../../web/typeorm');
 
 describe('Link repository tests', function () {
 
   beforeAll(async () => {
-    require('dotenv').config({ path: path.join(__dirname, '..', '..', '..', '.env') })
+    require('dotenv').config({ path: path.join(__dirname, '..', '..', '..', '.env.development') })
     await typeorm.create();
   });
 
@@ -131,6 +133,52 @@ describe('Link repository tests', function () {
     expect(links[1]).toEqual(link2);
   });
 
+});
+
+describe('SearchLog repository', function () {
+
+  beforeAll(async () => {
+    require('dotenv').config({ path: path.join(__dirname, '..', '..', '..', '.env.development') })
+    await typeorm.create();
+  });
+
+  afterAll(async () => {
+    await typeorm.close();
+  });
+
+  beforeEach(async () => {
+    await searchLogRepository.removeAll();
+  });
+
+  it('should save log', async function () {
+    const log = new SearchLog('test', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36');
+    const saved = await searchLogRepository.save(log);
+    const all = await searchLogRepository.getSortedByDate();
+
+    expect(all.length).toBe(1);
+    expect(all[0]).toEqual(log);
+    expect(saved).toEqual(log);
+  });
+
+  it('should group by query', async function () {
+    const logs = [
+      new SearchLog('test', 'Mozilla/5.0 (Macintosh; ...'),
+      new SearchLog('test', 'Mozilla/5.0 (Macintosh; ...'),
+      new SearchLog('test1', 'Mozilla/5.0 (Macintosh; ...'),
+      new SearchLog('test1', 'Mozilla/5.0 (Macintosh; ...'),
+      new SearchLog('test1', 'Mozilla/5.0 (Macintosh; ...'),
+    ];
+
+    for (let l of logs) {
+      await searchLogRepository.save(l);
+    }
+
+    const stats = await searchLogRepository.getCountByQuery();
+    expect(stats).toEqual([
+      { query: 'test', count: 2 },
+      { query: 'test1', count: 3 },
+    ])
+  });
 
 });
 

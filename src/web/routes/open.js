@@ -1,6 +1,8 @@
 const router = require('express').Router();
 const metaService = require('../../services/metadata')({ imageService: null });
 const githubService = require('../../services/github');
+const searchLogRepo = require('../repos/searchlog');
+const SearchLog = require('../../models/searchlog');
 const utils = require('./utils');
 const AwesomeError = require('../../error');
 
@@ -109,9 +111,14 @@ function RestApi ({ webService, listRepository, linkRepository }) {
           limit: req.query.limit ? parseInt(req.query.limit) : 15
         });
         res.send(utils.serializeSearchResult(searchRes));
+        // log search to db
+        await searchLogRepo.save(new SearchLog(
+          req.query.q,
+          req.useragent.source
+        ))
       } else {
         // return empty array if q param not provided or is empty
-        res.send([]);
+        next(new AwesomeError('Query param required'));
       }
     } catch (e) {
       next(e);
