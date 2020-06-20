@@ -4,13 +4,11 @@ import { Container, Row, Col } from "shards-react";
 
 import PageTitle from "./../components/common/PageTitle";
 import SmallStats from "./../components/common/SmallStats";
-import UsersOverview from "./../components/blog/UsersOverview";
-import UsersByDevice from "./../components/blog/UsersByDevice";
-import NewDraft from "./../components/blog/NewDraft";
-import Discussions from "./../components/blog/Discussions";
-import TopReferrals from "./../components/common/TopReferrals";
+import UsersOverview from "./../components/overview/UsersOverview";
+import UsersByDevice from "./../components/overview/UsersByDevice";
+import TopSearches from "../components/common/TopSearches";
 
-const BlogOverview = ({ smallStats }) => (
+const Overview = ({ smallStats }) => (
   <Container fluid className="main-content-container px-4">
     {/* Page Header */}
     <Row noGutters className="page-header py-4">
@@ -47,32 +45,22 @@ const BlogOverview = ({ smallStats }) => (
         <UsersByDevice />
       </Col>
 
-      {/* New Draft */}
-      <Col lg="4" md="6" sm="12" className="mb-4">
-        <NewDraft />
-      </Col>
-
-      {/* Discussions */}
-      <Col lg="5" md="12" sm="12" className="mb-4">
-        <Discussions />
-      </Col>
-
       {/* Top Referrals */}
       <Col lg="3" md="12" sm="12" className="mb-4">
-        <TopReferrals />
+        <TopSearches title={'Top Searches'} />
       </Col>
     </Row>
   </Container>
 );
 
-BlogOverview.propTypes = {
+Overview.propTypes = {
   /**
    * The small stats dataset.
    */
   smallStats: PropTypes.array
 };
 
-BlogOverview.defaultProps = {
+Overview.defaultProps = {
   smallStats: [
     {
       label: "Posts",
@@ -170,4 +158,4 @@ BlogOverview.defaultProps = {
   ]
 };
 
-export default BlogOverview;
+export default Overview;

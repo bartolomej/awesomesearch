@@ -5,9 +5,9 @@ import { Redirect } from "react-router-dom";
 import { DefaultLayout } from "./layouts";
 
 // Route Views
-import BlogOverview from "./views/BlogOverview";
-import ComponentsOverview from "./views/ComponentsOverview";
-import Tables from "./views/Tables";
+import Overview from "./views/Overview";
+import CreateJob from "./views/CreateJob";
+import Data from "./views/Data";
 import BlogPosts from "./views/BlogPosts";
 
 export default [
@@ -18,19 +18,19 @@ export default [
     component: () => <Redirect to="/blog-overview" />
   },
   {
-    path: "/blog-overview",
+    path: "/overview",
     layout: DefaultLayout,
-    component: BlogOverview
+    component: Overview
   },
   {
-    path: "/components-overview",
+    path: "/job",
     layout: DefaultLayout,
-    component: ComponentsOverview
+    component: CreateJob
   },
   {
-    path: "/tables",
+    path: "/data",
     layout: DefaultLayout,
-    component: Tables
+    component: Data
   },
   {
     path: "/blog-posts",

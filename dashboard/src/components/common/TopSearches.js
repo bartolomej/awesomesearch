@@ -12,7 +12,7 @@ import {
   FormSelect
 } from "shards-react";
 
-const TopReferrals = ({ title, referralData }) => (
+const TopSearches = ({ title, referralData }) => (
   <Card small>
     <CardHeader className="border-bottom">
       <h6 className="m-0">{title}</h6>
@@ -59,7 +59,7 @@ const TopReferrals = ({ title, referralData }) => (
   </Card>
 );
 
-TopReferrals.propTypes = {
+TopSearches.propTypes = {
   /**
    * The component's title.
    */
@@ -70,7 +70,7 @@ TopReferrals.propTypes = {
   referralData: PropTypes.array
 };
 
-TopReferrals.defaultProps = {
+TopSearches.defaultProps = {
   title: "Top Referrals",
   referralData: [
     {
@@ -108,4 +108,4 @@ TopReferrals.defaultProps = {
   ]
 };
 
-export default TopReferrals;
+export default TopSearches;
