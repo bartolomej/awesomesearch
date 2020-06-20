@@ -18,14 +18,17 @@ export default function BlogPost ({ data }) {
 }
 
 const Container = styled.div`
-  width: 50%;
+  width: 40%;
   margin: 0 auto;
   padding: 100px 0;
   
   p {
     color: ${p => p.theme.color.dark};
     margin: 20px 0;
-    line-height: 1.5;
+    line-height: 1.8;
+  }
+  img {
+    box-shadow: none !important;
   }
   @media (max-width: 700px) {
     width: 95%;

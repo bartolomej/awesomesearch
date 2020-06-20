@@ -4,28 +4,42 @@ import Layout from '../components/layout';
 import SEO from '../components/seo';
 import SearchField from "../components/searchfield";
 import logo from '../assets/logo.svg';
+import noResults from '../assets/no-results.svg';
+import error from '../assets/error.svg';
 import { connect } from "react-redux";
 import search from "../store/search";
 import Result from "../components/result";
 import { useInView } from "react-intersection-observer";
 import UseAnimations from "react-useanimations";
 import Modal from "../components/modal";
-import { getList } from "../store/api";
+import { getAllLists, getList } from "../store/api";
 import { Button, Link1 } from "../style/ui";
 import Description from "../components/description";
 import theme from "../style/theme";
 
 
-const IndexPage = ({ results, suggestions, search, suggest, loading, nextPage, nextPageIndex }) => {
+const IndexPage = ({ results, suggestions, search, suggest, loading, nextPage, nextPageIndex, query, error }) => {
   const [ref, inView, entry] = useInView({ threshold: 0 });
   const [showSource, setShowSource] = useState(null);
   const [repo, setRepo] = useState(null);
+  const [lists, setLists] = useState([]);
 
   useEffect(() => {
     if (inView === true) {
       nextPage(nextPageIndex);
     }
   }, [inView]);
+
+  useEffect(() => {
+    // there was a query with no results
+    if (results.length === 0 && query.length > 0) {
+
+    }
+    // there was an empty query
+    if (results.length === 0 && query.length === 0) {
+      getAllLists().then(setLists);
+    }
+  }, [query]);
 
   useEffect(() => {
     if (showSource) {
@@ -81,6 +95,31 @@ const IndexPage = ({ results, suggestions, search, suggest, loading, nextPage, n
               size={150}
             />
           </LoadingWrapper>
+        )}
+        {error && (
+          <MessageWrapper>
+            <ErrorIcon/>
+            <strong>Oops!</strong>
+          </MessageWrapper>
+        )}
+        {(results.length === 0 && query.length > 0 && !error) && (
+          <MessageWrapper>
+            <NoResultsIcon/>
+            <strong>Nothing found here</strong>
+          </MessageWrapper>
+        )}
+        {(results.length === 0 && query.length === 0 && !error) && (
+          lists.map((r, i) => (
+            <Result
+              onSourceClick={uid => setShowSource(uid)}
+              title={r.title}
+              url={r.url}
+              description={r.description}
+              screenshot={r.screenshot_url || r.image_url}
+              source={r.source}
+              emojis={r.emojis}
+            />
+          ))
         )}
         {results.map((r, i) => (
           <Result
@@ -190,11 +229,11 @@ const Title = styled.p`
   & > a {
     padding: 0 2px;
     ${p => Link1(
-      p.theme.color.red,
-      p.theme.color.red,
-      p.theme.color.red,
-      p.theme.color.white
-    )};
+  p.theme.color.red,
+  p.theme.color.red,
+  p.theme.color.red,
+  p.theme.color.white
+)};
   }
   @media (max-width: 700px) {
     font-size: ${p => p.theme.size(1.4)};
@@ -212,6 +251,28 @@ const Logo = styled(logo)`
   @media (max-width: 700px) {
     height: 70px;
     margin: 5px;
+  }
+`;
+
+const NoResultsIcon = styled(noResults)`
+  height: 250px;
+  width: 250px;
+`;
+
+const ErrorIcon = styled(error)`
+  height: 250px;
+  width: 250px;
+`;
+
+const MessageWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 50px;
+  strong {
+    font-size: ${p => p.theme.size(1.6)};
+    color: ${p => p.theme.color.dark};
+    margin: 20px 0;
   }
 `;
 
@@ -251,6 +312,7 @@ const mapStateToProps = state => ({
   suggestions: state.search.suggestions,
   error: state.search.error,
   loading: state.search.loading,
+  query: state.search.query
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -3,7 +3,7 @@ import * as api from "./api";
 
 
 const initialState = {
-  query: null,
+  query: '',
   loading: false,
   error: null,
   currentPage: 0,
@@ -17,7 +17,7 @@ const store = createSlice({
   initialState,
   reducers: {
     suggestPending (state) {
-      state.error = null
+      state.error = null;
     },
     suggestSuccess (state, action) {
       state.suggestions = action.payload.result || []
@@ -25,9 +25,10 @@ const store = createSlice({
     suggestFailed (state, action) {
       state.error = action.payload;
     },
-    searchPending (state) {
+    searchPending (state, action) {
       state.loading = true;
-      state.error = null
+      state.error = null;
+      state.query = action.payload;
     },
     searchSuccess (state, action) {
       state.loading = false;
@@ -64,7 +65,7 @@ const suggest = dispatch => query => {
 }
 
 const search = dispatch => query => {
-  dispatch(store.actions.searchPending());
+  dispatch(store.actions.searchPending(query));
   api.search(query)
     .then(res => dispatch(store.actions.searchSuccess(res)))
     .catch(error => dispatch(store.actions.searchFailed(error)))

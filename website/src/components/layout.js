@@ -46,7 +46,8 @@ const Footer = styled.footer`
   color: ${p => p.theme.color.light};
   background: ${p => p.theme.color.dark};
   a {
-    padding: 2px 3px;
+    margin: 0 4px;
+    padding: 2px 2px;
     ${p => Link1(
       p.theme.color.red,
       p.theme.color.red,

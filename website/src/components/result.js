@@ -27,12 +27,14 @@ function Result ({ innerRef, title, description, screenshot, source, url, type, 
           text={description || 'No description.'}
           emojis={emojis}
         />
-        <SourceWrapper>
-          <a href={`https://github.com/${source.uid.split('.')[0]}`}>
-            <img src={source.image_url} alt={'List author'}/>
-          </a>
-          <button onClick={() => onSourceClick(source.uid)}>{source.title}</button>
-        </SourceWrapper>
+        {source && (
+          <SourceWrapper>
+            <a href={`https://github.com/${source.uid.split('.')[0]}`}>
+              <img src={source.image_url} alt={'List author'}/>
+            </a>
+            <button onClick={() => onSourceClick(source.uid)}>{source.title}</button>
+          </SourceWrapper>
+        )}
       </TextWrapper>
     </Container>
   )
