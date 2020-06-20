@@ -132,7 +132,7 @@ function MetaService ({ imageService }) {
         id: response.public_id
       }
     } catch (e) {
-      logger.error(`Error while uploading to image store: ${e}`);
+      logger.error(`Error while uploading to image store: ${JSON.stringify(e, null, 2)}`);
       throw e;
     }
   }

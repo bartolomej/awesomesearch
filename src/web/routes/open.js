@@ -8,6 +8,10 @@ const AwesomeError = require('../../error');
 
 function RestApi ({ webService, listRepository, linkRepository }) {
 
+  router.get('/', (req, res) => {
+    res.send('AwesomeSearch API is running 🙌')
+  });
+
   router.get('/list/:uid', async (req, res, next) => {
     try {
       res.send(utils.serializeList(await webService.getItem(req.params.uid, 'list')));

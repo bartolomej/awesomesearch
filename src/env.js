@@ -11,6 +11,7 @@ module.exports = envalid.cleanEnv(process.env, {
   CLOUDINARY_API_KEY: str(),
   CLOUDINARY_API_SECRET: str(),
   USE_MEMORY_DB: bool({ default: false }),
+  USE_MOCK_IMAGE_SERVICE: bool(({ default: false })),
   GH_USERNAME: str(),
   GH_TOKEN: str()
 }, {

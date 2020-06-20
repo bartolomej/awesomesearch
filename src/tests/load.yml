@@ -1,0 +1,32 @@
+config:
+  target: 'http://localhost:5000'
+  payload:
+    # path is relative to the location of the test script
+    path: "keywords.csv"
+    fields:
+      - "keyword"
+  phases:
+    # create <arrivalRate> virtual users every second for <duration> seconds
+    # duration:10, arrivalRate: 100 -> create 100 new v users every second for 10s
+    - duration: 10
+      arrivalRate: 50
+      rampTo: 50
+      name: "Warm up the application"
+    - duration: 10
+      arrivalRate: 500
+      name: "Sustained max load"
+  environments:
+    production:
+      target: "https://awesomesearch-api.herokuapp.com"
+      phases:
+        - duration: 120
+          arrivalRate: 10
+    staging:
+      target: "http://localhost:5000"
+      phases:
+        - duration: 1200
+          arrivalRate: 20
+scenarios:
+  - flow:
+      - get:
+          url: "/search?q={{ keyword }}"

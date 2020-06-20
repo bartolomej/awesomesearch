@@ -1,9 +1,9 @@
 const { describe, expect, it, beforeEach, beforeAll } = require("@jest/globals");
 const MetaService = require('../../services/metadata');
-const imageService = require('../../services/image');
+const MockImageService = require('../mocks/image');
+const ImageService = require('../../services/image');
 const path = require('path');
 const fs = require('fs');
-const env = require('../../env');
 const { removeDir, makeDir } = require('../../utils');
 const { CACHE_DIR_PATH } = require('../../global');
 
@@ -14,7 +14,7 @@ describe('Test screenshot feature', function () {
 
   it('should screenshot website with intro animation', async function () {
     jest.setTimeout(30000);
-    const metaService = MetaService({ imageService });
+    const metaService = MetaService({ imageService: MockImageService() });
 
     const out = path.join(CACHE_DIR_PATH, 'uix.png');
     await metaService.screenshotWebsite('https://uix.me/', out);
@@ -28,15 +28,15 @@ describe('Test metadata processing flow', function () {
   afterAll(async () => await removeDir(CACHE_DIR_PATH));
   beforeAll(async () => {
     require('dotenv').config({ path: path.join(__dirname, '..', '..', '..', '.env.development') })
-    await imageService.init(
-      process.env.CLOUDINARY_CLOUD_NAME,
-      process.env.CLOUDINARY_API_KEY,
-      process.env.CLOUDINARY_API_SECRET,
-    );
   });
 
   it('should process metadata for website', async function () {
     jest.setTimeout(30000);
+    const imageService = ImageService({
+      cloudName: process.env.CLOUDINARY_CLOUD_NAME,
+      apiKey: process.env.CLOUDINARY_API_KEY,
+      apiSecret: process.env.CLOUDINARY_API_SECRET
+    });
     const metaService = MetaService({ imageService });
     const result = await metaService.getMetadata('https://reactnative.dev/');
     expect(typeof result.website.screenshot === 'string').toBeTruthy();

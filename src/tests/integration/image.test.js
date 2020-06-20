@@ -1,5 +1,5 @@
 const { describe, expect, it } = require("@jest/globals");
-const imageService = require('../../services/image');
+const ImageService = require('../../services/image');
 const path = require('path');
 
 describe('Image service tests', function () {
@@ -7,14 +7,15 @@ describe('Image service tests', function () {
   beforeAll(async () => {
     require('dotenv').config({ path: path.join(__dirname, '..', '..', '..', '.env.development') })
     jest.setTimeout(20000);
-    await imageService.init(
-      process.env.CLOUDINARY_CLOUD_NAME,
-      process.env.CLOUDINARY_API_KEY,
-      process.env.CLOUDINARY_API_SECRET,
-    );
   });
 
   it('should upload and remove image', async function () {
+    const imageService = ImageService({
+      cloudName: process.env.CLOUDINARY_CLOUD_NAME,
+      apiKey: process.env.CLOUDINARY_API_KEY,
+      apiSecret: process.env.CLOUDINARY_API_SECRET
+    });
+
     const dogImagePath = path.join(__dirname, '..', 'data', 'dog.jpg');
     const uploadRes = await imageService.upload(dogImagePath, 'dog');
 

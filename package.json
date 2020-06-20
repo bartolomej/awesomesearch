@@ -8,6 +8,8 @@
   },
   "scripts": {
     "test": "jest",
+    "test:load:staging": "yarn run start:web:dev && artillery run -e staging src/tests/load.yml ",
+    "test:load:production": "yarn run start:web:dev && artillery run -e production src/tests/load.yml ",
     "start": "NODE_ENV=production ENV_PATH=.env.production nf start",
     "start:dev": "NODE_ENV=development ENV_PATH=.env.development nf start",
     "start:web:dev": "NODE_ENV=development ENV_PATH=.env.development nodemon src/web/index.js",
@@ -18,7 +20,9 @@
     "coverage:web": "npm run coverage && open coverage/lcov-report/index.html",
     "repo-graph-ddot": "depcruise --exclude \"^node_modules\" --output-type ddot src | dot -T svg > graph.ddot.svg",
     "repo-graph-dot": "depcruise --exclude \"^node_modules\" --output-type dot src | dot -T svg > graph.dot.svg",
-    "count-lines": "find ./src -name '*.js' -not -path \"./src/tests*\" | xargs wc -l | sort -nr"
+    "loc:src": "find ./src -name '*.js' -not -path \"./src/tests*\" | xargs wc -l | sort -nr",
+    "loc:tests": "find ./src/tests -name '*.js' | xargs wc -l | sort -nr",
+    "loc": "find ./src -name '*.js' | xargs wc -l | sort -nr"
   },
   "repository": {
     "type": "git",

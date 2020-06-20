@@ -1,45 +1,12 @@
 const { describe, expect, it } = require("@jest/globals");
 const WebService = require('../../web/service');
+const MockQueue = require('../mocks/queue');
 const memoryDb = require('../../web/repos/memorydb');
 const Repository = require('../../models/repository');
 const Website = require('../../models/website');
 const List = require('../../models/list');
 const Link = require('../../models/link');
 
-function MockQueue () {
-  let completedCb;
-  let jobs = {};
-  let queuedJobs = [];
-
-  function on (name, cb) {
-    if (name === 'global:completed') {
-      completedCb = cb;
-    }
-  }
-
-  async function add (name, data) {
-    queuedJobs.push({ name, data });
-  }
-
-  async function getJob (id) {
-    return jobs[id];
-  }
-
-  function _getQueuedJobs () {
-    return queuedJobs;
-  }
-
-  function _setJob (id, job) {
-    jobs[id] = job;
-  }
-
-  async function _completeJob (id, result) {
-    // mock completed job
-    await completedCb(id, result);
-  }
-
-  return { on, _completeJob, _setJob, getJob, add, _getQueuedJobs }
-}
 
 /**
  * Each test case initializes web service with mocked dependencies.

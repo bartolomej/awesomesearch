@@ -44,6 +44,7 @@ To start both processes in production just run `npm start`.
 </div>
 
 ## Some libraries used
+
 - [flexsearch](https://github.com/nextapps-de/flexsearch) - Next-Generation full text search library for Browser and Node.js
 - [bull](https://github.com/OptimalBits/bull) - Premium Queue package for handling distributed jobs and messages in NodeJS
 - [typeorm](https://typeorm.io/) - ORM for TypeScript and JavaScript
@@ -61,3 +62,7 @@ To start both processes in production just run `npm start`.
 - `yarn start` - start server in production environment
 - `yarn start:dev` - start server in development environment
 - `node src/scripts/link.js <website-url>` - process website (outputs metadata to `/out`).
+
+## Testing
+
+https://artillery.io/docs/

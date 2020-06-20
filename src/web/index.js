@@ -6,16 +6,16 @@ const OpenRoutes = require('./routes/open');
 const AdminRoutes = require('./routes/admin');
 const WebService = require('./service');
 const memoryRepository = require('./repos/memorydb');
-const linkRepository = require('./repos/link');
-const listRepository = require('./repos/list');
+const LinkRepository = require('./repos/link');
+const ListRepository = require('./repos/list');
 const Queue = require('../queue');
 const typeorm = require('./typeorm');
 const logger = require('../logger')('web-index');
 const { execute } = require('../utils');
 
 async function start () {
-  const listRepositoryDb = env.USE_MEMORY_DB ? memoryRepository() : listRepository;
-  const linkRepositoryDb = env.USE_MEMORY_DB ? memoryRepository() : linkRepository;
+  const listRepository = env.USE_MEMORY_DB ? memoryRepository() : ListRepository;
+  const linkRepository = env.USE_MEMORY_DB ? memoryRepository() : LinkRepository;
 
   if (!env.USE_MEMORY_DB) {
     try {
@@ -28,8 +28,8 @@ async function start () {
 
   // inject required dependencies
   const webService = WebService({
-    listRepository: listRepositoryDb,
-    linkRepository: linkRepositoryDb,
+    listRepository,
+    linkRepository,
     workQueue: Queue('work')
   });
 
@@ -43,8 +43,8 @@ async function start () {
     await require('./server')([
       OpenRoutes({
         webService,
-        linkRepository: linkRepositoryDb,
-        listRepository: listRepositoryDb
+        linkRepository,
+        listRepository
       }),
       AdminRoutes()
     ]);
@@ -73,9 +73,9 @@ throng({
 // handle critical uncaught errors
 
 process.on('unhandledRejection', (reason, promise) => {
-  logger.error('Uncaught promise rejection', reason, promise);
+  logger.error('Uncaught promise rejection: ' + reason);
 });
 
 process.on('uncaughtException', (err, origin) => {
-  logger.error('Uncaught exception', err, origin);
+  logger.error('Uncaught exception' + err + origin);
 });
