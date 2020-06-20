@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import { ThemeProvider } from 'emotion-theming';
 import theme from '../style/theme';
 import "../style/index.css";
-import { Link1 } from "../style/ui";
+import { LinkCss } from "../style/ui";
 
 
 const Layout = ({ children }) => (
@@ -48,7 +48,7 @@ const Footer = styled.footer`
   a {
     margin: 0 4px;
     padding: 2px 2px;
-    ${p => Link1(
+    ${p => LinkCss(
       p.theme.color.red,
       p.theme.color.red,
       p.theme.color.red,
@@ -61,7 +61,7 @@ const Link = styled(GLink)`
   color: ${p => p.theme.color.white};
   margin-right: 20px;
   padding: 5px !important;
-  ${p => Link1(
+  ${p => LinkCss(
     p.theme.color.red,
     p.theme.color.red,
     p.theme.color.red,

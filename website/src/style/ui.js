@@ -2,7 +2,7 @@ import { css } from '@emotion/core';
 import theme from "./theme";
 
 
-export const Link1 = (bg0, bg1, txt0, txt1) => css`
+export const LinkCss = (bg0, bg1, txt0, txt1) => css`
   text-decoration: none;
   // horizontal offset | vertical offset | blur radius | spread radius | color
   box-shadow: inset 0 -2px 0 ${bg0};
@@ -15,13 +15,13 @@ export const Link1 = (bg0, bg1, txt0, txt1) => css`
   }
 `;
 
-export const Button = css`
+export const ButtonCss = css`
   padding: 12px 20px;
   background: ${theme.color.red};
   color: ${theme.color.white};
   border-radius: 8px !important;
   font-size: ${theme.size(0.9)};
-  ${Link1(
+  ${LinkCss(
     theme.color.red,
     theme.color.amaranth,
     theme.color.white,
@@ -33,4 +33,11 @@ export const Button = css`
   &:active {
     transform: scale(1.1);
   }
+`;
+
+export const SubtitleCss = css` 
+  font-size: 2.2em;
+  text-align: center;
+  z-index: 2;
+  color: ${theme.color.red};
 `;

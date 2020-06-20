@@ -13,9 +13,10 @@ import { useInView } from "react-intersection-observer";
 import UseAnimations from "react-useanimations";
 import Modal from "../components/modal";
 import { getAllLists, getList } from "../store/api";
-import { Button, Link1 } from "../style/ui";
+import { ButtonCss, LinkCss, SubtitleCss } from "../style/ui";
 import Description from "../components/description";
 import theme from "../style/theme";
+import Animation from "../components/animation";
 
 
 const IndexPage = ({ results, suggestions, search, suggest, loading, nextPage, nextPageIndex, query, error }) => {
@@ -78,6 +79,9 @@ const IndexPage = ({ results, suggestions, search, suggest, loading, nextPage, n
         </Modal>
       )}
       <Header>
+        <AnimationWrapper>
+          <Animation color={'#FECEA890'} />
+        </AnimationWrapper>
         <Logo/>
         <Title>Search <span>21600</span> links from <a target="_blank" href="https://awesome.re">awesome</a></Title>
         <SearchField
@@ -109,30 +113,44 @@ const IndexPage = ({ results, suggestions, search, suggest, loading, nextPage, n
           </MessageWrapper>
         )}
         {(results.length === 0 && query.length === 0 && !error) && (
-          lists.map((r, i) => (
-            <Result
-              onSourceClick={uid => setShowSource(uid)}
-              title={r.title}
-              url={r.url}
-              description={r.description}
-              screenshot={r.screenshot_url || r.image_url}
-              source={r.source}
-              emojis={r.emojis}
-            />
-          ))
+          <>
+            <Subtitle>Browse lists</Subtitle>
+            <ResultsWrapper>
+              {lists.map((r, i) => (
+                <Result
+                  uid={r.uid}
+                  onSourceClick={uid => setShowSource(uid)}
+                  innerRef={i === results.length - 5 ? ref : null}
+                  title={r.title}
+                  url={r.url}
+                  type={r.object_type}
+                  description={r.description}
+                  screenshot={r.screenshot_url || r.image_url}
+                  source={r.source}
+                  emojis={r.emojis}
+                />
+              ))}
+            </ResultsWrapper>
+          </>
         )}
-        {results.map((r, i) => (
-          <Result
-            onSourceClick={uid => setShowSource(uid)}
-            innerRef={i === results.length - 5 ? ref : null}
-            title={r.title}
-            url={r.url}
-            description={r.description}
-            screenshot={r.screenshot_url || r.image_url}
-            source={r.source}
-            emojis={r.emojis}
-          />
-        ))}
+        {results.length > 0 && (
+          <ResultsWrapper>
+            {results.map((r, i) => (
+              <Result
+                uid={r.uid}
+                onSourceClick={uid => setShowSource(uid)}
+                innerRef={i === results.length - 5 ? ref : null}
+                title={r.title}
+                url={r.url}
+                type={r.object_type}
+                description={r.description}
+                screenshot={r.screenshot_url || r.image_url}
+                source={r.source}
+                emojis={r.emojis}
+              />
+            ))}
+          </ResultsWrapper>
+        )}
       </Body>
     </Layout>
   )
@@ -146,21 +164,19 @@ function RepoView ({ title, description, stars, forks, links, url, tags, image, 
     align-items: center;
   `;
 
-  const Title = styled.h3` 
-    font-size: 2.2em;
-    text-align: center;
-    color: ${p => p.theme.color.red};
-  `;
-
   const Link = styled.a`
     display: block;
     width: 100px;
     margin: 15px;
-    ${Button};
+    ${ButtonCss};
   `;
 
   const StatsWrapper = styled.div`
     display: flex;
+  `;
+
+  const Subtitle = styled.h3`
+    ${SubtitleCss}
   `;
 
   const StatsElement = styled.div`
@@ -171,7 +187,7 @@ function RepoView ({ title, description, stars, forks, links, url, tags, image, 
 
   return (
     <Container>
-      <Title>{formatTitle(title)}</Title>
+      <Subtitle>{formatTitle(title)}</Subtitle>
       <StatsWrapper>
         <StatsElement>
           <strong>{links}</strong>
@@ -218,25 +234,34 @@ const Header = styled.header`
   background: ${p => p.theme.color.dark};
 `;
 
+const AnimationWrapper = styled.div`
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+`;
+
 const Title = styled.p`
   font-size: ${p => p.theme.size(1.8)};
   color: ${p => p.theme.color.white};
   margin-top: 10px;
   margin-bottom: 30px;
+  z-index: 1;
   & > span {
     color: ${p => p.theme.color.red};
   }
   & > a {
     padding: 0 2px;
-    ${p => Link1(
-  p.theme.color.red,
-  p.theme.color.red,
-  p.theme.color.red,
-  p.theme.color.white
-)};
+    ${p => LinkCss(
+      p.theme.color.red,
+      p.theme.color.red,
+      p.theme.color.red,
+      p.theme.color.white
+    )};
   }
   @media (max-width: 700px) {
-    font-size: ${p => p.theme.size(1.4)};
+    font-size: ${p => p.theme.size(1)};
     text-align: center;
     width: 90%;
     margin-bottom: 10px;
@@ -244,13 +269,19 @@ const Title = styled.p`
   }
 `;
 
+const Subtitle = styled.h3`
+  ${SubtitleCss};
+  margin-top: 2.4em;
+`;
+
 const Logo = styled(logo)`
   margin: 20px;
   width: 120px;
   height: 120px;
+  z-index: 1;
   @media (max-width: 700px) {
     height: 70px;
-    margin: 5px;
+    margin: 10px;
   }
 `;
 
@@ -276,13 +307,15 @@ const MessageWrapper = styled.div`
   }
 `;
 
-const Body = styled.div`
+const Body = styled.div``
+
+const ResultsWrapper = styled.div`
   min-height: 60vh;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-evenly;
-  margin: 50px auto;
+  margin: 80px auto;
   width: 80%;
   position: relative;
 `;

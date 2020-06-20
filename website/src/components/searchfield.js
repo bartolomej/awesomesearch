@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import searchIcon from '../assets/search.svg';
-import { Button } from "../style/ui";
+import { ButtonCss } from "../style/ui";
 
 
 const SearchField = ({ placeholder, onChange, onSubmit, suggestions }) => {
@@ -127,7 +127,7 @@ const Field = styled.input`
 `;
 
 const Submit = styled.button`
-  ${Button}
+  ${ButtonCss}
 `;
 
 const SuggestionContainer = styled.div`

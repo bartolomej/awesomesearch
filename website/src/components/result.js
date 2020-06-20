@@ -1,26 +1,37 @@
 import React from "react";
 import styled from "@emotion/styled";
+import { css } from '@emotion/core';
 import Image, { Shimmer } from 'react-shimmer'
 import Description from "./description";
-import { Link1 } from "../style/ui";
+import { LinkCss } from "../style/ui";
 
 
-function Result ({ innerRef, title, description, screenshot, source, url, type, emojis, onSourceClick }) {
+function Result ({ uid, innerRef, title, description, screenshot, source, url, type, emojis, onSourceClick }) {
+
+  const previewImage = (
+    <Image
+      src={screenshot}
+      fallback={<Shimmer width={300} height={230}/>}
+      NativeImgProps={{
+        style: {
+          objectFit: "cover",
+          width: "100%",
+        }
+      }}
+    />
+  );
 
   return (
     <Container ref={innerRef}>
-      <PreviewWrapper href={url}>
-        <Image
-          src={screenshot}
-          fallback={<Shimmer width={300} height={230}/>}
-          NativeImgProps={{
-            style: {
-              objectFit: "cover",
-              maxWidth: "100%",
-            }
-          }}
-        />
-      </PreviewWrapper>
+      {type === 'list' ? (
+        <ButtonWrapper onClick={() => onSourceClick(uid)}>
+          {previewImage}
+        </ButtonWrapper>
+      ) : (
+        <LinkWrapper href={url}>
+          {previewImage}
+        </LinkWrapper>
+      )}
       <TextWrapper>
         <Title>{title}</Title>
         <Description
@@ -42,14 +53,14 @@ function Result ({ innerRef, title, description, screenshot, source, url, type, 
 
 const Container = styled.div`
   width: 300px;
-  min-height: 400px;
+  max-height: 400px;
   margin: 0 20px 50px 20px;
   @media (max-width: 700px) {
     margin: 0 0 50px 0;
   }
 `;
 
-const PreviewWrapper = styled.a`
+const LinkStyle = css`
   width: 300px;
   height: 231px;
   border-radius: 8px;
@@ -62,7 +73,11 @@ const PreviewWrapper = styled.a`
     transform: translateY(-0.25rem);
     box-shadow: rgba(46, 41, 51, 0.08) 0px 4px 8px, rgba(71, 63, 79, 0.16) 0px 8px 16px;
   }
-`;
+`
+
+const ButtonWrapper = styled.button`${LinkStyle}`;
+
+const LinkWrapper = styled.a`${LinkStyle}`;
 
 const TextWrapper = styled.div``;
 
@@ -84,12 +99,12 @@ const SourceWrapper = styled.div`
   button {
     margin-left: 4px;
     padding: 3px;
-    ${p => Link1(
-      p.theme.color.red,
-      p.theme.color.red,
-      p.theme.color.red,
-      p.theme.color.white
-    )};
+    ${p => LinkCss(
+  p.theme.color.red,
+  p.theme.color.red,
+  p.theme.color.red,
+  p.theme.color.white
+)};
   }
 `;
 

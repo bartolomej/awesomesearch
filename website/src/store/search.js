@@ -68,7 +68,16 @@ const search = dispatch => query => {
   dispatch(store.actions.searchPending(query));
   api.search(query)
     .then(res => dispatch(store.actions.searchSuccess(res)))
-    .catch(error => dispatch(store.actions.searchFailed(error)))
+    .catch(error => {
+      if (error.message === 'Query param required') {
+        // recognise as successful query with empty result
+        dispatch(store.actions.searchSuccess({
+          page: 0, next: null, result: []
+        }));
+      } else {
+        dispatch(store.actions.searchFailed(error));
+      }
+    })
 }
 
 const nextPage = dispatch => (query, pageIndex) => {
