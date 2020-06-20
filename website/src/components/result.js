@@ -2,10 +2,10 @@ import React from "react";
 import styled from "@emotion/styled";
 import Image, { Shimmer } from 'react-shimmer'
 import Description from "./description";
-import { LinkCss } from "../style/ui";
+import { Link1 } from "../style/ui";
 
 
-function Result ({ innerRef, title, description, screenshot, source, url, type, emojis }) {
+function Result ({ innerRef, title, description, screenshot, source, url, type, emojis, onSourceClick }) {
 
   return (
     <Container ref={innerRef}>
@@ -28,8 +28,10 @@ function Result ({ innerRef, title, description, screenshot, source, url, type, 
           emojis={emojis}
         />
         <SourceWrapper>
-          <img src={source.image_url} alt={source.uid}/>
-          <a href={`https://github.com/${source.uid.replace('.', '/')}`}>{source.title}</a>
+          <a href={`https://github.com/${source.uid.split('.')[0]}`}>
+            <img src={source.image_url} alt={'List author'}/>
+          </a>
+          <button onClick={() => onSourceClick(source.uid)}>{source.title}</button>
         </SourceWrapper>
       </TextWrapper>
     </Container>
@@ -51,7 +53,7 @@ const PreviewWrapper = styled.a`
   border-radius: 8px;
   overflow: hidden;
   margin-bottom: 10px;
-  display: block;
+  display: flex;
   box-shadow: rgba(46, 41, 51, 0.08) 0px 1px 2px, rgba(71, 63, 79, 0.08) 0px 2px 4px;
   transition: all 250ms cubic-bezier(0.4, 0, 0.2, 1) 0s;
   &:hover {
@@ -71,11 +73,17 @@ const SourceWrapper = styled.div`
     height: 30px;
     border-radius: 50%;
   }
-  a {
+  a:first-child {
+    transition: 0.2s all ease-in-out;
+  }
+  a:first-child:hover {
+    transform: scale(1.1);
+  }
+  button {
     margin-left: 4px;
-    padding: 5px;
-    ${p => LinkCss(
-      'transparent',
+    padding: 3px;
+    ${p => Link1(
+      p.theme.color.red,
       p.theme.color.red,
       p.theme.color.red,
       p.theme.color.white

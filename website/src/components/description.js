@@ -5,10 +5,10 @@ import styled from "@emotion/styled";
 /**
  * This component replaces github :<emoji-name>: syntax with emoji images.
  */
-function Description ({ text, emojis, maxLength = 80 }) {
+function Description ({ text, emojis, maxLength = 80, color }) {
 
   return (
-    <Container dangerouslySetInnerHTML={{
+    <Container c={color} dangerouslySetInnerHTML={{
       __html: insertEmojis(formatDesc(text, maxLength), emojis)
     }}/>
   )
@@ -21,9 +21,9 @@ function insertEmojis (text, emojis) {
   return text;
 }
 
-function formatDesc (text, l) {
+function formatDesc (text, l = null) {
   if (text) {
-    return text.length > l
+    return (l && text.length > l)
       ? `${text.substring(0, l)}...`
       : text
   } else {
@@ -32,7 +32,7 @@ function formatDesc (text, l) {
 }
 
 const Container = styled.p`
-  color: ${p => p.theme.opacity(p.theme.color.dark, 80)};
+  color: ${p => p.c || p.theme.opacity(p.theme.color.dark, 80)};
   font-weight: normal;
   margin-top: 10px;
   img {

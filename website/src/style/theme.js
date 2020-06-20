@@ -7,6 +7,7 @@ const color = {
   dark: '#2A363B',
   orange: '#FF847C',
   red: '#E84A5F',
+  amaranth: '#ee0e51',
   gold: '#FECEA8',
   white: 'white'
 };

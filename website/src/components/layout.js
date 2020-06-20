@@ -5,7 +5,7 @@ import styled from '@emotion/styled';
 import { ThemeProvider } from 'emotion-theming';
 import theme from '../style/theme';
 import "../style/index.css";
-import { LinkCss } from "../style/ui";
+import { Link1 } from "../style/ui";
 
 
 const Layout = ({ children }) => (
@@ -17,7 +17,6 @@ const Layout = ({ children }) => (
       {children}
       <Footer>
         © {new Date().getFullYear()}, Built with
-        {` `}
         <a href="https://www.gatsbyjs.org">Gatsby</a>
       </Footer>
     </Container>
@@ -40,24 +39,33 @@ const Navigation = styled.nav`
 `;
 
 const Footer = styled.footer`
-  min-height: 40vh;
+  min-height: 30vh;
   display: flex;
   align-items: center;
   justify-content: center;
+  color: ${p => p.theme.color.light};
   background: ${p => p.theme.color.dark};
+  a {
+    padding: 2px 3px;
+    ${p => Link1(
+      p.theme.color.red,
+      p.theme.color.red,
+      p.theme.color.red,
+      p.theme.color.white
+    )};
+  }
 `;
 
 const Link = styled(GLink)`
   color: ${p => p.theme.color.white};
   margin-right: 20px;
-  border-radius: 10px !important;
-  padding: 8px 10px !important;
-  ${p => LinkCss(
-  'transparent',
-  p.theme.color.red,
-  p.theme.color.red,
-  p.theme.color.white
-)};
+  padding: 5px !important;
+  ${p => Link1(
+    p.theme.color.red,
+    p.theme.color.red,
+    p.theme.color.red,
+    p.theme.color.white
+  )};
 `;
 
 Layout.propTypes = {

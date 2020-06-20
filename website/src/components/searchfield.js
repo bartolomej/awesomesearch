@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import searchIcon from '../assets/search.svg';
-import { LinkCss } from "../style/ui";
+import { Button, Link1 } from "../style/ui";
 
 
 const SearchField = ({ placeholder, onChange, onSubmit, suggestions }) => {
@@ -127,21 +127,8 @@ const Field = styled.input`
 `;
 
 const Submit = styled.button`
-  padding: 12px 20px;
-  background: ${p => p.theme.color.red};
-  color: ${p => p.theme.color.white};
-  border-radius: 8px !important;
-  font-size: ${p => p.theme.size(0.9)};
-  ${p => LinkCss(
-    p.theme.color.red,
-    p.theme.color.gold,
-    p.theme.color.white,
-    p.theme.color.white
-  )};
-  &:active {
-    transform: scale(1.1);
-  }
-`
+  ${Button}
+`;
 
 const SuggestionContainer = styled.div`
   position: absolute;

@@ -3,28 +3,23 @@ import styled from '@emotion/styled';
 import Layout from '../components/layout';
 import SEO from '../components/seo';
 import SearchField from "../components/searchfield";
-import Glasses from '../assets/glasses.svg';
+import logo from '../assets/logo.svg';
 import { connect } from "react-redux";
 import search from "../store/search";
 import Result from "../components/result";
 import { useInView } from "react-intersection-observer";
 import UseAnimations from "react-useanimations";
-// icons
-import line from '../assets/line.svg';
-import triangle from '../assets/triangle.svg';
-import circle from '../assets/circle.svg';
+import Modal from "../components/modal";
+import { getList } from "../store/api";
+import { Button, Link1 } from "../style/ui";
+import Description from "../components/description";
+import theme from "../style/theme";
 
-const nShapes = 20;
+
 const IndexPage = ({ results, suggestions, search, suggest, loading, nextPage, nextPageIndex }) => {
   const [ref, inView, entry] = useInView({ threshold: 0 });
-  const [w, setW] = useState(0);
-  const [h, setH] = useState(0);
-  const headerRef = React.createRef();
-
-  useEffect(() => {
-    setW(headerRef.current.clientWidth);
-    setH(headerRef.current.clientHeight - 50);
-  }, [headerRef])
+  const [showSource, setShowSource] = useState(null);
+  const [repo, setRepo] = useState(null);
 
   useEffect(() => {
     if (inView === true) {
@@ -32,27 +27,45 @@ const IndexPage = ({ results, suggestions, search, suggest, loading, nextPage, n
     }
   }, [inView]);
 
+  useEffect(() => {
+    if (showSource) {
+      getList(showSource).then(setRepo);
+    }
+  }, [showSource])
+
   return (
     <Layout>
       <SEO
         title="Home"
         keywords={[`awesome`, `awesome-list`, `search`, `resources`, `learning`]}
       />
-      <Header ref={headerRef}>
-        {/*{new Array(nShapes).fill(0).map((e, i) => {*/}
-        {/*  if (i % 2 === 0) {*/}
-        {/*    const S = Shape(line);*/}
-        {/*    return <S x={Math.random() * w} y={Math.random() * h}/>;*/}
-        {/*  } else if (i % 3 === 0) {*/}
-        {/*    const S = Shape(circle);*/}
-        {/*    return <S x={Math.random() * w} y={Math.random() * h}/>;*/}
-        {/*  } else {*/}
-        {/*    const S = Shape(triangle);*/}
-        {/*    return <S x={Math.random() * w} y={Math.random() * h}/>;*/}
-        {/*  }*/}
-        {/*})}*/}
+      {showSource && (
+        <Modal onClose={() => setShowSource(null)}>
+          {!repo && (
+            <LoadingWrapper>
+              <UseAnimations
+                animationKey="infinity"
+                size={150}
+              />
+            </LoadingWrapper>
+          )}
+          {repo && (
+            <RepoView
+              url={repo.url}
+              image={repo.image_url}
+              tags={repo.tags}
+              stars={repo.stars}
+              forks={repo.forks}
+              title={repo.title}
+              description={repo.description}
+              emojis={repo.emojis}
+            />
+          )}
+        </Modal>
+      )}
+      <Header>
         <Logo/>
-        <Title>Search <span>21600</span> links in <span>205</span> awesome lists</Title>
+        <Title>Search <span>21600</span> links from <a target="_blank" href="https://awesome.re">awesome</a></Title>
         <SearchField
           onChange={q => suggest(q)}
           onSubmit={q => search(q)}
@@ -71,11 +84,12 @@ const IndexPage = ({ results, suggestions, search, suggest, loading, nextPage, n
         )}
         {results.map((r, i) => (
           <Result
+            onSourceClick={uid => setShowSource(uid)}
             innerRef={i === results.length - 5 ? ref : null}
             title={r.title}
             url={r.url}
             description={r.description}
-            screenshot={r.screenshot_url}
+            screenshot={r.screenshot_url || r.image_url}
             source={r.source}
             emojis={r.emojis}
           />
@@ -84,6 +98,75 @@ const IndexPage = ({ results, suggestions, search, suggest, loading, nextPage, n
     </Layout>
   )
 };
+
+function RepoView ({ title, description, stars, forks, links, url, tags, image, emojis }) {
+
+  const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  `;
+
+  const Title = styled.h3` 
+    font-size: 2.2em;
+    text-align: center;
+    color: ${p => p.theme.color.red};
+  `;
+
+  const Link = styled.a`
+    display: block;
+    width: 100px;
+    margin: 15px;
+    ${Button};
+  `;
+
+  const StatsWrapper = styled.div`
+    display: flex;
+  `;
+
+  const StatsElement = styled.div`
+    display: flex;
+    flex-direction: column;
+    margin: 10px 20px;
+  `;
+
+  return (
+    <Container>
+      <Title>{formatTitle(title)}</Title>
+      <StatsWrapper>
+        <StatsElement>
+          <strong>{links}</strong>
+          <span>links</span>
+        </StatsElement>
+        <StatsElement>
+          <strong>{stars}</strong>
+          <span>stars</span>
+        </StatsElement>
+        <StatsElement>
+          <strong>{forks}</strong>
+          <span>forks</span>
+        </StatsElement>
+      </StatsWrapper>
+      <Description
+        color={theme.color.dark}
+        text={description}
+        emojis={emojis}
+        maxLength={null}
+      />
+      <Link target="_blank" href={url}>
+        Go to Github
+      </Link>
+    </Container>
+  )
+}
+
+function formatTitle (text) {
+  return text
+    .replace('-', ' ')
+    .split(' ')
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(' ');
+}
 
 const Header = styled.header`
   width: 100vw;
@@ -97,30 +180,39 @@ const Header = styled.header`
 `;
 
 const Title = styled.p`
-  font-size: ${p => p.theme.size(2)};
+  font-size: ${p => p.theme.size(1.8)};
   color: ${p => p.theme.color.white};
   margin-top: 10px;
   margin-bottom: 30px;
   & > span {
     color: ${p => p.theme.color.red};
   }
+  & > a {
+    padding: 0 2px;
+    ${p => Link1(
+      p.theme.color.red,
+      p.theme.color.red,
+      p.theme.color.red,
+      p.theme.color.white
+    )};
+  }
   @media (max-width: 700px) {
     font-size: ${p => p.theme.size(1.4)};
     text-align: center;
     width: 90%;
+    margin-bottom: 10px;
+    margin-top: 5px;
   }
 `;
 
-const Logo = styled(Glasses)`
+const Logo = styled(logo)`
   margin: 20px;
-`;
-
-const Shape = shape => styled(shape)`
-  position: absolute;
-  left: ${props => props.x}px;
-  top: ${props => props.y}px;
-  opacity: ${Math.random() * 100}%;
-  transform: rotate(${Math.random() * 90}deg);
+  width: 120px;
+  height: 120px;
+  @media (max-width: 700px) {
+    height: 70px;
+    margin: 5px;
+  }
 `;
 
 const Body = styled.div`
@@ -140,6 +232,7 @@ const LoadingWrapper = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
+  z-index: 11;
   display: flex;
   justify-content: center;
   backdrop-filter: blur(7px);
@@ -170,4 +263,3 @@ export default connect(
   mapStateToProps,
   mapDispatchToProps,
 )(IndexPage);
-
