@@ -51,7 +51,7 @@ class SmallStats extends React.Component {
                 isplay: false,
                 // Avoid getting the graph line cut of at the top of the canvas.
                 // Chart.js bug link: https://github.com/chartjs/Chart.js/issues/4790
-                suggestedMax: Math.max(...this.props.chartData[0].data) + 1
+                suggestedMax: this.props.chartData[0] ? (Math.max(...this.props.chartData[0].data) + 1) : 0
               }
             }
           ]
@@ -59,6 +59,7 @@ class SmallStats extends React.Component {
       },
       ...this.props.chartOptions
     };
+
 
     const chartConfig = {
       ...{
@@ -76,7 +77,9 @@ class SmallStats extends React.Component {
       ...this.props.chartConfig
     };
 
-    new Chart(this.canvasRef.current, chartConfig);
+    if (this.props.chartData) {
+      new Chart(this.canvasRef.current, chartConfig);
+    }
   }
 
   render() {
@@ -124,7 +127,6 @@ class SmallStats extends React.Component {
     );
 
     const canvasHeight = variation === "1" ? 120 : 60;
-
     return (
       <Card small className={cardClasses}>
         <CardBody className={cardBodyClasses}>
@@ -133,9 +135,11 @@ class SmallStats extends React.Component {
               <span className={labelClasses}>{label}</span>
               <h6 className={valueClasses}>{value}</h6>
             </div>
-            <div className={innerDataFieldClasses}>
-              <span className={percentageClasses}>{percentage}</span>
-            </div>
+            {percentage && (
+              <div className={innerDataFieldClasses}>
+                <span className={percentageClasses}>{percentage}</span>
+              </div>
+            )}
           </div>
           <canvas
             height={canvasHeight}
@@ -189,7 +193,7 @@ SmallStats.propTypes = {
 
 SmallStats.defaultProps = {
   increase: true,
-  percentage: 0,
+  percentage: null,
   value: 0,
   label: "Label",
   chartOptions: Object.create(null),

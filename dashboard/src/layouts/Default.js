@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Container, Row, Col } from "shards-react";
 
-import MainSidebar from "../components/layout/MainSidebar/MainSidebar";
+import MainSidebar from "../components/sidebar/MainSidebar";
 
 const DefaultLayout = ({ children, noNavbar, noFooter }) => (
   <Container fluid>

@@ -1,5 +1,6 @@
-<h1 align="center" style="border-bottom: none !important; margin-bottom: 5px !important;"><a href="https://designrevision.com/downloads/shards-dashboard-lite-react/">AwesomeSearch Dashboard</a></h1>
+![](./public/banner.png)
 
+A lightweight dashboard for [awesomesearch.api](https://github.com/bartolomej/awesomesearch.api).
 Made with [shards-dashboard-react](https://github.com/DesignRevision/shards-dashboard-react) template.
 
 ### Built using

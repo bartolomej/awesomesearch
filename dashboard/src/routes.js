@@ -7,8 +7,7 @@ import { DefaultLayout } from "./layouts";
 // Route Views
 import Overview from "./views/Overview";
 import CreateJob from "./views/CreateJob";
-import Data from "./views/Data";
-import BlogPosts from "./views/BlogPosts";
+import Lists from "./views/Lists";
 
 export default [
   {
@@ -28,13 +27,8 @@ export default [
     component: CreateJob
   },
   {
-    path: "/data",
+    path: "/lists",
     layout: DefaultLayout,
-    component: Data
+    component: Lists
   },
-  {
-    path: "/blog-posts",
-    layout: DefaultLayout,
-    component: BlogPosts
-  }
 ];
