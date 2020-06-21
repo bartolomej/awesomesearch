@@ -9,29 +9,25 @@ async function request (path) {
 }
 
 export function search (query, page = 0, limit = 20) {
-  return request(`/search?q=${query}&p=${page}&limit=${limit}`)
+  return request(`/search?q=${query}&page=${page}&limit=${limit}`)
 }
 
 export function suggest (query, page = 0) {
-  return request(`/suggest?q=${query}&p=${page}`)
-}
-
-export function getRandomObjects (n = 10) {
-  return request(`/random?n=${n}`)
+  return request(`/suggest?q=${query}&page=${page}`)
 }
 
 export function getStats () {
   return request(`/stats`)
 }
 
-export function getAllLists () {
-  return request(`/list`);
+export function getAllLists (page = 0, limit = 20) {
+  return request(`/list?page=${page}&limit=${limit}`);
 }
 
 export function getList (uid) {
   return request(`/list/${uid}`);
 }
 
-export function getLinks (listUid, page = 0) {
-  return request(`/list/${listUid}/link?page=${page}`);
+export function getLinks (listUid, page = 0, limit = 20) {
+  return request(`/list/${listUid}/link?page=${page}&limit=${limit}`);
 }

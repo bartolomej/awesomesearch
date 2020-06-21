@@ -13,18 +13,33 @@ import Result from "../components/result";
 import { useInView } from "react-intersection-observer";
 import UseAnimations from "react-useanimations";
 import Modal from "../components/modal";
-import { getAllLists, getList, getStats } from "../store/api";
+import { getStats } from "../store/api";
 import { ButtonCss, LinkCss, SubtitleCss } from "../style/ui";
 import Description from "../components/description";
 import theme from "../style/theme";
 import Animation from "../components/animation";
+import lists from "../store/lists";
 
 
-const IndexPage = ({ results, suggestions, search, suggest, loading, nextPage, nextPageIndex, query, error }) => {
+const IndexPage = ({
+  results,
+  suggestions,
+  search,
+  suggest,
+  searchLoading,
+  nextPage,
+  nextPageIndex,
+  query,
+  searchError,
+  listLoading,
+  getAllLists,
+  getSingleList,
+  lists,
+  listInfo,
+  listError
+}) => {
   const [ref, inView, entry] = useInView({ threshold: 0 });
   const [showSource, setShowSource] = useState(null);
-  const [repo, setRepo] = useState(null);
-  const [lists, setLists] = useState([]);
   const [stats, setStats] = useState({});
 
   useEffect(() => {
@@ -35,14 +50,14 @@ const IndexPage = ({ results, suggestions, search, suggest, loading, nextPage, n
 
   useEffect(() => {
     // there was an empty query
-    if (results.length === 0 && query.length === 0) {
-      getAllLists().then(setLists);
+    if (results.length === 0 && query.length === 0 && lists.length === 0) {
+      getAllLists();
     }
   }, [query]);
 
   useEffect(() => {
     if (showSource) {
-      getList(showSource).then(setRepo);
+      getSingleList(showSource);
     }
   }, [showSource])
 
@@ -58,7 +73,7 @@ const IndexPage = ({ results, suggestions, search, suggest, loading, nextPage, n
       />
       {showSource && (
         <Modal onClose={() => setShowSource(null)}>
-          {!repo && (
+          {!listLoading && (
             <LoadingWrapper>
               <UseAnimations
                 animationKey="infinity"
@@ -66,23 +81,23 @@ const IndexPage = ({ results, suggestions, search, suggest, loading, nextPage, n
               />
             </LoadingWrapper>
           )}
-          {repo && (
+          {listInfo && (
             <RepoView
-              url={repo.url}
-              image={repo.image_url}
-              tags={repo.tags}
-              stars={repo.stars}
-              forks={repo.forks}
-              title={repo.title}
-              description={repo.description}
-              emojis={repo.emojis}
+              url={listInfo.url}
+              image={listInfo.image_url}
+              tags={listInfo.tags}
+              stars={listInfo.stars}
+              forks={listInfo.forks}
+              title={listInfo.title}
+              description={listInfo.description}
+              emojis={listInfo.emojis}
             />
           )}
         </Modal>
       )}
       <Header>
         <AnimationWrapper>
-          <Animation color={'#FECEA890'} />
+          <Animation color={'#FECEA890'}/>
         </AnimationWrapper>
         <Logo/>
         <Title>Search <span>{stats.link_count}</span> links from <a target="_blank" href="https://awesome.re">awesome</a></Title>
@@ -94,7 +109,7 @@ const IndexPage = ({ results, suggestions, search, suggest, loading, nextPage, n
         />
       </Header>
       <Body>
-        {loading && (
+        {searchLoading && (
           <LoadingWrapper>
             <UseAnimations
               animationKey="infinity"
@@ -102,19 +117,27 @@ const IndexPage = ({ results, suggestions, search, suggest, loading, nextPage, n
             />
           </LoadingWrapper>
         )}
-        {error && (
+        {(listError && query.length === 0) && (
           <MessageWrapper>
             <ErrorIcon/>
             <strong>Oops!</strong>
+            <span>Failed to load lists because: {listError.message.toLowerCase()}</span>
           </MessageWrapper>
         )}
-        {(results.length === 0 && query.length > 0 && !error) && (
+        {(searchError && query.length > 0) && (
+          <MessageWrapper>
+            <ErrorIcon/>
+            <strong>Oops!</strong>
+            <span>Failed to load search results because: {searchError.message.toLowerCase()}</span>
+          </MessageWrapper>
+        )}
+        {(results.length === 0 && query.length > 0 && !searchError) && (
           <MessageWrapper>
             <NoResultsIcon/>
             <strong>Nothing found here</strong>
           </MessageWrapper>
         )}
-        {(results.length === 0 && query.length === 0 && !error) && (
+        {(results.length === 0 && query.length === 0 && !listError) && (
           <>
             <Subtitle>Browse lists</Subtitle>
             <ResultsWrapper>
@@ -274,11 +297,11 @@ const Title = styled.p`
   & > a {
     padding: 0 2px;
     ${p => LinkCss(
-      p.theme.color.red,
-      p.theme.color.red,
-      p.theme.color.red,
-      p.theme.color.white
-    )};
+  p.theme.color.red,
+  p.theme.color.red,
+  p.theme.color.red,
+  p.theme.color.white
+)};
   }
   @media (max-width: 700px) {
     font-size: ${p => p.theme.size(1)};
@@ -319,7 +342,7 @@ const MessageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 50px 0;
+  padding: 50px 0;
   strong {
     font-size: ${p => p.theme.size(1.6)};
     color: ${p => p.theme.color.dark};
@@ -329,6 +352,7 @@ const MessageWrapper = styled.div`
 
 const Body = styled.div`
   position: relative;
+  min-height: 80vh;
   background: ${p => p.theme.color.light};
 `
 
@@ -366,15 +390,21 @@ const mapStateToProps = state => ({
   nextPageIndex: state.search.nextPage,
   results: state.search.results,
   suggestions: state.search.suggestions,
-  error: state.search.error,
-  loading: state.search.loading,
-  query: state.search.query
+  searchError: state.search.error,
+  searchLoading: state.search.loading,
+  listLoading: state.lists.loading,
+  query: state.search.query,
+  lists: state.lists.results,
+  listInfo: state.lists.result,
+  listError: state.lists.error
 });
 
 const mapDispatchToProps = dispatch => ({
   search: search.search(dispatch),
   suggest: search.suggest(dispatch),
-  nextPage: search.nextPage(dispatch),
+  nextPage: search.nextSearchPage(dispatch),
+  getAllLists: lists.getAllLists(dispatch),
+  getSingleList: lists.getSingle(dispatch)
 })
 
 export default connect(

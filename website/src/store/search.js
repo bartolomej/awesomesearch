@@ -9,13 +9,27 @@ const initialState = {
   currentPage: 0,
   nextPage: null,
   results: [],
+  lists: [],
   suggestions: []
 }
 
+// possibly remove redux and use react-query instead
 const store = createSlice({
   name: 'search',
   initialState,
   reducers: {
+    getListsPending (state) {
+      state.loading = true;
+      state.error = null;
+    },
+    getListsSuccess (state, action) {
+      state.loading = false;
+      state.lists = action.payload;
+    },
+    getListsFailed (state, action) {
+      state.loading = false;
+      state.error = action.payload;
+    },
     suggestPending (state) {
       state.error = null;
     },
@@ -80,10 +94,17 @@ const search = dispatch => query => {
     })
 }
 
-const nextPage = dispatch => (query, next) => {
+const nextSearchPage = dispatch => (query, next) => {
   if (next === null) return;
   dispatch(store.actions.nextPagePending());
   api.search(query, next)
+    .then(res => dispatch(store.actions.nextPageSuccess(res)))
+    .catch(error => dispatch(store.actions.nextPageFailed(error)))
+}
+
+const getAllLists = dispatch => (page) => {
+  dispatch(store.actions.nextPagePending());
+  api.getAllLists()
     .then(res => dispatch(store.actions.nextPageSuccess(res)))
     .catch(error => dispatch(store.actions.nextPageFailed(error)))
 }
@@ -92,5 +113,5 @@ export default {
   reducer: store.reducer,
   suggest,
   search,
-  nextPage
+  nextSearchPage
 }
