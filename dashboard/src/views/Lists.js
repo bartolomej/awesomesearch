@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card, CardBody, CardHeader, Col, Container, Row } from "shards-react";
+import { Card, CardBody, CardHeader, Col, Container, Row, Alert } from "shards-react";
 
 import PageTitle from "../components/common/PageTitle";
 import { getLists } from "../api";
@@ -7,9 +7,12 @@ import { getLists } from "../api";
 
 function Lists () {
   const [lists, setLists] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    getLists().then(setLists);
+    getLists()
+      .then(setLists)
+      .catch(setError);
   }, []);
 
   return (
@@ -18,6 +21,12 @@ function Lists () {
       <Row noGutters className="page-header py-4">
         <PageTitle sm="4" title="Indexed Lists" className="text-sm-left"/>
       </Row>
+
+      {error && (
+        <Alert theme="danger">
+          Error occurred: {error.message.toLowerCase()}
+        </Alert>
+      )}
 
       <Row>
         <Col>

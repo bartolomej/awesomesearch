@@ -13,7 +13,7 @@ import {
   Row,
   Modal,
   ModalHeader,
-  ModalBody
+  ModalBody, Alert
 } from "shards-react";
 
 import PageTitle from "../components/common/PageTitle";
@@ -24,6 +24,7 @@ const CreateJob = () => {
   const [url, setUrl] = useState('');
   const [isLoading, setLoading] = useState(false);
   const [message, setMessage] = useState(null);
+  const [error, setError] = useState(null);
 
   function onJobSubmit () {
     setLoading(true);
@@ -34,7 +35,7 @@ const CreateJob = () => {
       })
       .catch(e => {
         setLoading(false);
-        setMessage(`Job request failed: ${e.message}`)
+        setError(e)
       });
   }
 
@@ -49,14 +50,20 @@ const CreateJob = () => {
           />
         </Row>
 
-        <Modal open={message !== null} toggle={() => setMessage(null)}>
-          <ModalHeader>Alert</ModalHeader>
-          <ModalBody>{message}</ModalBody>
-        </Modal>
+        {error && (
+          <Alert theme="danger">
+            Error occurred: {error.message.toLowerCase()}
+          </Alert>
+        )}
+
+        {message && (
+          <Alert theme="success">
+            Job started
+          </Alert>
+        )}
 
         <Row>
           <Col lg="8" className="mb-4">
-            {/* Complete Form Example */}
             <Card small>
               <CardHeader className="border-bottom">
                 <h6 className="m-0">Create List Job</h6>
@@ -79,6 +86,10 @@ const CreateJob = () => {
                         <Button onClick={onJobSubmit} type="submit">
                           {isLoading ? 'Posting ...' : 'Start indexing'}
                         </Button>
+
+                        <a style={{ marginLeft: 20}} target="_blank" href="https://api.awesomesearch.in/admin/queue">
+                          Go to queue dashboard
+                        </a>
                       </>
                     </Col>
                   </Row>

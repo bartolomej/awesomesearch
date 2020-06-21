@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Col, Container, Row } from "shards-react";
+import { Alert, Col, Container, Row } from "shards-react";
 
 import PageTitle from "./../components/common/PageTitle";
 import SmallStats from "./../components/common/SmallStats";
-import UsersOverview from "./../components/overview/UsersOverview";
-import UsersByDevice from "./../components/overview/UsersByDevice";
+import BigChart from "../components/overview/BigChart";
 import TopSearches from "../components/common/TopSearches";
 import { getSearchStats, getStats } from "../api";
 
 
 const Overview = ({ smallStats }) => {
-  const [stats, setStats] = useState([]);
-  const [queryStats, setQueryStats] = useState([]);
+  const [stats, setStats] = useState(null);
+  const [queryStats, setQueryStats] = useState(null);
+  const [error, setError] = useState(null);
   const [dateStats, setDateStats] = useState(null);
 
   useEffect(() => {
@@ -43,7 +43,7 @@ const Overview = ({ smallStats }) => {
           value: s.search_count,
         },
       ])
-    });
+    }).catch(setError)
   }
 
   function updateDateStats () {
@@ -65,15 +65,17 @@ const Overview = ({ smallStats }) => {
           },
         ]
       })
-    });
+    }).catch(setError)
   }
 
   function updateQueryStats () {
     getSearchStats('query').then(s => {
-      setQueryStats(s.map(s => ({
-        title: s.query, value: s.count
-      })))
-    })
+      setQueryStats(
+        s.map(s => ({
+          title: s.query, value: s.count
+        })).slice(0, 9)
+      )
+    }).catch(setError)
   }
 
   return (
@@ -84,39 +86,51 @@ const Overview = ({ smallStats }) => {
                    className="text-sm-left mb-3"/>
       </Row>
 
+      {error && (
+        <Alert theme="danger">
+          Error occurred: {error.message.toLowerCase()}
+        </Alert>
+      )}
+
+      {stats && (
+        <Row>
+          {stats.map((stats, idx) => (
+            <Col className="col-lg mb-4" key={idx} {...stats.attrs}>
+              <SmallStats
+                id={`small-stats-${idx}`}
+                variation="1"
+                chartData={stats.datasets}
+                chartLabels={stats.chartLabels}
+                label={stats.label}
+                value={stats.value}
+                percentage={stats.percentage}
+                increase={stats.increase}
+                decrease={stats.decrease}
+              />
+            </Col>
+          ))}
+        </Row>
+      )}
+
       <Row>
-        {stats.map((stats, idx) => (
-          <Col className="col-lg mb-4" key={idx} {...stats.attrs}>
-            <SmallStats
-              id={`small-stats-${idx}`}
-              variation="1"
-              chartData={stats.datasets}
-              chartLabels={stats.chartLabels}
-              label={stats.label}
-              value={stats.value}
-              percentage={stats.percentage}
-              increase={stats.increase}
-              decrease={stats.decrease}
+        {dateStats && (
+          <Col lg="8" md="12" sm="12" className="mb-4">
+            <BigChart title={"Searches over time"} chartData={dateStats}/>
+          </Col>
+        )}
+
+        {/*<Col lg="4" md="6" sm="12" className="mb-4">*/}
+        {/*  <UsersByDevice/>*/}
+        {/*</Col>*/}
+
+        {queryStats && (
+          <Col lg="4" md="12" sm="12" className="mb-4">
+            <TopSearches
+              title={'Popular queries'}
+              referralData={queryStats}
             />
           </Col>
-        ))}
-      </Row>
-
-      <Row>
-        <Col lg="8" md="12" sm="12" className="mb-4">
-          {dateStats && <UsersOverview chartData={dateStats}/>}
-        </Col>
-
-        <Col lg="4" md="6" sm="12" className="mb-4">
-          <UsersByDevice/>
-        </Col>
-
-        <Col lg="3" md="12" sm="12" className="mb-4">
-          <TopSearches
-            title={'Top Searches'}
-            referralData={queryStats}
-          />
-        </Col>
+        )}
       </Row>
     </Container>
   );

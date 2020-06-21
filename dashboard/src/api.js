@@ -13,7 +13,7 @@ export function getLists (page = 0, limit = 20) {
 }
 
 export function postJob (url) {
-  return request(`/list?url=${url}`, 'POST');
+  return request(`/admin/list?url=${url}`, 'POST');
 }
 
 export function getStats () {
@@ -21,5 +21,5 @@ export function getStats () {
 }
 
 export function getSearchStats (groupBy = 'date') {
-  return request(`/admin/log/stats?group=${groupBy}`);
+  return request(`/admin/search/stats?group=${groupBy}`);
 }

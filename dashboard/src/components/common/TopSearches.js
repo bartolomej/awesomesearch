@@ -12,7 +12,7 @@ import {
   FormSelect
 } from "shards-react";
 
-const TopSearches = ({ title, referralData }) => (
+const TopSearches = ({ title, referralData, onPeriodChange }) => (
   <Card small>
     <CardHeader className="border-bottom">
       <h6 className="m-0">{title}</h6>
@@ -33,28 +33,29 @@ const TopSearches = ({ title, referralData }) => (
     </CardBody>
 
     <CardFooter className="border-top">
-      <Row>
-        {/* Time Span */}
-        <Col>
-          <FormSelect
-            size="sm"
-            value="last-week"
-            style={{ maxWidth: "130px" }}
-            onChange={() => {}}
-          >
-            <option value="last-week">Last Week</option>
-            <option value="today">Today</option>
-            <option value="last-month">Last Month</option>
-            <option value="last-year">Last Year</option>
-          </FormSelect>
-        </Col>
+      {/* TODO: mby add this functionality later */}
+      {/*<Row>*/}
+      {/*  /!* Time Span *!/*/}
+      {/*  <Col>*/}
+      {/*    <FormSelect*/}
+      {/*      size="sm"*/}
+      {/*      value="last-week"*/}
+      {/*      style={{ maxWidth: "130px" }}*/}
+      {/*      onChange={e => onPeriodChange(e.target.value)}*/}
+      {/*    >*/}
+      {/*      <option value="last-week">Last Week</option>*/}
+      {/*      <option value="today">Today</option>*/}
+      {/*      <option value="last-month">Last Month</option>*/}
+      {/*      <option value="last-year">Last Year</option>*/}
+      {/*    </FormSelect>*/}
+      {/*  </Col>*/}
 
-        {/* View Full Report */}
-        <Col className="text-right view-report">
-          {/* eslint-disable-next-line */}
-          <a href="#">Full report &rarr;</a>
-        </Col>
-      </Row>
+      {/*  /!* View Full Report *!/*/}
+      {/*  <Col className="text-right view-report">*/}
+      {/*    /!* eslint-disable-next-line *!/*/}
+      {/*    <a href="#">Full report &rarr;</a>*/}
+      {/*  </Col>*/}
+      {/*</Row>*/}
     </CardFooter>
   </Card>
 );

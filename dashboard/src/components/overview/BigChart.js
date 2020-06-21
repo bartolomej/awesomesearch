@@ -5,10 +5,9 @@ import { Row, Col, Card, CardHeader, CardBody, Button } from "shards-react";
 import RangeDatePicker from "../common/RangeDatePicker";
 import Chart from "../../utils/chart";
 
-class UsersOverview extends React.Component {
+class BigChart extends React.Component {
   constructor(props) {
     super(props);
-
     this.canvasRef = React.createRef();
   }
 
@@ -86,7 +85,7 @@ class UsersOverview extends React.Component {
   }
 
   render() {
-    const { title } = this.props;
+    const { title, onPeriodChange } = this.props;
     return (
       <Card small className="h-100">
         <CardHeader className="border-bottom">
@@ -94,9 +93,10 @@ class UsersOverview extends React.Component {
         </CardHeader>
         <CardBody className="pt-0">
           <Row className="border-bottom py-2 bg-light">
-            <Col sm="6" className="d-flex mb-2 mb-sm-0">
-              <RangeDatePicker />
-            </Col>
+            {/* TODO: mby add this functionality later */}
+            {/*<Col sm="6" className="d-flex mb-2 mb-sm-0">*/}
+            {/*  <RangeDatePicker/>*/}
+            {/*</Col>*/}
             <Col>
               <Button
                 size="sm"
@@ -117,7 +117,7 @@ class UsersOverview extends React.Component {
   }
 }
 
-UsersOverview.propTypes = {
+BigChart.propTypes = {
   /**
    * The component's title.
    */
@@ -132,7 +132,7 @@ UsersOverview.propTypes = {
   chartOptions: PropTypes.object
 };
 
-UsersOverview.defaultProps = {
+BigChart.defaultProps = {
   title: "Users Overview",
   chartData: {
     labels: Array.from(new Array(30), (_, i) => (i === 0 ? 1 : i)),
@@ -229,4 +229,4 @@ UsersOverview.defaultProps = {
   }
 };
 
-export default UsersOverview;
+export default BigChart;
