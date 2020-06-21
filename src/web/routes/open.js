@@ -1,10 +1,27 @@
 const router = require('express').Router();
 const metaService = require('../../services/metadata')({ imageService: null });
-const githubService = require('../../services/github');
 const searchLogRepo = require('../repos/searchlog');
 const SearchLog = require('../../models/searchlog');
 const utils = require('./utils');
+const { query } = require('express-validator');
 const AwesomeError = require('../../error');
+
+// REQUEST PARAMS VALIDATION RULES
+
+const listFetchRules = () => ([
+  query('limit').isNumeric().optional(),
+  query('page').isNumeric().optional()
+]);
+
+const metaFetchRules = () => ([
+  query('url').isURL(),
+]);
+
+const searchFetchRules = () => ([
+  query('limit').isNumeric().optional(),
+  query('page').isNumeric().optional(),
+  query('q').isString()
+]);
 
 function RestApi ({ webService, listRepository, linkRepository }) {
 
@@ -28,56 +45,62 @@ function RestApi ({ webService, listRepository, linkRepository }) {
     }
   });
 
-  router.get('/list', async (req, res, next) => {
-    try {
-      res.send((await listRepository.getAll(
-        req.query.limit || 10,
-        req.query.page || 0
-      )).map(utils.serializeList))
-    } catch (e) {
-      next(e);
-    }
-  });
-
-  router.get('/list/:uid/link', async (req, res, next) => {
-    try {
-      const links = await linkRepository.getAll(
-        req.query.limit || 10,
-        req.query.page || 0,
-        req.params.uid
-      );
-      if (links.length === 0) {
-        return next(new AwesomeError(
-          AwesomeError.types.NOT_FOUND,
-          `No links found for requested list`
-        ));
+  router.get('/list',
+    listFetchRules(),
+    utils.validateReqParams,
+    async (req, res, next) => {
+      const { limit, page } = req.query;
+      try {
+        const lists = await listRepository.getAll(limit || 10, page || 0);
+        // append link count to result object
+        res.send(await Promise.all(lists.map(async l => ({
+          ...utils.serializeList(l),
+          link_count: await linkRepository.getCount(l.uid)
+        }))));
+      } catch (e) {
+        next(e);
       }
-      res.send(links.map(utils.serializeLink));
-    } catch (e) {
-      next(e);
     }
-  });
+  );
+
+  router.get('/list/:uid/link',
+    listFetchRules(),
+    utils.validateReqParams,
+    async (req, res, next) => {
+      const { limit, page } = req.query;
+      try {
+        const links = await linkRepository.getAll(limit || 10, page || 0, req.params.uid);
+        if (links.length === 0) {
+          return next(
+            new AwesomeError(
+              AwesomeError.types.NOT_FOUND,
+              `No links found for requested list`
+            )
+          );
+        }
+        res.send(links.map(utils.serializeLink));
+      } catch (e) {
+        next(e);
+      }
+    }
+  );
 
   /**
    * Returns website metadata given url in query param.
    */
-  router.get('/meta', async (req, res, next) => {
-    try {
-      if (req.query.url) {
+  router.get('/meta',
+    metaFetchRules(),
+    utils.validateReqParams,
+    async (req, res, next) => {
+      try {
         const html = await metaService.getHtml(req.query.url);
         const website = await metaService.parseHtml(html, req.query.url);
-        if (req.headers.accept.indexOf('text/html') === 0) {
-          res.render('metadata', website);
-        } else {
-          res.send(website);
-        }
-      } else {
-        next(new Error('Please provide website url'));
+        res.send(website);
+      } catch (e) {
+        next(e);
       }
-    } catch (e) {
-      next(e);
     }
-  });
+  );
 
   router.get('/link/random', async (req, res, next) => {
     try {
@@ -88,77 +111,46 @@ function RestApi ({ webService, listRepository, linkRepository }) {
     }
   });
 
-  router.get('/suggest', async (req, res, next) => {
-    try {
-      if (req.query.q) {
+  router.get('/suggest',
+    searchFetchRules(),
+    utils.validateReqParams,
+    async (req, res, next) => {
+    const {q, page, limit} = req.query;
+      try {
         const searchRes = await webService.suggest({
-          query: req.query.q,
-          page: req.query.p || true,
-          limit: req.query.limit ? parseInt(req.query.limit) : 10
+          query: q, page: page || true,
+          limit: limit ? parseInt(limit) : 10
         });
         res.send(searchRes);
-      } else {
-        // return empty array if q param not provided or is empty
-        res.send([]);
+      } catch (e) {
+        next(e);
       }
-    } catch (e) {
-      next(e);
     }
-  });
+  );
 
-  router.get('/search', async (req, res, next) => {
-    try {
-      if (req.query.q) {
+  router.get('/search',
+    searchFetchRules(),
+    utils.validateReqParams,
+    async (req, res, next) => {
+      const { q, p, limit } = req.query;
+      try {
         const searchRes = await webService.search({
-          query: req.query.q,
-          page: req.query.p || true,
-          limit: req.query.limit ? parseInt(req.query.limit) : 15
+          query: q, page: p || true,
+          limit: limit ? parseInt(limit) : 15
         });
         res.send(utils.serializeSearchResult(searchRes));
         // log search to db
-        await searchLogRepo.save(new SearchLog(
-          req.query.q,
-          req.useragent.source
-        ))
-      } else {
-        // return empty array if q param not provided or is empty
-        next(new AwesomeError('Query param required'));
+        await searchLogRepo.save(new SearchLog(q, req.useragent.source))
+      } catch (e) {
+        next(e);
       }
-    } catch (e) {
-      next(e);
     }
-  });
+  );
 
   router.get('/stats', async (req, res, next) => {
     try {
       const stats = await webService.getStats();
       res.send(utils.serializeStats(stats))
-    } catch (e) {
-      next(e);
-    }
-  });
-
-  router.get('/admin/stats', async (req, res, next) => {
-    try {
-      const rateLimit = await githubService.rateLimit();
-      res.send({
-        rate_limit: rateLimit
-      })
-    } catch (e) {
-      next(e);
-    }
-  });
-
-  /**
-   * Dispatch awesome job.
-   */
-  router.post('/list', async (req, res, next) => {
-    try {
-      if (req.query.url) {
-        res.send(await webService.scrapeList(req.query.url));
-      } else {
-        res.send(await webService.scrapeFromRoot());
-      }
     } catch (e) {
       next(e);
     }

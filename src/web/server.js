@@ -3,7 +3,6 @@ const app = express();
 const cors = require('cors');
 const path = require('path');
 const logger = require('../logger')('root');
-const handlebars = require('express-handlebars');
 const useragent = require('express-useragent');
 const env = require('../env');
 
@@ -13,11 +12,6 @@ module.exports = async function (routes = []) {
     // development logger
     app.use(require('morgan')('dev'));
   }
-
-  // setup view engine
-  app.engine('handlebars', handlebars());
-  app.set('view engine', 'handlebars');
-  app.set('views', path.join(__dirname, 'views'));
 
   app.use(useragent.express());
   app.use(express.static(path.join(__dirname, 'public')));

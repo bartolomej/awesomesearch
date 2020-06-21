@@ -1,8 +1,10 @@
 class AwesomeError extends Error {
 
-  constructor (message, description) {
+  constructor (message, description, code) {
     super(message);
+    this.message = typeof message === 'object' ? message.message : message;
     this.description = description;
+    this.code = code;
   }
 
   toString () {
@@ -12,8 +14,18 @@ class AwesomeError extends Error {
 }
 
 const types = {
-  NOT_FOUND: 'Object not found',
-  DUPLICATE_ENTRY: 'Duplicate entry'
+  NOT_FOUND: {
+    message: 'Object not found',
+    code: 404
+  },
+  DUPLICATE_ENTRY: {
+    message: 'Duplicate entry',
+    code: 403
+  },
+  INVALID_REQUEST: {
+    message: 'Invalid request',
+    code: 400
+  }
 }
 
 module.exports = AwesomeError;

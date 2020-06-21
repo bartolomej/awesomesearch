@@ -1,5 +1,17 @@
 const emojiMap = require('../public/emojis.json');
 const List = require('../../models/list');
+const { validationResult } = require('express-validator');
+const AwesomeError = require('../../error');
+
+
+function validateReqParams (req, res, next) {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return next(new AwesomeError(AwesomeError.types.INVALID_REQUEST, errors.array()));
+  } else {
+    return next();
+  }
+}
 
 function serializeSearchResult (response, minify = false) {
   return {
@@ -70,6 +82,7 @@ function serializeStats (stats) {
   return {
     link_count: stats.linkCount,
     list_count: stats.listCount,
+    search_count: stats.searchCount,
     object_index: stats.objectIndex,
     keywords_index: stats.keywordsIndex
   }
@@ -82,4 +95,5 @@ module.exports = {
   serializeSource,
   serializeStats,
   serializeSearchResult,
+  validateReqParams
 }

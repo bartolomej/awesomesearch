@@ -30,7 +30,7 @@ async function get (uid) {
   );
 }
 
-async function getAll (pageLimit = 10, pageNumber = 0, orderBy = 'stars') {
+async function getAll (pageLimit = 10, pageNumber = 0) {
   return (await getRepository(List)
     .createQueryBuilder('list')
     .leftJoinAndSelect('list.repository', 'repository')

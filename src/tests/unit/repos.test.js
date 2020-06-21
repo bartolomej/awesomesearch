@@ -197,9 +197,9 @@ describe('SearchLog repository', function () {
 
     const count = await searchLogRepository.getCountByDate();
     expect(count).toEqual([
-      { datetime: logs[0].datetime, count: 1 },
-      { datetime: logs[1].datetime, count: 1 },
-      { datetime: logs[2].datetime, count: 1 },
+      { datetime: datetimeToDate(logs[0].datetime), count: 1 },
+      { datetime: datetimeToDate(logs[1].datetime), count: 1 },
+      { datetime: datetimeToDate(logs[2].datetime), count: 1 },
     ])
   });
 
@@ -210,7 +210,7 @@ describe('SearchLog repository', function () {
     const count = await searchLogRepository.getCountByDate(fromDate);
 
     expect(count).toEqual([
-      { datetime: logs[0].datetime, count: 1 },
+      { datetime: datetimeToDate(logs[0].datetime), count: 1 },
     ])
   });
 
@@ -221,8 +221,8 @@ describe('SearchLog repository', function () {
     const count = await searchLogRepository.getCountByDate(null, toDate);
 
     expect(count).toEqual([
-      { datetime: logs[1].datetime, count: 1 },
-      { datetime: logs[2].datetime, count: 1 },
+      { datetime: datetimeToDate(logs[1].datetime), count: 1 },
+      { datetime: datetimeToDate(logs[2].datetime), count: 1 },
     ])
   });
 
@@ -234,11 +234,19 @@ describe('SearchLog repository', function () {
     const count = await searchLogRepository.getCountByDate(fromDate, toDate);
 
     expect(count).toEqual([
-      { datetime: logs[1].datetime, count: 1 },
+      { datetime: datetimeToDate(logs[1].datetime), count: 1 },
     ])
   });
 
 });
+
+function datetimeToDate (d) {
+  d.setHours(0);
+  d.setMinutes(0);
+  d.setSeconds(0);
+  d.setMilliseconds(0);
+  return d;
+}
 
 async function insertLogFor3days () {
   const logs = [

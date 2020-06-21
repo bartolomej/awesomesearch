@@ -43,14 +43,14 @@ async function getCountByQuery (start, end, page = 0, limit = 50) {
 async function getCountByDate (start, end, page = 0, limit = 50) {
   const query = await getRepository(SearchLog)
     .createQueryBuilder('l')
-    .select('l.datetime as d, count(*) as c')
-    .groupBy('l.datetime')
-    .orderBy('l.datetime', 'DESC');
+    .select('DATE(l.datetime) as d, count(*) as c') // cast datetime to date
+    .groupBy('d')
+    .orderBy('d', 'DESC');
   if (start) {
-    query.where('l.datetime > :start', { start })
+    query.where('DATE(l.datetime) > :start', { start })
   }
   if (end) {
-    query.andWhere('l.datetime < :end', { end })
+    query.andWhere('DATE(l.datetime) < :end', { end })
   }
   const res = await query
     .limit(limit)

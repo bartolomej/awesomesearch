@@ -46,7 +46,9 @@ async function start () {
         linkRepository,
         listRepository
       }),
-      AdminRoutes()
+      AdminRoutes({
+        webService
+      })
     ]);
     logger.info(`Web process ${process.pid} started 🙌`);
   } catch (e) {
