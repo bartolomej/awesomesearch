@@ -2,10 +2,10 @@ const UaParser = require('ua-parser-js');
 
 class SearchLog {
 
-  constructor (query, userAgent) {
+  constructor (query, userAgent, datetime) {
     this.query = query;
     this.userAgent = userAgent;
-    this.datetime = new Date();
+    this.datetime = datetime || new Date();
     this.datetime.setMilliseconds(0);
   }
 

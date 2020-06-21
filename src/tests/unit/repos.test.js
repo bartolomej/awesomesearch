@@ -160,7 +160,20 @@ describe('SearchLog repository', function () {
     expect(saved).toEqual(log);
   });
 
-  it('should group by query', async function () {
+  it('should count all searches', async function () {
+    const logs = [
+      new SearchLog('test', 'Mozilla/5.0 (Macintosh; ...'),
+      new SearchLog('test2', 'Mozilla/5.0 (Macintosh; ...'),
+    ];
+    for (let l of logs) {
+      await searchLogRepository.save(l);
+    }
+
+    const count = await searchLogRepository.getCount();
+    expect(count).toBe(2)
+  });
+
+  it('should group by query, order by popularity', async function () {
     const logs = [
       new SearchLog('test', 'Mozilla/5.0 (Macintosh; ...'),
       new SearchLog('test', 'Mozilla/5.0 (Macintosh; ...'),
@@ -168,19 +181,76 @@ describe('SearchLog repository', function () {
       new SearchLog('test1', 'Mozilla/5.0 (Macintosh; ...'),
       new SearchLog('test1', 'Mozilla/5.0 (Macintosh; ...'),
     ];
-
     for (let l of logs) {
       await searchLogRepository.save(l);
     }
 
     const stats = await searchLogRepository.getCountByQuery();
     expect(stats).toEqual([
-      { query: 'test', count: 2 },
       { query: 'test1', count: 3 },
+      { query: 'test', count: 2 },
+    ])
+  });
+
+  it('should count all searches by date', async function () {
+    const logs = await insertLogFor3days();
+
+    const count = await searchLogRepository.getCountByDate();
+    expect(count).toEqual([
+      { datetime: logs[0].datetime, count: 1 },
+      { datetime: logs[1].datetime, count: 1 },
+      { datetime: logs[2].datetime, count: 1 },
+    ])
+  });
+
+  it('should count all searches from date', async function () {
+    const logs = await insertLogFor3days();
+
+    const fromDate = new Date(new Date().setHours(new Date().getHours() - 24));
+    const count = await searchLogRepository.getCountByDate(fromDate);
+
+    expect(count).toEqual([
+      { datetime: logs[0].datetime, count: 1 },
+    ])
+  });
+
+  it('should count all searches to date', async function () {
+    const logs = await insertLogFor3days();
+
+    const toDate = new Date(new Date().setHours(new Date().getHours() - 24));
+    const count = await searchLogRepository.getCountByDate(null, toDate);
+
+    expect(count).toEqual([
+      { datetime: logs[1].datetime, count: 1 },
+      { datetime: logs[2].datetime, count: 1 },
+    ])
+  });
+
+  it('should count all searches from and to date', async function () {
+    const logs = await insertLogFor3days();
+
+    const fromDate = new Date(new Date().setHours(new Date().getHours() - 48));
+    const toDate = new Date(new Date().setHours(new Date().getHours() - 24));
+    const count = await searchLogRepository.getCountByDate(fromDate, toDate);
+
+    expect(count).toEqual([
+      { datetime: logs[1].datetime, count: 1 },
     ])
   });
 
 });
+
+async function insertLogFor3days () {
+  const logs = [
+    new SearchLog('test', '', new Date()),
+    new SearchLog('test2', '', new Date(new Date().setHours(new Date().getHours() - 24))),
+    new SearchLog('test2', '', new Date(new Date().setHours(new Date().getHours() - 48))),
+  ];
+  for (let l of logs) {
+    await searchLogRepository.save(l);
+  }
+  return logs;
+}
 
 function exampleLink (urlPostfix = '') {
   const website = new Website(`https://example.com${urlPostfix}`, 'example');

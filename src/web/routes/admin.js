@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const githubService = require('../../services/github');
+const AwesomeError = require('../../error');
 const { UI } = require('bull-board');
 const searchLogRepo = require('../repos/searchlog');
 
@@ -17,7 +18,15 @@ function RestApi () {
   });
 
   router.get('/admin/log/stats', async (req, res, next) => {
-    res.send(await searchLogRepo.getCountByQuery());
+    if (req.query.group === 'query') {
+      res.send(await searchLogRepo.getCountByQuery());
+    }
+    else if (req.query.group === 'date') {
+      res.send(await searchLogRepo.getCountByDate());
+    }
+    else {
+      next(new AwesomeError('Required param: group'))
+    }
   });
 
   router.get('/admin/stats', async (req, res, next) => {

@@ -1,8 +1,4 @@
-<div align="center">
-	<img width="250" src="https://api.awesomesearch.in/logo.png" alt="Awesome Node.js">
-</div>
-<br>
-<hr>
+![](./src/web/public/banner.png)
 
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 [![Awesome](https://awesome.re/badge-flat2.svg)](https://awesome.re)

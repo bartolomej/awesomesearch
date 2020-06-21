@@ -13,15 +13,50 @@ async function getSortedByDate (page = 0, limit = 20) {
     .getMany();
 }
 
-async function getCountByQuery (page = 0, limit = 20) {
+async function getCount () {
   const res = await getRepository(SearchLog)
+    .createQueryBuilder('l')
+    .select('count(*) as c')
+    .getRawOne();
+  return parseInt(res.c);
+}
+
+async function getCountByQuery (start, end, page = 0, limit = 50) {
+  const query = await getRepository(SearchLog)
     .createQueryBuilder('l')
     .select('l.query as q, count(*) as c')
     .groupBy('l.query')
+  if (start) {
+    query.where('l.datetime > :start', { start })
+  }
+  if (end) {
+    query.andWhere('l.datetime < :end', { end })
+  }
+  const res = await query
+    .limit(limit)
+    .skip(page * limit)
+    .orderBy('c', 'DESC')
+    .getRawMany();
+  return res.map(r => ({ query: r.q, count: parseInt(r.c) }));
+}
+
+async function getCountByDate (start, end, page = 0, limit = 50) {
+  const query = await getRepository(SearchLog)
+    .createQueryBuilder('l')
+    .select('l.datetime as d, count(*) as c')
+    .groupBy('l.datetime')
+    .orderBy('l.datetime', 'DESC');
+  if (start) {
+    query.where('l.datetime > :start', { start })
+  }
+  if (end) {
+    query.andWhere('l.datetime < :end', { end })
+  }
+  const res = await query
     .limit(limit)
     .skip(page * limit)
     .getRawMany();
-  return res.map(r => ({ query: r.q, count: parseInt(r.c) }));
+  return res.map(r => ({ datetime: r.d, count: parseInt(r.c) }));
 }
 
 async function removeAll () {
@@ -32,5 +67,7 @@ module.exports = {
   save,
   getSortedByDate,
   getCountByQuery,
+  getCountByDate,
+  getCount,
   removeAll
 }

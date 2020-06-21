@@ -4,6 +4,7 @@ const Link = require('../models/link');
 const List = require('../models/list');
 const FlexSearch = require("flexsearch");
 const logger = require('../logger')('web-service');
+const searchLogRepository = require('./repos/searchlog');
 const AwesomeError = require('../error');
 
 function WebService ({ listRepository, linkRepository, workQueue }) {
@@ -211,6 +212,7 @@ function WebService ({ listRepository, linkRepository, workQueue }) {
     return {
       linkCount: await linkRepository.getCount(),
       listCount: await listRepository.getCount(),
+      searchCount: await searchLogRepository.getCount(),
       objectIndex: objectIndex.info(),
       keywordsIndex: keywordIndex.info()
     }
