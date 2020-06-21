@@ -9,8 +9,9 @@ function SEO ({ description, lang, meta, keywords, title }) {
     <StaticQuery
       query={detailsQuery}
       render={data => {
-        const metaDescription =
-          description || data.site.siteMetadata.description;
+        const metaDescription = description || data.site.siteMetadata.description;
+        const image = data.site.siteMetadata.image;
+
         return (
           <Helmet
             htmlAttributes={{
@@ -22,6 +23,14 @@ function SEO ({ description, lang, meta, keywords, title }) {
               {
                 name: `description`,
                 content: metaDescription,
+              },
+              {
+                property: `og:type`,
+                content: 'website',
+              },
+              {
+                property: `og:url`,
+                content: data.site.siteMetadata.url,
               },
               {
                 property: `og:title`,
@@ -36,12 +45,16 @@ function SEO ({ description, lang, meta, keywords, title }) {
                 content: `website`,
               },
               {
+                property: `og:image`,
+                content: image,
+              },
+              {
                 name: `twitter:card`,
                 content: `summary`,
               },
               {
                 name: `twitter:creator`,
-                content: data.site.siteMetadata.author,
+                content: data.site.siteMetadata.twitterUsername,
               },
               {
                 name: `twitter:title`,
@@ -50,6 +63,10 @@ function SEO ({ description, lang, meta, keywords, title }) {
               {
                 name: `twitter:description`,
                 content: metaDescription,
+              },
+              {
+                name: `twitter:image`,
+                content: image,
               },
             ]
               .concat(
@@ -90,7 +107,9 @@ const detailsQuery = graphql`
             siteMetadata {
                 title
                 description
-                author
+                author,
+                image,
+                url
             }
         }
     }

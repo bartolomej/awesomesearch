@@ -1,10 +1,22 @@
 module.exports = {
   siteMetadata: {
     title: `AwesomeSearch`,
-    description: `User friendly search engine for Awesome lists curated collections.`,
+    description: `User friendly search engine for Awesome lists.`,
     author: `@bartolomejkozorog`,
+    twitterUsername: '@mejkoz',
+    url: "https://www.awesomesearch.in",
+    image: '/banner.png',
   },
   plugins: [
+    {
+      resolve: `gatsby-plugin-favicon`,
+      options: {
+        logo: "./static/logo.png",
+        background: '#2A363B',
+        theme_color: '#2A363B',
+        version: '1.0'
+      }
+    },
     {
       resolve: `gatsby-source-filesystem`,
       options: {
