@@ -18,11 +18,7 @@ const postJobRules = () => ([
 function RestApi ({ webService }) {
 
   // https://github.com/vcapretz/bull-board
-  router.get('/admin/queues', UI)
-
-  router.get('/admin/dashboard', async (req, res) => {
-    res.render('dash');
-  });
+  router.use('/admin/queue', UI)
 
   router.get('/admin/search', async (req, res) => {
     res.send(await logRepo.getSortedByDate());

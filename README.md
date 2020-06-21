@@ -4,29 +4,69 @@
 [![Awesome](https://awesome.re/badge-flat2.svg)](https://awesome.re)
 <br>
 
-Awesome web service indexes [awesome](https://awesome.com/sindresorhus/awesome) list collections and exposes search via REST API.
+This application creates an index of the largest collection of cool internet resources called [awesome](https://awesome.com/sindresorhus/awesome). 
+It exposes querying functionality via REST API.
 
-I've also made a [website](https://github.com/bartolomej/awesomesearch-web) and an experimental [Android app](https://github.com/bartolomej/awesomesearch-web).
+I've also made a [web client](https://github.com/bartolomej/awesomesearch.website) and an experimental [dashboard](https://github.com/bartolomej/awesomesearch.dashboard).
 
 
-## Deploying to Heroku
+## 🚀 Deploy to Heroku
 
-After deploying to Heroku, you will need to [manually scale worker process](https://devcenter.heroku.com/articles/procfile#scaling-a-process-type) with heroku cli command: 
-```bash
-$ heroku ps:scale worker=1 --app <appname>
-```
-In order to run [puppeteer](https://pptr.dev/) for website screenshots feature, you need to add the following [buildpack](https://devcenter.heroku.com/articles/buildpacks):
-```bash
-$ heroku buildpacks:add jontewks/puppeteer --app <appname>
-```
+You can deploy your own instance of this server in a few minutes by following these steps:
 
-## Architecture
-App consists of two separate processes:
+1. **Click deploy to heroku button**
+
+    Heroku will automatically setup deployment environment for you.
+
+2. **Scale worker process to a single instance**
+
+    Because this uses heroku's free plan, you need to manually scale up the 'worker' process via [heroku cli](https://github.com/heroku/cli).
+
+   ```shell
+   heroku ps:scale worker=1 --app <appname>
+   ```
+
+## 💜 Some libraries used
+
+- [flexsearch](https://github.com/nextapps-de/flexsearch) - Next-Generation full text search library for Browser and Node.js
+- [bull](https://github.com/OptimalBits/bull) - Premium Queue package for handling distributed jobs and messages in NodeJS
+- [typeorm](https://typeorm.io/) - ORM for TypeScript and JavaScript
+
+## ⚙️ Running locally
+
+You can run this app on your local machine as well, but you will need to set up a few things first:
+
+1. **Clone this repository**
+
+    Move to your desired directory and run the following git command.
+
+    ```shell
+       git clone https://github.com/bartolomej/awesomesearch.server
+    ```
+    
+2. **Install and run Redis server**
+
+    This is needed for job queue functionality. Install from [here](https://redis.io/).
+
+2. **Setup environmental variables**
+
+    Here we will define private credentials for our app to use. This follows [12 factor app methodology](https://12factor.net/config).
+    Required environmental variables are listed in `.env.example` file.
+    
+3. **Install dependencies and start the app**
+
+    In your project root run `yarn install` or `npm i` to install required packages.
+    You can then finally start the app in development mode with `yarn start:dev` or `npm start:dev`/
+    
+
+## 🏗️ Architecture
+
+This app consists of two separate processes:
 - `web` (entry file `src/web/index.js`): 
     - receives HTTP requests from clients
     - dispatches jobs to redis queue
     - performs search queries
-    - stores data
+    - interacts with database
 - `worker` (entry file `src/worker.js`): 
     - performs website scraping
     - list parsing
@@ -39,26 +79,17 @@ To start both processes in production just run `npm start`.
     <img src="architecture.png" width="500" />
 </div>
 
-## Some libraries used
+## 🔨 Testing
 
-- [flexsearch](https://github.com/nextapps-de/flexsearch) - Next-Generation full text search library for Browser and Node.js
-- [bull](https://github.com/OptimalBits/bull) - Premium Queue package for handling distributed jobs and messages in NodeJS
-- [typeorm](https://typeorm.io/) - ORM for TypeScript and JavaScript
+- **Unit & integration tests**
 
-## Developing
+    These tests validate that isolated and connected modules of code work well. Run with `yarn run test`.
 
-1. install and run [Redis](https://redis.io/) server
-2. create `.env.development` file with variables defined in `.env.example`
-3. run `yarn install` or `npm i` command to install dependencies
-4. run `yarn start` or `npm start` to start both app processes in production
+- **Performance tests**
 
-## Scripts
+    These test real life performance of our application by simulating what normal users would do.
+    To run these you will need to install [artillery tool](https://artillery.io/) and then run `yarn run test:load:staging`.
 
-- `yarn test` - runs all unit tests
-- `yarn start` - start server in production environment
-- `yarn start:dev` - start server in development environment
-- `node src/scripts/link.js <website-url>` - process website (outputs metadata to `/out`).
+## :memo: License
 
-## Testing
-
-https://artillery.io/docs/
+Licensed under the [MIT License](./LICENSE).

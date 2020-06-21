@@ -1,9 +1,15 @@
 {
-  "name": "Awesome Search API",
-  "description": "Open source Awesome lists search app with REST API.",
-  "repository": "https://github.com/bartolomej/awesomesearch-api",
+  "name": "awesomesearch.api",
+  "description": "Awesome lists search app with REST API.",
+  "website": "https://awesomesearch.in",
+  "repository": "https://github.com/bartolomej/awesomesearch.api",
   "logo": "https://api.awesomesearch.in/logo.png",
-  "keywords": ["nodejs", "awesome", "api"],
+  "keywords": ["nodejs", "awesome", "api", "search-engine"],
+  "buildpacks": [
+    {
+      "url": "https://buildpack-registry.s3.amazonaws.com/buildpacks/jontewks/puppeteer.tgz"
+    }
+  ],
   "addons": [
     "heroku-redis",
     "jawsdb"
