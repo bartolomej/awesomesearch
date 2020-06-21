@@ -24,7 +24,6 @@ const Layout = ({ children }) => (
 );
 
 const Container = styled.main`
-  width: 100vw;
   background: ${p => p.theme.color.light};
 `;
 

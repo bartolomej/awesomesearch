@@ -36,7 +36,7 @@ export const ButtonCss = css`
 `;
 
 export const SubtitleCss = css` 
-  font-size: 2.2em;
+  font-size: 2em;
   text-align: center;
   z-index: 2;
   color: ${theme.color.red};

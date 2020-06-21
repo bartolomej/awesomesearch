@@ -80,9 +80,10 @@ const search = dispatch => query => {
     })
 }
 
-const nextPage = dispatch => (query, pageIndex) => {
+const nextPage = dispatch => (query, next) => {
+  if (next === null) return;
   dispatch(store.actions.nextPagePending());
-  api.search(query, pageIndex)
+  api.search(query, next)
     .then(res => dispatch(store.actions.nextPageSuccess(res)))
     .catch(error => dispatch(store.actions.nextPageFailed(error)))
 }

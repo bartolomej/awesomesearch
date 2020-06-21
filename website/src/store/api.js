@@ -8,8 +8,8 @@ async function request (path) {
   }
 }
 
-export function search (query, page = 0) {
-  return request(`/search?q=${query}&p=${page}`)
+export function search (query, page = 0, limit = 20) {
+  return request(`/search?q=${query}&p=${page}&limit=${limit}`)
 }
 
 export function suggest (query, page = 0) {

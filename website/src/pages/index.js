@@ -5,6 +5,7 @@ import SEO from '../components/seo';
 import SearchField from "../components/searchfield";
 import logo from '../assets/logo.svg';
 import noResults from '../assets/no-results.svg';
+import glasses from '../assets/glasses.svg'
 import error from '../assets/error.svg';
 import { connect } from "react-redux";
 import search from "../store/search";
@@ -12,7 +13,7 @@ import Result from "../components/result";
 import { useInView } from "react-intersection-observer";
 import UseAnimations from "react-useanimations";
 import Modal from "../components/modal";
-import { getAllLists, getList } from "../store/api";
+import { getAllLists, getList, getStats } from "../store/api";
 import { ButtonCss, LinkCss, SubtitleCss } from "../style/ui";
 import Description from "../components/description";
 import theme from "../style/theme";
@@ -24,18 +25,15 @@ const IndexPage = ({ results, suggestions, search, suggest, loading, nextPage, n
   const [showSource, setShowSource] = useState(null);
   const [repo, setRepo] = useState(null);
   const [lists, setLists] = useState([]);
+  const [stats, setStats] = useState({});
 
   useEffect(() => {
     if (inView === true) {
-      nextPage(nextPageIndex);
+      nextPage(query, nextPageIndex);
     }
   }, [inView]);
 
   useEffect(() => {
-    // there was a query with no results
-    if (results.length === 0 && query.length > 0) {
-
-    }
     // there was an empty query
     if (results.length === 0 && query.length === 0) {
       getAllLists().then(setLists);
@@ -47,6 +45,10 @@ const IndexPage = ({ results, suggestions, search, suggest, loading, nextPage, n
       getList(showSource).then(setRepo);
     }
   }, [showSource])
+
+  useEffect(() => {
+    getStats().then(setStats);
+  }, []);
 
   return (
     <Layout>
@@ -83,7 +85,7 @@ const IndexPage = ({ results, suggestions, search, suggest, loading, nextPage, n
           <Animation color={'#FECEA890'} />
         </AnimationWrapper>
         <Logo/>
-        <Title>Search <span>21600</span> links from <a target="_blank" href="https://awesome.re">awesome</a></Title>
+        <Title>Search <span>{stats.link_count}</span> links from <a target="_blank" href="https://awesome.re">awesome</a></Title>
         <SearchField
           onChange={q => suggest(q)}
           onSubmit={q => search(q)}
@@ -156,7 +158,7 @@ const IndexPage = ({ results, suggestions, search, suggest, loading, nextPage, n
   )
 };
 
-function RepoView ({ title, description, stars, forks, links, url, tags, image, emojis }) {
+function RepoView ({ title, description, stars, forks, links = 120, url, tags, image, emojis }) {
 
   const Container = styled.div`
     display: flex;
@@ -164,29 +166,45 @@ function RepoView ({ title, description, stars, forks, links, url, tags, image, 
     align-items: center;
   `;
 
+  const Logo = styled(glasses)`
+  
+  `;
+
+  const DescWrapper = styled.div`
+    max-width: 500px;
+    padding: 10px 0;
+  `;
+
   const Link = styled.a`
     display: block;
-    width: 100px;
+    width: 120px;
     margin: 15px;
     ${ButtonCss};
   `;
 
   const StatsWrapper = styled.div`
     display: flex;
+    text-align: center;
   `;
 
   const Subtitle = styled.h3`
-    ${SubtitleCss}
+    ${SubtitleCss};
+    margin-top: 10px;
+    margin-bottom: 20px;
   `;
 
   const StatsElement = styled.div`
     display: flex;
     flex-direction: column;
     margin: 10px 20px;
+    padding: 20px;
+    background: white;
+    border-radius: 5px;
   `;
 
   return (
     <Container>
+      <Logo/>
       <Subtitle>{formatTitle(title)}</Subtitle>
       <StatsWrapper>
         <StatsElement>
@@ -202,14 +220,16 @@ function RepoView ({ title, description, stars, forks, links, url, tags, image, 
           <span>forks</span>
         </StatsElement>
       </StatsWrapper>
-      <Description
-        color={theme.color.dark}
-        text={description}
-        emojis={emojis}
-        maxLength={null}
-      />
+      <DescWrapper>
+        <Description
+          color={theme.color.dark}
+          text={description}
+          emojis={emojis}
+          maxLength={null}
+        />
+      </DescWrapper>
       <Link target="_blank" href={url}>
-        Go to Github
+        View on Github
       </Link>
     </Container>
   )
@@ -225,7 +245,7 @@ function formatTitle (text) {
 
 const Header = styled.header`
   width: 100vw;
-  height: 40vh;
+  padding: 60px 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -271,7 +291,7 @@ const Title = styled.p`
 
 const Subtitle = styled.h3`
   ${SubtitleCss};
-  margin-top: 2.4em;
+  padding-top: 2em;
 `;
 
 const Logo = styled(logo)`
@@ -299,7 +319,7 @@ const MessageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 50px;
+  margin: 50px 0;
   strong {
     font-size: ${p => p.theme.size(1.6)};
     color: ${p => p.theme.color.dark};
@@ -307,7 +327,10 @@ const MessageWrapper = styled.div`
   }
 `;
 
-const Body = styled.div``
+const Body = styled.div`
+  position: relative;
+  background: ${p => p.theme.color.light};
+`
 
 const ResultsWrapper = styled.div`
   min-height: 60vh;
@@ -315,9 +338,9 @@ const ResultsWrapper = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-evenly;
-  margin: 80px auto;
+  margin: 0 auto;
+  padding: 80px 0;
   width: 80%;
-  position: relative;
 `;
 
 const LoadingWrapper = styled.div`

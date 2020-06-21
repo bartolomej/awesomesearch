@@ -7,7 +7,7 @@ import { ButtonCss } from "../style/ui";
 const SearchField = ({ placeholder, onChange, onSubmit, suggestions }) => {
   const [text, setText] = useState('');
   const [suggestionList, setSuggestionList] = useState([]);
-  const containerRef = React.useRef();
+  const inputRef = React.useRef();
 
   useEffect(() => {
     window.addEventListener('click', onClick);
@@ -23,11 +23,12 @@ const SearchField = ({ placeholder, onChange, onSubmit, suggestions }) => {
   }, [suggestions]);
 
   function onClick (e) {
-    if (!containerRef.current) return;
-    if (!containerRef.current.contains(e.target)) {
-      setSuggestionList([]);
-    } else {
+    if (!inputRef.current) return;
+    // hide suggestions if clicked outside the field
+    if (inputRef.current.contains(e.target)) {
       setSuggestionList(suggestions);
+    } else {
+      setSuggestionList([]);
     }
   }
 
@@ -45,15 +46,16 @@ const SearchField = ({ placeholder, onChange, onSubmit, suggestions }) => {
   }
 
   function onSubmitClick () {
-    onSubmit(text);
     setSuggestionList([]);
+    onSubmit(text);
   }
 
   return (
-    <Container ref={containerRef}>
+    <Container>
       <InnerContainer>
         <Icon/>
         <Field
+          ref={inputRef}
           type="text"
           value={text}
           placeholder={placeholder}
@@ -72,7 +74,7 @@ const SearchField = ({ placeholder, onChange, onSubmit, suggestions }) => {
               dangerouslySetInnerHTML={{
                 __html: insertMarks(s, text)
               }}
-              onClick={() => onSuggestionClick(s)} />
+              onClick={() => onSuggestionClick(s)}/>
           ))}
         </SuggestionContainer>
       )}
