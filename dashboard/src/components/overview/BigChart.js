@@ -73,19 +73,12 @@ class BigChart extends React.Component {
       options: chartOptions
     });
 
-    // They can still be triggered on hover.
-    const buoMeta = BlogUsersOverview.getDatasetMeta(0);
-    buoMeta.data[0]._model.radius = 0;
-    buoMeta.data[
-      this.props.chartData.datasets[0].data.length - 1
-    ]._model.radius = 0;
-
     // Render the chart.
     BlogUsersOverview.render();
   }
 
   render() {
-    const { title, onPeriodChange } = this.props;
+    const { title } = this.props;
     return (
       <Card small className="h-100">
         <CardHeader className="border-bottom">
