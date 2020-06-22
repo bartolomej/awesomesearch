@@ -8,10 +8,13 @@
   "buildpacks": [
     {
       "url": "https://buildpack-registry.s3.amazonaws.com/buildpacks/jontewks/puppeteer.tgz"
+    },
+    {
+      "url": "heroku/nodejs"
     }
   ],
   "addons": [
     "heroku-redis",
     "jawsdb"
-  ]
+  ],
 }

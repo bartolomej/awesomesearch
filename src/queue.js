@@ -19,10 +19,10 @@ const opts = {
         throw new Error('Unexpected connection type: ', type);
     }
   },
-  // limiter: {
-  //   max: 20,
-  //   duration: 5000
-  // }
+  limiter: {
+    max: 20,
+    duration: 5000
+  }
 }
 
 module.exports = function (name) {
