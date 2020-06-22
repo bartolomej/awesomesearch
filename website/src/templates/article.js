@@ -2,6 +2,7 @@ import React from "react"
 import { graphql } from "gatsby"
 import Layout from "../components/layout"
 import styled from "@emotion/styled";
+import Animation from "../components/animation";
 
 
 export default function BlogPost ({ data }) {
@@ -9,20 +10,33 @@ export default function BlogPost ({ data }) {
 
   return (
     <Layout>
+      <AnimationWrapper>
+        <Animation color={'#FECEA890'}/>
+      </AnimationWrapper>
       <Header>
         <Title>{post.frontmatter.title}</Title>
       </Header>
-      <Container>
-        <div dangerouslySetInnerHTML={{ __html: post.html }}/>
-      </Container>
+      <Body>
+        <Container>
+          <div dangerouslySetInnerHTML={{ __html: post.html }}/>
+        </Container>
+      </Body>
     </Layout>
   )
 }
+
+const Body = styled.div`
+  position: relative;
+  min-height: 80vh;
+  background: ${p => p.theme.color.light};
+`;
 
 const Container = styled.div`
   width: 40%;
   margin: 0 auto;
   padding: 100px 0;
+  background: ${p => p.theme.color.light};
+  color: ${p => p.theme.color.dark};
   
   p {
     color: ${p => p.theme.color.dark};
@@ -43,7 +57,15 @@ const Header = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
-`
+`;
+
+const AnimationWrapper = styled.div`
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+`;
 
 const Title = styled.h1`
   text-align: center;

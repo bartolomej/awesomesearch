@@ -3,7 +3,7 @@ title: "About this project"
 image: "../images/banner.png"
 ---
 
-![AwesomeSearch banner](../images/banner.png)
+![AwesomeSearch banner](../images/logo.png)
 
 ### What is AWESOME ?
 

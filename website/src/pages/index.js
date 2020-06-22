@@ -74,14 +74,6 @@ const IndexPage = ({
       />
       {showSource && (
         <Modal onClose={() => setShowSource(null)}>
-          {/*{!listLoading && (*/}
-          {/*  <LoadingWrapper>*/}
-          {/*    <UseAnimations*/}
-          {/*      animationKey="infinity"*/}
-          {/*      size={150}*/}
-          {/*    />*/}
-          {/*  </LoadingWrapper>*/}
-          {/*)}*/}
           {currentList && (
             <RepoView
               url={currentList.url}
