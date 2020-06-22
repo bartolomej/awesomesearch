@@ -9,8 +9,10 @@ export default function BlogPost ({ data }) {
 
   return (
     <Layout>
-      <Container>
+      <Header>
         <Title>{post.frontmatter.title}</Title>
+      </Header>
+      <Container>
         <div dangerouslySetInnerHTML={{ __html: post.html }}/>
       </Container>
     </Layout>
@@ -35,6 +37,14 @@ const Container = styled.div`
   }
 `;
 
+const Header = styled.header`
+  background: ${p => p.theme.color.dark};
+  min-height: 30vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+
 const Title = styled.h1`
   text-align: center;
   margin-bottom: 30px;
@@ -46,7 +56,10 @@ export const query = graphql`
         markdownRemark(fields: { slug: { eq: $slug } }) {
             html
             frontmatter {
-                title
+                title,
+                image {
+                    relativePath
+                }
             }
         }
     }

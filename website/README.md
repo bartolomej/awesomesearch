@@ -23,10 +23,6 @@ You can run this app on your local machine as well, but you will need to set up 
     Here we will define url of the [awesomesearch.server](https://github.com/bartolomej/awesomesearch.server) under the name `GATSBY_API_HOST`. 
     You can [run a local server](https://github.com/bartolomej/awesomesearch.server#%EF%B8%8F-running-locally) instance or use a [production api](https://api.awesomesearch.in/).
     
-3. **Setup environmental variables**
-
-    Here we will define url of the api server under the name `GATSBY_API_HOST`.
-    
 4. **Install dependencies and run**
 
     In your project root run `yarn install or npm i` to install required packages. You can then finally start the app in development mode with `yarn run develop or npm run develop`.

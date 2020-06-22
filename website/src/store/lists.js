@@ -51,10 +51,10 @@ const getAllLists = dispatch => (page) => {
 }
 
 const getSingle = dispatch => (uid) => {
-  dispatch(store.actions.getListsPending());
-  api.getAllLists()
-    .then(res => dispatch(store.actions.getListsSuccess(res)))
-    .catch(error => dispatch(store.actions.getListsFailed(error)))
+  dispatch(store.actions.getSinglePending());
+  api.getList(uid)
+    .then(res => dispatch(store.actions.getSingleSuccess(res)))
+    .catch(error => dispatch(store.actions.getSingleFailed(error)))
 }
 
 export default {

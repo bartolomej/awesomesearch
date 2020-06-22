@@ -36,7 +36,8 @@ const IndexPage = ({
   getSingleList,
   lists,
   listInfo,
-  listError
+  listError,
+  currentList,
 }) => {
   const [ref, inView, entry] = useInView({ threshold: 0 });
   const [showSource, setShowSource] = useState(null);
@@ -73,24 +74,24 @@ const IndexPage = ({
       />
       {showSource && (
         <Modal onClose={() => setShowSource(null)}>
-          {!listLoading && (
-            <LoadingWrapper>
-              <UseAnimations
-                animationKey="infinity"
-                size={150}
-              />
-            </LoadingWrapper>
-          )}
-          {listInfo && (
+          {/*{!listLoading && (*/}
+          {/*  <LoadingWrapper>*/}
+          {/*    <UseAnimations*/}
+          {/*      animationKey="infinity"*/}
+          {/*      size={150}*/}
+          {/*    />*/}
+          {/*  </LoadingWrapper>*/}
+          {/*)}*/}
+          {currentList && (
             <RepoView
-              url={listInfo.url}
-              image={listInfo.image_url}
-              tags={listInfo.tags}
-              stars={listInfo.stars}
-              forks={listInfo.forks}
-              title={listInfo.title}
-              description={listInfo.description}
-              emojis={listInfo.emojis}
+              url={currentList.url}
+              image={currentList.image_url}
+              tags={currentList.tags}
+              stars={currentList.stars}
+              forks={currentList.forks}
+              title={currentList.title}
+              description={currentList.description}
+              emojis={currentList.emojis}
             />
           )}
         </Modal>
@@ -143,6 +144,7 @@ const IndexPage = ({
             <ResultsWrapper>
               {lists.map((r, i) => (
                 <Result
+                  key={r.uid}
                   uid={r.uid}
                   onSourceClick={uid => setShowSource(uid)}
                   innerRef={i === results.length - 5 ? ref : null}
@@ -162,6 +164,7 @@ const IndexPage = ({
           <ResultsWrapper>
             {results.map((r, i) => (
               <Result
+                key={r.uid}
                 uid={r.uid}
                 onSourceClick={uid => setShowSource(uid)}
                 innerRef={i === results.length - 5 ? ref : null}
@@ -395,8 +398,9 @@ const mapStateToProps = state => ({
   listLoading: state.lists.loading,
   query: state.search.query,
   lists: state.lists.results,
+  currentList: state.lists.result,
   listInfo: state.lists.result,
-  listError: state.lists.error
+  listError: state.lists.error,
 });
 
 const mapDispatchToProps = dispatch => ({
