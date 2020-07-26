@@ -35,6 +35,14 @@ export const ButtonCss = css`
   }
 `;
 
+export const BackgroundAppear = css`
+  animation: 1s ease-in-out bcgAppear forwards;
+  @keyframes bcgAppear {
+    0% { opacity: 0 }
+    100% { opacity: 0.6 }
+  }
+`;
+
 export const SubtitleCss = css` 
   font-size: 2em;
   text-align: center;

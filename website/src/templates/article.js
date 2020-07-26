@@ -11,7 +11,7 @@ export default function BlogPost ({ data }) {
   return (
     <Layout>
       <AnimationWrapper>
-        <Animation color={'#FECEA890'}/>
+        <Animation speed={0.02} color={'rgb(254,206,168)'}/>
       </AnimationWrapper>
       <Header>
         <Title>{post.frontmatter.title}</Title>
@@ -62,9 +62,9 @@ const Header = styled.header`
 const AnimationWrapper = styled.div`
   position: fixed;
   top: 0;
-  bottom: 0;
   left: 0;
   right: 0;
+  height: 30vh;
 `;
 
 const Title = styled.h1`

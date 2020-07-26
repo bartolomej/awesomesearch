@@ -47,14 +47,38 @@ const getAllLists = dispatch => (page) => {
   dispatch(store.actions.getListsPending());
   api.getAllLists()
     .then(res => dispatch(store.actions.getListsSuccess(res)))
-    .catch(error => dispatch(store.actions.getListsFailed(error)))
+    .catch(error => {
+      if (error.message === 'Failed to fetch') {
+        dispatch(store.actions.getListsFailed({
+          message: 'Failed to fetch!',
+          description: 'Looks like our app servers are offline, because we use free plan on Heroku.'
+        }));
+      } else {
+        dispatch(store.actions.getListsFailed({
+          message: 'Oops!',
+          description: 'Unknown error occurred while fetching data from servers.'
+        }));
+      }
+    })
 }
 
 const getSingle = dispatch => (uid) => {
   dispatch(store.actions.getSinglePending());
   api.getList(uid)
     .then(res => dispatch(store.actions.getSingleSuccess(res)))
-    .catch(error => dispatch(store.actions.getSingleFailed(error)))
+    .catch(error => {
+      if (error.message === 'Failed to fetch') {
+        dispatch(store.actions.getSingleFailed({
+          message: 'Failed to fetch!',
+          description: 'Looks like our app servers are offline, because we use free plan on Heroku.'
+        }));
+      } else {
+        dispatch(store.actions.getSingleFailed({
+          message: 'Oops!',
+          description: 'Unknown error occurred while fetching data from servers.'
+        }));
+      }
+    })
 }
 
 export default {

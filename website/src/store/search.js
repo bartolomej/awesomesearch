@@ -75,7 +75,7 @@ const suggest = dispatch => query => {
   dispatch(store.actions.suggestPending());
   api.suggest(query)
     .then(res => dispatch(store.actions.suggestSuccess(res)))
-    .catch(error => dispatch(store.actions.suggestFailed(error)))
+    .catch(error => {})
 }
 
 const search = dispatch => query => {
@@ -89,7 +89,17 @@ const search = dispatch => query => {
           page: 0, next: null, result: []
         }));
       } else {
-        dispatch(store.actions.searchFailed(error));
+        if (error.message === 'Failed to fetch') {
+          dispatch(store.actions.searchFailed({
+            message: 'Search failed!',
+            description: 'Looks like our app servers are offline, because we use free plan on Heroku.'
+          }));
+        } else {
+          dispatch(store.actions.searchFailed({
+            message: 'Oops!',
+            description: 'Unknown error occurred while fetching data from servers.'
+          }));
+        }
       }
     })
 }
@@ -99,14 +109,38 @@ const nextSearchPage = dispatch => (query, next) => {
   dispatch(store.actions.nextPagePending());
   api.search(query, next)
     .then(res => dispatch(store.actions.nextPageSuccess(res)))
-    .catch(error => dispatch(store.actions.nextPageFailed(error)))
+    .catch(error => {
+      if (error.message === 'Failed to fetch') {
+        dispatch(store.actions.nextPageFailed({
+          message: 'Failed to fetch!',
+          description: 'Looks like our app servers are offline, because we use free plan on Heroku.'
+        }));
+      } else {
+        dispatch(store.actions.nextPageFailed({
+          message: 'Oops!',
+          description: 'Unknown error occurred while fetching data from servers.'
+        }));
+      }
+    })
 }
 
 const getAllLists = dispatch => (page) => {
   dispatch(store.actions.nextPagePending());
   api.getAllLists()
     .then(res => dispatch(store.actions.nextPageSuccess(res)))
-    .catch(error => dispatch(store.actions.nextPageFailed(error)))
+    .catch(error => {
+      if (error.message === 'Failed to fetch') {
+        dispatch(store.actions.nextPageFailed({
+          message: 'Failed to fetch!',
+          description: 'Looks like our app servers are offline, because we use free plan on Heroku.'
+        }));
+      } else {
+        dispatch(store.actions.nextPageFailed({
+          message: 'Oops!',
+          description: 'Unknown error occurred while fetching data from servers.'
+        }));
+      }
+    })
 }
 
 export default {

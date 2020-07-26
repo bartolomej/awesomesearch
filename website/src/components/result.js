@@ -57,8 +57,19 @@ const Container = styled.div`
   width: 300px;
   max-height: 400px;
   margin: 0 20px 70px 20px;
+  animation: ease-in 200ms resAppear forwards;
   @media (max-width: 700px) {
     margin: 0 0 50px 0;
+  }
+  @keyframes resAppear {
+    0% { 
+      opacity: 0;
+      transform: translateY(5%);
+    }
+    100% { 
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 `;
 

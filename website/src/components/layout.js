@@ -5,7 +5,8 @@ import styled from '@emotion/styled';
 import { ThemeProvider } from 'emotion-theming';
 import theme from '../style/theme';
 import "../style/index.css";
-import { LinkCss } from "../style/ui";
+import { BackgroundAppear, LinkCss } from "../style/ui";
+import Animation from "./animation";
 
 
 const Layout = ({ children }) => (
@@ -16,6 +17,9 @@ const Layout = ({ children }) => (
       </Navigation>
       {children}
       <Footer>
+        <AnimationWrapper>
+          <Animation speed={0.02} color={'rgb(254,206,168)'}/>
+        </AnimationWrapper>
         © {new Date().getFullYear()}, Built with
         <a href="https://www.gatsbyjs.org">Gatsby</a>
       </Footer>
@@ -54,6 +58,15 @@ const Footer = styled.footer`
       p.theme.color.white
     )};
   }
+`;
+
+const AnimationWrapper = styled.div`
+  ${BackgroundAppear};
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 30vh;
 `;
 
 const Link = styled(GLink)`

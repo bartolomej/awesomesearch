@@ -14,7 +14,7 @@ import { useInView } from "react-intersection-observer";
 import UseAnimations from "react-useanimations";
 import Modal from "../components/modal";
 import { getStats } from "../store/api";
-import { ButtonCss, LinkCss, SubtitleCss } from "../style/ui";
+import { BackgroundAppear, ButtonCss, LinkCss, SubtitleCss } from "../style/ui";
 import Description from "../components/description";
 import theme from "../style/theme";
 import Animation from "../components/animation";
@@ -90,7 +90,7 @@ const IndexPage = ({
       )}
       <Header>
         <AnimationWrapper>
-          <Animation color={'#FECEA890'}/>
+          <Animation speed={0.02} color={'rgb(254,206,168)'}/>
         </AnimationWrapper>
         <Logo/>
         <Title>Search <span>{stats.link_count}</span> links from <a target="_blank" href="https://awesome.re">awesome</a></Title>
@@ -110,21 +110,21 @@ const IndexPage = ({
             />
           </LoadingWrapper>
         )}
-        {(listError && query.length === 0) && (
+        {searchError && (
           <MessageWrapper>
             <ErrorIcon/>
-            <strong>Oops!</strong>
-            <span>Failed to load lists because: {listError.message.toLowerCase()}</span>
+            <strong>{searchError.message}</strong>
+            <span>{searchError.description}</span>
           </MessageWrapper>
         )}
-        {(searchError && query.length > 0) && (
+        {listError && !searchError && (
           <MessageWrapper>
             <ErrorIcon/>
-            <strong>Oops!</strong>
-            <span>Failed to load search results because: {searchError.message.toLowerCase()}</span>
+            <strong>{listError.message}</strong>
+            <span>{listError.description}</span>
           </MessageWrapper>
         )}
-        {(results.length === 0 && query.length > 0 && !searchError) && (
+        {(results.length === 0 && query.length > 0 && !searchError && !listError) && (
           <MessageWrapper>
             <NoResultsIcon/>
             <strong>Nothing found here</strong>
@@ -273,11 +273,12 @@ const Header = styled.header`
 `;
 
 const AnimationWrapper = styled.div`
+  ${BackgroundAppear};
   position: fixed;
   top: 0;
-  bottom: 0;
   left: 0;
   right: 0;
+  height: 50vh;
 `;
 
 const Title = styled.p`
@@ -347,6 +348,7 @@ const MessageWrapper = styled.div`
 
 const Body = styled.div`
   position: relative;
+  z-index: 1;
   min-height: 80vh;
   background: ${p => p.theme.color.light};
 `

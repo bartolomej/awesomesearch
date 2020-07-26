@@ -20,19 +20,3 @@ I was using the existing search solutions like [Awesome Indexed](https://awesome
 What I didn't like about those solutions is that there is no visual preview of the content for the user, 
 so the user always has to click the link and go to the source to check it out.
 Because of that I decided that I would try to build another search solution myself.
-
-### How I build it
-
-This app consists of two separate processes:
-
-- *web process*
-    - receives HTTP requests from clients
-    - dispatches jobs to redis queue
-    - performs search queries
-    - interacts with database
-- *worker process*
-    - performs website scraping
-    - list parsing
-    - website screenshots
-
-![AwesomeSearch banner](../images/architecture.png)
