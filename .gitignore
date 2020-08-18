@@ -11,6 +11,7 @@ graph.dot.svg
 graph.ddot.svg
 .env.development
 .env.production
+.env
 /TODO.md
 src/tests/res
 .cache

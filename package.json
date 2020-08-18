@@ -8,20 +8,16 @@
   },
   "scripts": {
     "test": "jest",
-    "test:load:staging": "yarn run start:web:dev && artillery run -e staging src/tests/load.yml ",
-    "test:load:production": "yarn run start:web:dev && artillery run -e production src/tests/load.yml ",
+    "test:load:staging": "yarn run start:web:dev && artillery run -e staging src/test/load-test.yml ",
+    "test:load:production": "yarn run start:web:dev && artillery run -e production src/test/load-test.yml ",
     "start": "NODE_ENV=production ENV_PATH=.env.production nf start",
     "start:dev": "NODE_ENV=development ENV_PATH=.env.development nf start",
     "start:web:dev": "NODE_ENV=development ENV_PATH=.env.development nodemon src/web/index.js",
     "start:web:prod": "NODE_ENV=production ENV_PATH=.env.production nodemon src/web/index.js",
-    "test:unit": "jest src/tests/unit",
-    "test:integration": "jest src/tests/integration",
     "coverage": "jest --coverage",
     "coverage:web": "npm run coverage && open coverage/lcov-report/index.html",
     "repo-graph-ddot": "depcruise --exclude \"^node_modules\" --output-type ddot src | dot -T svg > graph.ddot.svg",
     "repo-graph-dot": "depcruise --exclude \"^node_modules\" --output-type dot src | dot -T svg > graph.dot.svg",
-    "loc:src": "find ./src -name '*.js' -not -path \"./src/tests*\" | xargs wc -l | sort -nr",
-    "loc:tests": "find ./src/tests -name '*.js' | xargs wc -l | sort -nr",
     "loc": "find ./src -name '*.js' | xargs wc -l | sort -nr"
   },
   "repository": {
@@ -39,6 +35,7 @@
     "jest": "25.1.0"
   },
   "dependencies": {
+    "artillery": "1.6.1",
     "bull": "3.14.0",
     "bull-board": "0.7.0",
     "chalk": "3.0.0",

@@ -2,26 +2,18 @@ const throng = require('throng');
 const Queue = require('./queue');
 const listService = require('./services/list');
 const MetaService = require('./services/metadata');
+const ImageService = require('./services/image');
 const logger = require('./logger')('worker');
 const env = require('./env');
 
 const workQueue = Queue('work');
 
 function start () {
-  let imageService;
-
-  if (!env.USE_MOCK_IMAGE_SERVICE) {
-    const ImageService = require('./services/image');
-    imageService = ImageService({
-      cloudName: env.CLOUDINARY_CLOUD_NAME,
-      apiKey: env.CLOUDINARY_API_KEY,
-      apiSecret: env.CLOUDINARY_API_SECRET
-    })
-  } else {
-    // initialize mock image service implementation
-    const MockImageService = require('./tests/mocks/image');
-    imageService = MockImageService();
-  }
+  let imageService = ImageService({
+    cloudName: env.CLOUDINARY_CLOUD_NAME,
+    apiKey: env.CLOUDINARY_API_KEY,
+    apiSecret: env.CLOUDINARY_API_SECRET
+  })
 
   const linkService = MetaService({ imageService });
 

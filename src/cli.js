@@ -1,4 +1,4 @@
-const MetaService = require('../services/metadata');
+const MetaService = require('./services/metadata');
 const path = require('path');
 const fs = require('fs');
 

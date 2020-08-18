@@ -1,8 +1,7 @@
 const { describe, expect, it } = require("@jest/globals");
-const Link = require('../../models/link');
-const Website = require('../../models/website');
-const Repository = require('../../models/repository');
-const List = require('../../models/list');
+const Website = require('./website');
+const Repository = require('./repository');
+const List = require('./list');
 
 
 describe('Repository model tests', function () {
