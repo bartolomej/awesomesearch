@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/worker.js",
   "engines": {
-    "node": ">=13.11"
+    "node": ">=12"
   },
   "scripts": {
     "test": "jest",
@@ -14,6 +14,8 @@
     "start:dev": "NODE_ENV=development ENV_PATH=.env.development nf start",
     "start:web:dev": "NODE_ENV=development ENV_PATH=.env.development nodemon src/web/index.js",
     "start:web:prod": "NODE_ENV=production ENV_PATH=.env.production nodemon src/web/index.js",
+    "docker:build:web": "docker build -t bartolomej/awesomesearch.server.web -f Dockerfile.web .",
+    "docker:build:worker": "docker build -t bartolomej/awesomesearch.server.worker -f Dockerfile.worker .",
     "coverage": "jest --coverage",
     "coverage:web": "npm run coverage && open coverage/lcov-report/index.html",
     "repo-graph-ddot": "depcruise --exclude \"^node_modules\" --output-type ddot src | dot -T svg > graph.ddot.svg",

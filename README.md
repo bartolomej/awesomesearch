@@ -26,13 +26,25 @@ You can deploy your own instance of this server in a few minutes by following th
    heroku ps:scale worker=1 --app <appname>
    ```
 
-## 💜 Some libraries used
+## 💜 Some tech used
 
 - [flexsearch](https://github.com/nextapps-de/flexsearch) - Next-Generation full text search library for Browser and Node.js
 - [bull](https://github.com/OptimalBits/bull) - Premium Queue package for handling distributed jobs and messages in NodeJS
 - [typeorm](https://typeorm.io/) - ORM for TypeScript and JavaScript
 
-## ⚙️ Running locally
+## 📦️ Run with docker
+
+1. **Download and install [docker desktop](https://www.docker.com/get-started).**
+
+2. **Configure environment variables**
+
+    Create `.env` file in root directory, containing all required environmental variables defined in `.env.example` template.
+
+3. **Build and run docker containers**
+
+    Simply run `docker-compose up` to run all services required for the app to work (redis, mysql, web and worker processes).
+
+## ⚙️ Run manually
 
 You can run this app on your local machine as well, but you will need to set up a few things first:
 
@@ -59,26 +71,6 @@ You can run this app on your local machine as well, but you will need to set up 
     You can then finally start the app in development mode with `yarn start:dev` or `npm start:dev`/
     
 
-## 🏗️ Architecture
-
-This app consists of two separate processes:
-- `web` (entry file `src/web/index.js`): 
-    - receives HTTP requests from clients
-    - dispatches jobs to redis queue
-    - performs search queries
-    - interacts with database
-- `worker` (entry file `src/worker.js`): 
-    - performs website scraping
-    - list parsing
-    - website screenshots
-
-You can configure the number of instances for each processes with environmental variables `WEB_CONCURRENCY` (for web process) and `WEB_WORKERS` (for worker process).
-To start both processes in production just run `npm start`.
-
-<div align="center">
-    <img src="architecture.png" width="500" />
-</div>
-
 ## 🔨 Testing
 
 - **Unit & integration tests**
@@ -89,6 +81,10 @@ To start both processes in production just run `npm start`.
 
     These test real life performance of our application by simulating what normal users would do.
     To run these you will need to install [artillery tool](https://artillery.io/) and then run `yarn run test:load:staging`.
+
+## 🌪 Common issues
+
+
 
 ## :memo: License
 

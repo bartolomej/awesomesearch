@@ -34,7 +34,7 @@ function start () {
   console.log(`Worker ${process.pid} started 🙌`);
 }
 
-throng(({ workers: env.WEB_WORKERS, start }));
+throng(({ workers: env.WORKER_CONCURRENCY, start }));
 
 // handle critical uncaught errors
 
