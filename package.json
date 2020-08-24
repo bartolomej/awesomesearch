@@ -20,7 +20,9 @@
     "coverage:web": "npm run coverage && open coverage/lcov-report/index.html",
     "repo-graph-ddot": "depcruise --exclude \"^node_modules\" --output-type ddot src | dot -T svg > graph.ddot.svg",
     "repo-graph-dot": "depcruise --exclude \"^node_modules\" --output-type dot src | dot -T svg > graph.dot.svg",
-    "loc": "find ./src -name '*.js' | xargs wc -l | sort -nr"
+    "loc": "find ./src -name '*.js' | xargs wc -l | sort -nr",
+    "db:seed": "N_LISTS=20 N_LINKS_PER_LIST=5 node scripts/seed-db.js",
+    "db:reset": "node scripts/reset-db.js"
   },
   "repository": {
     "type": "git",
@@ -50,6 +52,7 @@
     "express": "4.17.1",
     "express-useragent": "1.0.13",
     "express-validator": "6.6.0",
+    "faker": "4.1.0",
     "fetch-mock": "9.2.1",
     "flexsearch": "0.6.32",
     "foreman": "3.0.1",
