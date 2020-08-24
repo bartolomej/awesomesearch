@@ -31,7 +31,7 @@ function RestApi ({ webService, listRepository, linkRepository }) {
 
   router.get('/list/:uid', async (req, res, next) => {
     try {
-      res.send(utils.serializeList(await webService.getItem(req.params.uid, 'list')));
+      res.send(utils.serializeList(await webService.getList(req.params.uid)));
     } catch (e) {
       next(e);
     }
@@ -39,7 +39,7 @@ function RestApi ({ webService, listRepository, linkRepository }) {
 
   router.get('/link/:uid', async (req, res, next) => {
     try {
-      res.send(utils.serializeLink(await webService.getItem(req.params.uid, 'link')));
+      res.send(utils.serializeLink(await webService.getLink(req.params.uid)));
     } catch (e) {
       next(e);
     }
@@ -135,7 +135,7 @@ function RestApi ({ webService, listRepository, linkRepository }) {
       const { q, p, limit } = req.query;
       try {
         const searchRes = await webService.search({
-          query: q, page: p || true,
+          query: q, page: p ? parseInt(p) : 0,
           limit: limit ? parseInt(limit) : 15
         });
         res.send(utils.serializeSearchResult(searchRes));

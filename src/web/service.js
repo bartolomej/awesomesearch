@@ -19,26 +19,7 @@ function WebService ({ listRepository, linkRepository, workQueue }) {
     throw new Error('List repository not provided');
   }
 
-  /**
-   * Indexes link + list objects.
-   */
-  const objectIndex = new FlexSearch({
-    encode: "advanced",
-    tokenize: "reverse",
-    doc: {
-      id: 'uid',
-      field: [
-        'id',
-        'title',
-        'url',
-        'websiteName',
-        'description',
-        'author',
-        'tags'
-      ]
-    }
-  });
-
+  // TODO: test keyword search with MySQL index
   /**
    * Keywords / topics index.
    * Used for search suggestions.
@@ -68,35 +49,58 @@ function WebService ({ listRepository, linkRepository, workQueue }) {
     const job = await workQueue.getJob(jobId);
 
     if (job.name === 'list') {
-      const list = List.createFromJson(result)
-      try {
-        await listRepository.save(list);
-        await addToIndex(list);
-      } catch (e) {
-        if (e.message === AwesomeError.types.DUPLICATE_ENTRY) {
-          logger.info(e.message);
-        } else {
-          logger.error(e);
-        }
-      }
-      // post link jobs for found urls
-      for (let url of list.urls) {
-        await scrapeLink(url, list.uid);
-      }
+      await onListJobCompleted(List.createFromJson(result));
     } else if (job.name === 'link') {
-      const link = Link.createFromJson(result);
-      try {
-        await linkRepository.save(link);
-        await addToIndex(link);
-      } catch (e) {
-        if (e.message === AwesomeError.types.DUPLICATE_ENTRY) {
-          logger.info(e.message)
-        } else {
-          logger.error(e)
-        }
-      }
+      await onLinkJobCompleted(Link.createFromJson(result));
     }
   });
+
+  async function onListJobCompleted (list) {
+    try {
+      await listRepository.save(list);
+    } catch (e) {
+      if (e.message === AwesomeError.types.DUPLICATE_ENTRY) {
+        logger.info(e.message);
+      } else {
+        logger.error(e);
+      }
+    }
+    // post link jobs for found urls
+    for (let url of list.urls) {
+      await scrapeLink(url, list.uid);
+    }
+  }
+
+  async function onLinkJobCompleted (link) {
+    try {
+      await linkRepository.save(link);
+    } catch (e) {
+      if (e.message === AwesomeError.types.DUPLICATE_ENTRY) {
+        logger.info(e.message)
+      } else {
+        logger.error(e)
+      }
+    }
+  }
+
+  async function buildKeywordIndex (batchSize = 100) {
+    let keywords = await linkRepository.getAllKeywords(0, batchSize);
+    let topics = await listRepository.getAllTopics(0, batchSize);
+
+    // build index by batches
+    let kIndex = 0;
+    while (keywords.length > 0) {
+      keywords = await linkRepository.getAllKeywords(batchSize, kIndex);
+      keywords.forEach(k => keywordIndex.add(k, k))
+      kIndex++;
+    }
+    let tIndex = 0;
+    while (topics.length > 0) {
+      topics = await listRepository.getAllTopics(batchSize, tIndex);
+      topics.forEach(k => keywordIndex.add(k, k))
+      tIndex++;
+    }
+  }
 
   function suggest ({ query, page = true, limit = 15 }) {
     const searchRes = keywordIndex.search({ limit, page, query, suggest: true });
@@ -108,95 +112,41 @@ function WebService ({ listRepository, linkRepository, workQueue }) {
   }
 
   // TODO: implement field search
-  async function search ({ query, page = true, limit = 15 }) {
-    const searchRes = await objectIndex.search({ limit, page, query, suggest: true });
-    const result = searchRes.result ?
-      await Promise.all(searchRes.result.map(obj => getItem(obj.uid, obj.type))) : [];
+  async function search ({ query, page = 0, limit = 15 }) {
+    const result = (await Promise.all([
+      linkRepository.search(query, limit, page),
+      listRepository.search(query, limit, page),
+    ])).flat();
     return {
-      page: parseInt(searchRes.page),
-      next: searchRes.next ? parseInt(searchRes.next) : null,
+      page,
+      next: result.length > 0 ? page + 1 : null,
       result
     };
   }
 
-  /**
-   * Builds in-memory object search index.
-   * Call on server restarts.
-   */
-  async function buildIndex (itemsPerBatch = 50) {
-    let linkBatchSize = 0;
-    let linkPageIndex = 0;
-    // link batch size is 0 when there are no objects left to process
-    while (linkBatchSize > 0 || linkPageIndex === 0) {
-      const batch = await linkRepository.getAll(itemsPerBatch, linkPageIndex);
-      await Promise.all(batch.map(addToIndex));
-      linkBatchSize = batch.length;
-      linkPageIndex++;
-    }
-    let listBatchSize = 0;
-    let listPageIndex = 0;
-    while (listBatchSize > 0 || listPageIndex === 0) {
-      const batch = await listRepository.getAll(itemsPerBatch, listBatchSize);
-      await Promise.all(batch.map(addToIndex));
-      listBatchSize = batch.length
-      listPageIndex++;
+  async function getList (uid) {
+    try {
+      return await listRepository.get(uid)
+    } catch (e) {
+      logger.error(`Error fetching list ${uid} from db: ${e}`);
+      throw e;
     }
   }
 
-  async function addToIndex (object) {
-    // adds keywords / tags to keywords index
-    function addTags (tags) {
-      for (let tag of tags) {
-        keywordIndex.add(tag, tag);
-      }
-    }
-    function serialize (obj) {
-      return {
-        uid: obj.uid,
-        title: obj.title,
-        tags: obj.tags,
-        description: obj.description,
-        author: obj.author,
-        websiteName: obj.websiteName,
-        url: obj.url,
-        type: obj.type
-      }
-    }
-    // add serialized string data to search index
-    if (object instanceof Link && await linkRepository.exists(object.uid)) {
-      objectIndex.add(serialize(object));
-      addTags(object.tags);
-    }
-    if (object instanceof List && await listRepository.exists(object.uid)) {
-      objectIndex.add(serialize(object));
-      addTags(object.tags);
-    }
-  }
-
-  async function getItem (uid, type) {
-    if (type === 'link') {
-      try {
-        const link = await linkRepository.get(uid);
-        if (link.source) {
-          try {
-            link.source = await listRepository.get(link.source);
-          } catch (e) {
-            logger.error(`Error fetching source list ${link.source} for ${uid}: ${e}`);
-          }
+  async function getLink (uid) {
+    try {
+      const link = await linkRepository.get(uid);
+      if (link.source) {
+        try {
+          link.source = await listRepository.get(link.source);
+        } catch (e) {
+          logger.error(`Error fetching source list ${link.source} for ${uid}: ${e}`);
         }
-        return link;
-      } catch (e) {
-        logger.error(`Error fetching link ${uid} from db: ${e}`);
-        throw e;
       }
-    }
-    if (type === 'list') {
-      try {
-        return await listRepository.get(uid)
-      } catch (e) {
-        logger.error(`Error fetching list ${uid} from db: ${e}`);
-        throw e;
-      }
+      return link;
+    } catch (e) {
+      logger.error(`Error fetching link ${uid} from db: ${e}`);
+      throw e;
     }
   }
 
@@ -213,7 +163,6 @@ function WebService ({ listRepository, linkRepository, workQueue }) {
       linkCount: await linkRepository.getCount(),
       listCount: await listRepository.getCount(),
       searchCount: await searchLogRepository.getCount(),
-      objectIndex: objectIndex.info(),
       keywordsIndex: keywordIndex.info()
     }
   }
@@ -234,8 +183,9 @@ function WebService ({ listRepository, linkRepository, workQueue }) {
     suggest,
     scrapeFromRoot,
     scrapeLink,
-    getItem,
-    buildIndex,
+    buildKeywordIndex,
+    getLink,
+    getList,
     scrapeList,
     getStats,
     workQueue,

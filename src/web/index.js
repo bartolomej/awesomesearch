@@ -5,25 +5,21 @@ const { setQueues } = require('bull-board')
 const OpenRoutes = require('./routes/open');
 const AdminRoutes = require('./routes/admin');
 const WebService = require('./service');
-const memoryRepository = require('./repos/memorydb');
-const LinkRepository = require('./repos/link');
-const ListRepository = require('./repos/list');
 const Queue = require('../queue');
 const typeorm = require('./typeorm');
 const logger = require('../logger')('web-index');
 const { execute } = require('../utils');
 
 async function start () {
-  const listRepository = env.USE_MEMORY_DB ? memoryRepository() : ListRepository;
-  const linkRepository = env.USE_MEMORY_DB ? memoryRepository() : LinkRepository;
+  const linkRepository = require('./repos/link');
+  const listRepository = require('./repos/list');
 
-  if (!env.USE_MEMORY_DB) {
-    try {
-      await typeorm.create();
-    } catch (e) {
-      logger.error(`Error while connecting to db: ${e}`);
-      process.exit(1);
-    }
+  try {
+    const con = await typeorm.create();
+    logger.debug(`Connected to database: ${con.name}`)
+  } catch (e) {
+    logger.error(`Error while connecting to db: ${e}`);
+    process.exit(1);
   }
 
   // inject required dependencies
@@ -56,13 +52,11 @@ async function start () {
   }
 
   // build index with stored objects if using persistent db
-  if (!env.USE_MEMORY_DB) {
-    try {
-      // async index build at 200 per data batch
-      await execute(`Building search index`, webService.buildIndex(100));
-    } catch (e) {
-      logger.error(`Error while building search index: ${e}: ${e.description}`);
-    }
+  try {
+    // async index build at 200 per data batch
+    await execute(`Building keyword search index`, webService.buildKeywordIndex(200));
+  } catch (e) {
+    logger.error(`Error while building search index: ${e}: ${e.description}`);
   }
 }
 

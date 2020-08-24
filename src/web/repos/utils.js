@@ -82,5 +82,6 @@ module.exports = {
   deserializeWebsite,
   deserializeLink,
   serializeRepo,
-  serializeWebsite
+  serializeWebsite,
+  split
 }

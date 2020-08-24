@@ -10,10 +10,10 @@ module.exports = new EntitySchema({
       type: "varchar",
     },
     url: {
-      type: "varchar"
+      type: "varchar",
     },
     title: {
-      type: "varchar"
+      type: "varchar",
     },
     type: {
       type: "varchar",
@@ -21,15 +21,15 @@ module.exports = new EntitySchema({
     },
     name: {
       type: "varchar",
-      nullable: true
+      nullable: true,
     },
     description: {
       type: "longtext",
-      nullable: true
+      nullable: true,
     },
     author: {
       type: "varchar",
-      nullable: true
+      nullable: true,
     },
     icon: {
       type: "longtext",
@@ -49,7 +49,23 @@ module.exports = new EntitySchema({
     },
     keywords: {
       type: "longtext",
-      nullable: true
+      nullable: true,
+      fulltext: true
     },
-  }
+  },
+  indices: [
+    {
+      name: 'search',
+      fulltext: true,
+      synchronize: true,
+      columns: [
+        'url',
+        'title',
+        'name',
+        'description',
+        'author',
+        'keywords'
+      ]
+    }
+  ],
 });

@@ -1,6 +1,5 @@
 const { describe, expect, it } = require("@jest/globals");
 const WebService = require('../web/service');
-const memoryDb = require('../web/repos/memorydb');
 const Repository = require('../models/repository');
 const Website = require('../models/website');
 const List = require('../models/list');
@@ -26,7 +25,7 @@ describe('Web service tests', function () {
       name: 'link',
       data: { url: linkUrl, source: list.repository.uid }
     }]);
-    expect(searchResult.result.length).toBe(1);
+    expect(searchResult.result).toEqual([list]);
   });
 
   it('should handle link result given completed job', async function () {
@@ -39,18 +38,18 @@ describe('Web service tests', function () {
     );
     workQueue._setJob('1', { name: 'link' });
     await workQueue._completeJob('1', JSON.stringify(link));
-    const searchResult = await service.search({ query: 'LinkTest' });
+    const searchResult = await service.search('LinkTest');
 
     expect(linkRepository.get(link.uid)).toEqual(link);
-    expect(searchResult.result.length).toBe(1);
+    expect(searchResult.result).toEqual([link]);
   });
 
 });
 
 function webServiceFactory () {
   const workQueue = MockQueue();
-  const listRepository = memoryDb();
-  const linkRepository = memoryDb();
+  const listRepository = MockRepository();
+  const linkRepository = MockRepository();
   const service = WebService({ listRepository, linkRepository, workQueue });
   return { workQueue, listRepository, linkRepository, service }
 }
@@ -88,4 +87,84 @@ function MockQueue () {
   }
 
   return { on, _completeJob, _setJob, getJob, add, _getQueuedJobs }
+}
+
+function MockRepository () {
+
+  let store = {};
+
+  async function search (query) {
+    let results = [];
+    for (let key in store) {
+      let matches = false;
+      for (let k in store[key]) {
+        if (new RegExp(query).test(store[key][k])) {
+          matches = true;
+        }
+      }
+      if (matches) {
+        results.push(store[key])
+      }
+    }
+    return results;
+  }
+
+  function save (object) {
+    store[object.uid] = object;
+    return store[object.uid];
+  }
+
+  function getCount () {
+    return Object.keys(store).length;
+  }
+
+  function get (uid) {
+    const object = store[uid];
+    if (object) {
+      return object;
+    } else {
+      throw new Error('Entity not found');
+    }
+  }
+
+  function getRandomObject (n = 1) {
+    const results = [];
+    for (let i = 0; i < n; i++) {
+      const keys = Object.keys(store);
+      const rand = Math.round(Math.random() * keys.length - 1);
+      results.push(store[keys[rand]]);
+    }
+    return results;
+  }
+
+  function getAll (limit = null) {
+    const keys = Object.keys(store);
+    return keys.map(k => store[k])
+      .slice(0, limit || keys.length);
+  }
+
+  function removeAll () {
+    store = {};
+  }
+
+  function remove (uid) {
+    store[uid] = undefined;
+  }
+
+  function exists (uid) {
+    return store[uid] !== undefined;
+  }
+
+  return {
+    save,
+    get,
+    search,
+    remove,
+    removeAll,
+    getAll,
+    exists,
+    getCount,
+    getRandomObject
+  }
+
 }

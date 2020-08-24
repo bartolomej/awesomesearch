@@ -34,6 +34,19 @@ module.exports = new EntitySchema({
       type: "longtext"
     }
   },
+  indices: [
+    {
+      name: 'search',
+      fulltext: true,
+      synchronize: true,
+      columns: [
+        'url',
+        'homepage',
+        'description',
+        'topics'
+      ]
+    }
+  ],
   relations: {
     repository: {
       target: "List",

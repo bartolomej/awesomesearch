@@ -7,6 +7,21 @@ const utils = require('./utils');
 const logger = require('../../logger')('list-repo');
 const AwesomeError = require('../../error');
 
+async function search (query, pageLimit = 10, pageNumber = 0) {
+  return (await getRepository(List)
+    .createQueryBuilder('list')
+    .leftJoinAndSelect('list.repository', 'r')
+    // TODO: test IN NATURAL LANGUAGE MODE WITH QUERY EXPANSION
+    .where(`
+      MATCH(r.url, r.homepage, r.description, r.topics)
+      AGAINST ('${query}')
+    `)
+    .skip(pageLimit * pageNumber)
+    .take(pageLimit)
+    .getMany()
+  ).map(utils.deserializeList);
+}
+
 async function save (list) {
   await getRepository(Repository)
     .save(utils.serializeRepo(list.repository))
@@ -24,7 +39,7 @@ async function get (uid) {
   return utils.deserializeList(
     await getRepository(List)
       .createQueryBuilder('list')
-      .leftJoinAndSelect('list.repository', 'repository')
+      .leftJoinAndSelect('list.repository', 'r')
       .where('list.uid = :uid', { uid })
       .getOne()
   );
@@ -33,7 +48,7 @@ async function get (uid) {
 async function getAll (pageLimit = 10, pageNumber = 0) {
   return (await getRepository(List)
     .createQueryBuilder('list')
-    .leftJoinAndSelect('list.repository', 'repository')
+    .leftJoinAndSelect('list.repository', 'r')
     // .orderBy(`list.${orderBy}`, 'DESC')
     // https://github.com/typeorm/typeorm/issues/4270
     .skip(pageLimit * pageNumber)
@@ -45,6 +60,20 @@ async function getCount () {
   const result = await getRepository(List)
     .query('SELECT COUNT(*) as c FROM list');
   return parseInt(result[0].c);
+}
+
+async function getAllTopics (page = 0, limit = 50) {
+  // split keywords into arrays
+  // remove repeated keywords with set constructor
+  return [...new Set((await getRepository(Repository)
+    .createQueryBuilder('repo')
+    .select('repo.topics')
+    .distinct(true)
+    .where('CHAR_LENGTH(repo.topics) > 1')
+    .skip(page * limit)
+    .take(limit)
+    .getMany())
+    .map(r => utils.split(r.topics)).flat())];
 }
 
 async function exists (uid) {
@@ -73,5 +102,7 @@ module.exports = {
   removeAll,
   getAll,
   exists,
-  getCount
+  getCount,
+  search,
+  getAllTopics
 }

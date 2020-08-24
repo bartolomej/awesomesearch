@@ -36,6 +36,8 @@ class Website {
   }
 
   static computeUid (url) {
+    // formats url in form: domain-name.domain.path1.path2...
+    // example: github.com.microsoft.vscode
     const normalized = normalizeUrlLib(url, {
       stripHash: true,
       stripWWW: true,

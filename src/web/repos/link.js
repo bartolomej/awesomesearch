@@ -5,6 +5,22 @@ const Website = require('../../models/website');
 const Repository = require('../../models/repository');
 const AwesomeError = require('../../error');
 
+async function search (query, pageLimit = 10, pageNumber = 0) {
+  return (await getRepository(Link)
+    .createQueryBuilder('link')
+    .leftJoinAndSelect('link.repository', 'r')
+    .leftJoinAndSelect('link.website', 'w')
+    // TODO: try mode: NATURAL LANGUAGE MODE WITH QUERY EXPANSION
+    .where(`
+      MATCH(w.url, w.title, w.name, w.description, w.author, w.keywords) 
+      AGAINST ('${query}' IN NATURAL LANGUAGE MODE)
+    `)
+    .skip(pageLimit * pageNumber)
+    .take(pageLimit)
+    .getMany()
+  ).map(utils.deserializeLink);
+}
+
 async function save (link) {
   if (link.website) {
     await getRepository(Website)
@@ -47,7 +63,7 @@ async function getFromSource (sourceUid) {
     .getMany()).map(utils.deserializeLink)
 }
 
-async function getAll (pageLimit = 10, pageNumber = 0, source = null) {
+async function getAll (limit = 10, page = 0, source = null) {
   const query = getRepository(Link)
     .createQueryBuilder('link')
     .leftJoinAndSelect('link.repository', 'repository')
@@ -56,8 +72,8 @@ async function getAll (pageLimit = 10, pageNumber = 0, source = null) {
     query.where('link.source = :source', { source })
   }
   query
-    .skip(pageNumber * pageLimit)
-    .take(pageLimit);
+    .skip(page * limit)
+    .take(limit);
   return (await query.getMany()).map(utils.deserializeLink);
 }
 
@@ -75,6 +91,20 @@ async function getRandomObject (n = 1) {
     .take(n)
     .orderBy('RAND()')
     .getMany()).map(utils.deserializeLink)
+}
+
+async function getAllKeywords (limit = 100, page = 0) {
+  // split keywords into arrays
+  // remove repeated keywords with set constructor
+  return [...new Set((await getRepository(Website)
+    .createQueryBuilder('w')
+    .select('w.keywords')
+    .distinct(true)
+    .where('CHAR_LENGTH(w.keywords) > 1')
+    .skip(page * limit)
+    .take(limit)
+    .getMany())
+    .map(l => utils.split(l.keywords)).flat())];
 }
 
 async function exists (uid) {
@@ -97,5 +127,7 @@ module.exports = {
   getCount,
   getAll,
   exists,
-  getRandomObject
+  getRandomObject,
+  getAllKeywords,
+  search
 }
