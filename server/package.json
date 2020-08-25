@@ -21,8 +21,8 @@
     "repo-graph-ddot": "depcruise --exclude \"^node_modules\" --output-type ddot src | dot -T svg > graph.ddot.svg",
     "repo-graph-dot": "depcruise --exclude \"^node_modules\" --output-type dot src | dot -T svg > graph.dot.svg",
     "loc": "find ./src -name '*.js' | xargs wc -l | sort -nr",
-    "db:seed": "N_LISTS=20 N_LINKS_PER_LIST=5 node scripts/seed-db.js",
-    "db:reset": "node scripts/reset-db.js"
+    "db:seed": "N_LISTS=20 N_LINKS_PER_LIST=5 node server/scripts/seed-db.js",
+    "db:reset": "node server/scripts/reset-db.js"
   },
   "repository": {
     "type": "git",

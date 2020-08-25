@@ -7,19 +7,26 @@ version: '3.8'
 services:
   web:
     build:
-      context: .
+      context: server
       dockerfile: Dockerfile.web
     container_name: awesomesearch.server.web
     depends_on:
       - db
       - redis
     environment:
-      - DB_HOST=db
+      - DB_HOST=awesomesearch.server.db
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_USERNAME=${DB_USERNAME}
       - DB_NAME=${DB_NAME}
       - WEB_CONCURRENCY=${WEB_CONCURRENCY}
       - REDIS_URL=redis:6379
+      # --------------- TODO: separate worker/web environmental variables !
+      - GH_USERNAME=${GH_USERNAME}
+      - GH_TOKEN=${GH_TOKEN}
+      - CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME}
+      - CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}
+      - CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET}
+      # ---------------
       - PORT=8000
     ports:
       - '8000:8000'
@@ -30,7 +37,7 @@ services:
       - awesome-network
   worker:
     build:
-      context: .
+      context: server
       dockerfile: Dockerfile.worker
     container_name: awesomesearch.server.worker
     depends_on:
@@ -52,12 +59,12 @@ services:
       - awesome-network
   redis:
     image: redis
-    container_name: redis
+    container_name: awesomesearch.server.redis
     networks:
       - awesome-network
   db:
     image: mysql
-    container_name: db
+    container_name: awesomesearch.server.db
     command: --default-authentication-plugin=mysql_native_password
     volumes:
       - dbdata:/data/db
