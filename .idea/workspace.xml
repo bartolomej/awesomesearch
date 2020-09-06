@@ -28,16 +28,12 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="df5c9592-b435-4736-b9e4-8053067b0417" name="typescript" comment="refactor server codebase to ts">
-      <change afterPath="$PROJECT_DIR$/server/src/worker/processors/link.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/worker/processors/list.ts" afterDir="false" />
+    <list default="true" id="df5c9592-b435-4736-b9e4-8053067b0417" name="typescript" comment="fix stuck jobs">
+      <change afterPath="$PROJECT_DIR$/website/src/components/repository.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/Dockerfile.worker" beforeDir="false" afterPath="$PROJECT_DIR$/server/Dockerfile.worker" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/env.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/env.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/web/repos/list.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/web/repos/list.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/web/routes/utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/web/routes/utils.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/web/repos/link.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/web/repos/link.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/web/service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/web/service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/worker.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/worker/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/website/src/components/result.js" beforeDir="false" afterPath="$PROJECT_DIR$/website/src/components/result.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/website/src/pages/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/website/src/pages/index.js" afterDir="false" />
     </list>
     <list id="b335f404-2176-45ea-ab88-fac23c9df1b6" name="cra" comment="">
@@ -181,7 +177,7 @@
       <workItem from="1598953575992" duration="9610000" />
       <workItem from="1598981208539" duration="2476000" />
       <workItem from="1599295984008" duration="12693000" />
-      <workItem from="1599386447371" duration="11592000" />
+      <workItem from="1599386447371" duration="17242000" />
     </task>
     <task id="LOCAL-00001" summary="moved server code to server/src">
       <created>1598379264652</created>
@@ -211,7 +207,14 @@
       <option name="project" value="LOCAL" />
       <updated>1599396224135</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="fix stuck jobs">
+      <created>1599401680378</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1599401680378</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -261,7 +264,8 @@
     <MESSAGE value="removed unnecessary css" />
     <MESSAGE value="dockerized frontends" />
     <MESSAGE value="refactor server codebase to ts" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor server codebase to ts" />
+    <MESSAGE value="fix stuck jobs" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix stuck jobs" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="WindowStateProjectService">
@@ -296,10 +300,10 @@
     <state x="880" y="69" key="#xdebugger.evaluate/0.0.1440.820/-245.-1057.1920.1057@0.0.1440.820" timestamp="1599390902361" />
     <state x="674" y="149" key="#xdebugger.evaluate/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1598965191277" />
     <state x="674" y="149" key="#xdebugger.evaluate/0.0.1440.900@0.0.1440.900" timestamp="1598968060015" />
-    <state x="0" y="0" width="1203" height="900" key="CommitChangelistDialog2" timestamp="1599401396049">
+    <state x="0" y="0" width="1203" height="900" key="CommitChangelistDialog2" timestamp="1599401679786">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="0" y="0" width="1203" height="900" key="CommitChangelistDialog2/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1599401396049" />
+    <state x="0" y="0" width="1203" height="900" key="CommitChangelistDialog2/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1599401679786" />
     <state x="0" y="0" key="CommitChangelistDialog2/0.0.1440.900@0.0.1440.900" timestamp="1598439469183" />
     <state x="100" y="100" width="1240" height="700" key="DiffContextDialog" timestamp="1599306470733">
       <screen x="0" y="0" width="1440" height="900" />

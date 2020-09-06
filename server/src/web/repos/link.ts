@@ -15,7 +15,6 @@ export default function LinkRepository (): LinkRepositoryInt {
         .createQueryBuilder('link')
         .leftJoinAndSelect('link.repository', 'r')
         .leftJoinAndSelect('link.website', 'w')
-        // TODO: try mode: NATURAL LANGUAGE MODE WITH QUERY EXPANSION
         .where(`
         MATCH(w.url, w.title, w.name, w.description, w.author, w.keywords)
         AGAINST ('${query}' IN NATURAL LANGUAGE MODE)

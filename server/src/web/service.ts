@@ -123,6 +123,7 @@ export default function WebService ({
   }
 
   // TODO: implement field search
+  // TODO: measure and improve performance
   async function search (query, page = 0, limit = 15) {
     let result;
     try {

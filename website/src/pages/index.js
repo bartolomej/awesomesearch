@@ -5,7 +5,6 @@ import SEO from '../components/seo';
 import SearchField from "../components/searchfield";
 import logo from '../assets/logo.svg';
 import noResults from '../assets/no-results.svg';
-import glasses from '../assets/glasses.svg'
 import error from '../assets/error.svg';
 import { connect } from "react-redux";
 import search from "../store/search";
@@ -14,9 +13,8 @@ import { useInView } from "react-intersection-observer";
 import UseAnimations from "react-useanimations";
 import Modal from "../components/modal";
 import { getStats } from "../store/api";
-import { BackgroundAppear, ButtonCss, LinkCss, SubtitleCss } from "../style/ui";
-import Description from "../components/description";
-import theme from "../style/theme";
+import { BackgroundAppear, LinkCss, SubtitleCss } from "../style/ui";
+import RepoView from "../components/repository";
 import Animation from "../components/animation";
 import lists from "../store/lists";
 
@@ -93,7 +91,8 @@ const IndexPage = ({
           <Animation speed={0} color={'rgb(254,206,168)'}/>
         </AnimationWrapper>
         <Logo/>
-        <Title>Search <span>{stats.link_count}</span> links from <a target="_blank" href="https://awesome.re">awesome</a></Title>
+        <Title>Search <span>{stats.link_count}</span> links from <a
+          target="_blank" href="https://awesome.re">awesome</a></Title>
         <SearchField
           onChange={q => suggest(q)}
           onSubmit={q => search(q)}
@@ -145,8 +144,13 @@ const IndexPage = ({
                   type={r.object_type}
                   description={r.description}
                   screenshot={r.screenshot_url || r.image_url}
-                  source={r.source}
                   emojis={r.emojis}
+                  displayOnHover={
+                    <RepositoryStats
+                      forksCount={r.forks}
+                      starsCount={r.stars}
+                    />
+                  }
                 />
               ))}
             </ResultsWrapper>
@@ -176,89 +180,24 @@ const IndexPage = ({
   )
 };
 
-function RepoView ({ title, description, stars, forks, links = 120, url, tags, image, emojis }) {
+function RepositoryStats ({ starsCount, forksCount }) {
 
-  const Container = styled.div`
-    display: flex;
+  const Wrapper = styled.div`
     flex-direction: column;
-    align-items: center;
   `;
 
-  const Logo = styled(glasses)`
-
-  `;
-
-  const DescWrapper = styled.div`
-    max-width: 500px;
-    padding: 10px 0;
-  `;
-
-  const Link = styled.a`
-    display: block;
-    width: 120px;
-    margin: 15px;
-    ${ButtonCss};
-  `;
-
-  const StatsWrapper = styled.div`
-    display: flex;
-    text-align: center;
-  `;
-
-  const Subtitle = styled.h3`
-    ${SubtitleCss};
-    margin-top: 10px;
-    margin-bottom: 20px;
-  `;
-
-  const StatsElement = styled.div`
-    display: flex;
-    flex-direction: column;
-    margin: 10px 20px;
-    padding: 20px;
-    background: white;
-    border-radius: 5px;
+  const Stat = styled.div`
+    color: ${p => p.theme.color.light};
+    font-weight: bold;
+    font-size: 14px;
   `;
 
   return (
-    <Container>
-      <Logo/>
-      <Subtitle>{formatTitle(title)}</Subtitle>
-      <StatsWrapper>
-        <StatsElement>
-          <strong>{links}</strong>
-          <span>links</span>
-        </StatsElement>
-        <StatsElement>
-          <strong>{stars}</strong>
-          <span>stars</span>
-        </StatsElement>
-        <StatsElement>
-          <strong>{forks}</strong>
-          <span>forks</span>
-        </StatsElement>
-      </StatsWrapper>
-      <DescWrapper>
-        <Description
-          color={theme.color.dark}
-          text={description}
-          emojis={emojis}
-          maxLength={null}
-        />
-      </DescWrapper>
-      <Link target="_blank" href={url}>
-        View on Github
-      </Link>
-    </Container>
+    <Wrapper>
+      <Stat>⭐️ {starsCount} stars</Stat>
+      <Stat>⚒️️ {forksCount} forks</Stat>
+    </Wrapper>
   )
-}
-
-function formatTitle (text) {
-  return text
-    .replace('-', ' ')
-    .split(' ')
-    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
-    .join(' ');
 }
 
 const Header = styled.header`
