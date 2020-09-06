@@ -90,7 +90,7 @@ const IndexPage = ({
       )}
       <Header>
         <AnimationWrapper>
-          <Animation speed={0.02} color={'rgb(254,206,168)'}/>
+          <Animation speed={0} color={'rgb(254,206,168)'}/>
         </AnimationWrapper>
         <Logo/>
         <Title>Search <span>{stats.link_count}</span> links from <a target="_blank" href="https://awesome.re">awesome</a></Title>
@@ -185,7 +185,7 @@ function RepoView ({ title, description, stars, forks, links = 120, url, tags, i
   `;
 
   const Logo = styled(glasses)`
-  
+
   `;
 
   const DescWrapper = styled.div`

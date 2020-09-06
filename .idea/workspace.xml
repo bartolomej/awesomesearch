@@ -28,77 +28,21 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="df5c9592-b435-4736-b9e4-8053067b0417" name="typescript" comment="added">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/awesomesearch.server.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/jest.config.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/constants.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/env.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/scripts/reset-db.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/src/web/repos/repos.d.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/tsconfig.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.env.example" beforeDir="false" afterPath="$PROJECT_DIR$/server/.env.example" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/server/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/server/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/Dockerfile.web" beforeDir="false" afterPath="$PROJECT_DIR$/server/Dockerfile.web" afterDir="false" />
+    <list default="true" id="df5c9592-b435-4736-b9e4-8053067b0417" name="typescript" comment="refactor server codebase to ts">
+      <change afterPath="$PROJECT_DIR$/server/src/worker/processors/link.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/worker/processors/list.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/Dockerfile.worker" beforeDir="false" afterPath="$PROJECT_DIR$/server/Dockerfile.worker" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/cli.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/scripts/metadata.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/env.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/error.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/global.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/logger.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/logger.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/models/link.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/models/link.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/models/list.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/models/list.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/models/models.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/models/models.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/models/repository.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/models/repository.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/models/searchlog.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/models/searchlog.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/models/website.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/models/website.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/queue.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/queue.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/scripts/reset-db.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/scripts/seed-db.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/scripts/seed-db.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/services/github.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/services/github.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/services/image.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/services/image.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/services/list.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/services/list.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/services/list.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/services/list.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/services/metadata.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/services/metadata.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/services/metadata.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/services/metadata.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/utils.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/web/entity/link.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/web/entity/link.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/web/entity/list.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/web/entity/list.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/web/entity/repository.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/web/entity/repository.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/web/entity/searchlog.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/web/entity/searchlog.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/web/entity/website.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/web/entity/website.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/web/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/web/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/web/public/dashboard.css" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/web/public/dashboard.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/web/public/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/web/public/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/web/public/metadata.css" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/web/public/metadata.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/web/public/root.css" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/web/public/root.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/web/repos/link.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/web/repos/link.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/web/repos/list.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/web/repos/list.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/web/repos/repos.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/web/repos/repos.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/web/repos/searchlog.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/web/repos/searchlog.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/web/repos/utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/web/repos/utils.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/web/routes/admin.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/web/routes/admin.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/web/routes/open.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/web/routes/open.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/web/routes/routes.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/web/routes/routes.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/web/routes/utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/web/routes/utils.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/web/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/web/server.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/web/service.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/web/service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/web/service.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/web/service.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/web/typeorm.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/web/typeorm.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/worker.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/worker.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/server/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/env.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/env.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/web/repos/list.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/web/repos/list.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/web/routes/utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/web/routes/utils.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/web/service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/web/service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/worker.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/worker/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/website/src/pages/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/website/src/pages/index.js" afterDir="false" />
     </list>
     <list id="b335f404-2176-45ea-ab88-fac23c9df1b6" name="cra" comment="">
       <change beforePath="$PROJECT_DIR$/server/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/scripts/seed-db.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/scripts/seed-db.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/scripts/seed-db.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/scripts/seed-db.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/website/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/website/public/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/website/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/website/yarn.lock" afterDir="false" />
     </list>
@@ -123,37 +67,6 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="LineStatusTrackerManager">
-    <file path="$PROJECT_DIR$/server/package.json">
-      <ranges>
-        <range start1="4" end1="5" start2="4" end2="5" changelist="df5c9592-b435-4736-b9e4-8053067b0417" />
-        <range start1="12" end1="12" start2="12" end2="14" changelist="df5c9592-b435-4736-b9e4-8053067b0417" />
-        <range start1="14" end1="16" start2="16" end2="18" changelist="df5c9592-b435-4736-b9e4-8053067b0417" />
-        <range start1="23" end1="25" start2="25" end2="27" changelist="b335f404-2176-45ea-ab88-fac23c9df1b6" />
-        <range start1="36" end1="40" start2="38" end2="38" changelist="df5c9592-b435-4736-b9e4-8053067b0417" />
-        <range start1="41" end1="41" start2="39" end2="42" changelist="df5c9592-b435-4736-b9e4-8053067b0417" />
-        <range start1="59" end1="59" start2="60" end2="61" changelist="df5c9592-b435-4736-b9e4-8053067b0417" />
-        <range start1="69" end1="69" start2="71" end2="72" changelist="df5c9592-b435-4736-b9e4-8053067b0417" />
-        <range start1="70" end1="70" start2="73" end2="74" changelist="df5c9592-b435-4736-b9e4-8053067b0417" />
-        <range start1="73" end1="74" start2="77" end2="78" changelist="df5c9592-b435-4736-b9e4-8053067b0417" />
-      </ranges>
-    </file>
-    <file path="$PROJECT_DIR$/server/src/scripts/seed-db.ts">
-      <ranges>
-        <range start1="0" end1="9" start2="0" end2="10" changelist="b335f404-2176-45ea-ab88-fac23c9df1b6" />
-        <range start1="16" end1="16" start2="17" end2="22" changelist="df5c9592-b435-4736-b9e4-8053067b0417" />
-        <range start1="18" end1="19" start2="24" end2="25" changelist="df5c9592-b435-4736-b9e4-8053067b0417" />
-        <range start1="20" end1="21" start2="26" end2="27" changelist="df5c9592-b435-4736-b9e4-8053067b0417" />
-        <range start1="24" end1="24" start2="30" end2="31" changelist="df5c9592-b435-4736-b9e4-8053067b0417" />
-        <range start1="27" end1="27" start2="34" end2="35" changelist="df5c9592-b435-4736-b9e4-8053067b0417" />
-        <range start1="37" end1="38" start2="45" end2="46" changelist="df5c9592-b435-4736-b9e4-8053067b0417" />
-        <range start1="40" end1="40" start2="48" end2="49" changelist="df5c9592-b435-4736-b9e4-8053067b0417" />
-        <range start1="41" end1="41" start2="50" end2="51" changelist="df5c9592-b435-4736-b9e4-8053067b0417" />
-        <range start1="56" end1="57" start2="66" end2="67" changelist="df5c9592-b435-4736-b9e4-8053067b0417" />
-        <range start1="58" end1="59" start2="68" end2="69" changelist="df5c9592-b435-4736-b9e4-8053067b0417" />
-      </ranges>
-    </file>
-  </component>
   <component name="ProjectId" id="1gXeKX0BdclGhp6Nyfc6m0BS31C" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -176,18 +89,18 @@
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/server" />
-    </key>
-    <key name="es6.move.members.recent.items">
-      <recent name="$PROJECT_DIR$/server/src/web/routes/utils.ts" />
-    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/server/src/worker" />
       <recent name="$PROJECT_DIR$/server" />
       <recent name="$PROJECT_DIR$/server/src/scripts" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/server/src" />
-      <recent name="$PROJECT_DIR$/website" />
+    </key>
+    <key name="es6.move.members.recent.items">
+      <recent name="$PROJECT_DIR$/server/src/web/routes/utils.ts" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/server" />
     </key>
   </component>
   <component name="RunManager" selected="Docker.rebuild &amp; run">
@@ -201,61 +114,12 @@
       <scope-kind value="ALL" />
       <method v="2" />
     </configuration>
-    <configuration name="Link repository tests" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
-      <node-interpreter value="project" />
-      <node-options value="" />
-      <jest-package value="$PROJECT_DIR$/server/node_modules/jest" />
-      <working-dir value="$PROJECT_DIR$/server" />
-      <envs />
-      <scope-kind value="SUITE" />
-      <test-file value="$PROJECT_DIR$/server/src/web/repos/repos.test.ts" />
-      <test-names>
-        <test-name value="Link repository tests" />
-      </test-names>
-      <method v="2" />
+    <configuration name="web process" type="NodeJSConfigurationType" path-to-js-file="server/build/web/index.js" working-dir="$PROJECT_DIR$">
+      <method v="2">
+        <option name="TypeScript.Before.Run" enabled="true" FAIL_ON_ERROR="true" CONFIG_PATH="$PROJECT_DIR$/server/tsconfig.json" />
+      </method>
     </configuration>
-    <configuration name="Web service tests" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
-      <node-interpreter value="project" />
-      <node-options value="" />
-      <jest-package value="$PROJECT_DIR$/server/node_modules/jest" />
-      <working-dir value="$PROJECT_DIR$/server" />
-      <envs />
-      <scope-kind value="SUITE" />
-      <test-file value="$PROJECT_DIR$/server/src/web/service.test.ts" />
-      <test-names>
-        <test-name value="Web service tests" />
-      </test-names>
-      <method v="2" />
-    </configuration>
-    <configuration name="Web service tests.should handle link result given completed job" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
-      <node-interpreter value="project" />
-      <node-options value="" />
-      <jest-package value="$PROJECT_DIR$/server/node_modules/jest" />
-      <working-dir value="$PROJECT_DIR$/server" />
-      <envs />
-      <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/server/src/web/service.test.ts" />
-      <test-names>
-        <test-name value="Web service tests" />
-        <test-name value="should handle link result given completed job" />
-      </test-names>
-      <method v="2" />
-    </configuration>
-    <configuration name="Web service tests.should handle list result given completed job" type="JavaScriptTestRunnerJest" temporary="true" nameIsGenerated="true">
-      <node-interpreter value="project" />
-      <node-options value="" />
-      <jest-package value="$PROJECT_DIR$/server/node_modules/jest" />
-      <working-dir value="$PROJECT_DIR$/server" />
-      <envs />
-      <scope-kind value="TEST" />
-      <test-file value="$PROJECT_DIR$/server/src/web/service.test.ts" />
-      <test-names>
-        <test-name value="Web service tests" />
-        <test-name value="should handle list result given completed job" />
-      </test-names>
-      <method v="2" />
-    </configuration>
-    <configuration name="start web process" type="NodeJSConfigurationType" path-to-js-file="server/build/web/index.js" working-dir="$PROJECT_DIR$">
+    <configuration name="worker process" type="NodeJSConfigurationType" path-to-js-file="server/build/web/index.js" working-dir="$PROJECT_DIR$">
       <method v="2">
         <option name="TypeScript.Before.Run" enabled="true" FAIL_ON_ERROR="true" CONFIG_PATH="$PROJECT_DIR$/server/tsconfig.json" />
       </method>
@@ -264,19 +128,6 @@
       <deployment type="docker-compose.yml">
         <settings>
           <option name="commandLineOptions" value="--build" />
-          <option name="sourceFilePath" value="server/docker-compose.yml" />
-        </settings>
-      </deployment>
-      <method v="2" />
-    </configuration>
-    <configuration name="server.web: Compose Deployment" type="docker-deploy" factoryName="docker-compose.yml" temporary="true" server-name="Docker">
-      <deployment type="docker-compose.yml">
-        <settings>
-          <option name="services">
-            <list>
-              <option value="web" />
-            </list>
-          </option>
           <option name="sourceFilePath" value="server/docker-compose.yml" />
         </settings>
       </deployment>
@@ -304,25 +155,12 @@
     </configuration>
     <list>
       <item itemvalue="Docker.rebuild &amp; run" />
-      <item itemvalue="Docker.server.web: Compose Deployment" />
       <item itemvalue="Jest.All server tests" />
-      <item itemvalue="Jest.Link repository tests" />
-      <item itemvalue="Jest.Web service tests" />
-      <item itemvalue="Jest.Web service tests.should handle list result given completed job" />
-      <item itemvalue="Jest.Web service tests.should handle link result given completed job" />
-      <item itemvalue="Node.js.start web process" />
+      <item itemvalue="Node.js.worker process" />
+      <item itemvalue="Node.js.web process" />
       <item itemvalue="npm.start website" />
       <item itemvalue="npm.start dashboard" />
     </list>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Jest.Web service tests" />
-        <item itemvalue="Jest.Web service tests.should handle link result given completed job" />
-        <item itemvalue="Jest.Web service tests.should handle list result given completed job" />
-        <item itemvalue="Jest.Link repository tests" />
-        <item itemvalue="Docker.server.web: Compose Deployment" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -343,7 +181,7 @@
       <workItem from="1598953575992" duration="9610000" />
       <workItem from="1598981208539" duration="2476000" />
       <workItem from="1599295984008" duration="12693000" />
-      <workItem from="1599386447371" duration="7937000" />
+      <workItem from="1599386447371" duration="11592000" />
     </task>
     <task id="LOCAL-00001" summary="moved server code to server/src">
       <created>1598379264652</created>
@@ -366,7 +204,14 @@
       <option name="project" value="LOCAL" />
       <updated>1598439469147</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="refactor server codebase to ts">
+      <created>1599396224135</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1599396224135</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -415,21 +260,26 @@
     <MESSAGE value="moved server code to server/src" />
     <MESSAGE value="removed unnecessary css" />
     <MESSAGE value="dockerized frontends" />
-    <option name="LAST_COMMIT_MESSAGE" value="dockerized frontends" />
+    <MESSAGE value="refactor server codebase to ts" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactor server codebase to ts" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="184" y="40" width="1071" height="860" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1599395440695">
+    <state x="184" y="40" width="1071" height="860" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1599401463440">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="184" y="40" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1440.900/-245.-1057.1920.1057@0.0.1440.900" timestamp="1599395404817" />
-    <state x="184" y="40" width="1071" height="700" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1599395440695" />
+    <state x="184" y="40" width="1071" height="700" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1599401463440" />
     <state x="184" y="40" width="1071" height="860" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1440.900@0.0.1440.900" timestamp="1598968121580" />
     <state x="100" y="100" width="1240" height="700" key="#com.intellij.execution.junit2.states.ComparisonFailureState$DiffDialog" timestamp="1599313306385">
       <screen x="0" y="23" width="1440" height="797" />
     </state>
     <state x="100" y="100" width="1240" height="700" key="#com.intellij.execution.junit2.states.ComparisonFailureState$DiffDialog/0.0.1440.820/-245.-1057.1920.1057@0.0.1440.820" timestamp="1599313088132" />
     <state x="100" y="100" width="1240" height="700" key="#com.intellij.execution.junit2.states.ComparisonFailureState$DiffDialog/0.23.1440.797/-245.-1057.1920.1057@0.23.1440.797" timestamp="1599313306385" />
+    <state x="457" y="250" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1599399004026">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="457" y="250" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1599399004026" />
     <state x="868" y="165" key="#com.intellij.ide.util.MemberChooser" timestamp="1599389275521">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
@@ -446,10 +296,10 @@
     <state x="880" y="69" key="#xdebugger.evaluate/0.0.1440.820/-245.-1057.1920.1057@0.0.1440.820" timestamp="1599390902361" />
     <state x="674" y="149" key="#xdebugger.evaluate/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1598965191277" />
     <state x="674" y="149" key="#xdebugger.evaluate/0.0.1440.900@0.0.1440.900" timestamp="1598968060015" />
-    <state x="0" y="0" width="1203" height="900" key="CommitChangelistDialog2" timestamp="1599396113105">
+    <state x="0" y="0" width="1203" height="900" key="CommitChangelistDialog2" timestamp="1599401396049">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="0" y="0" width="1203" height="900" key="CommitChangelistDialog2/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1599396113105" />
+    <state x="0" y="0" width="1203" height="900" key="CommitChangelistDialog2/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1599401396049" />
     <state x="0" y="0" key="CommitChangelistDialog2/0.0.1440.900@0.0.1440.900" timestamp="1598439469183" />
     <state x="100" y="100" width="1240" height="700" key="DiffContextDialog" timestamp="1599306470733">
       <screen x="0" y="0" width="1440" height="900" />
@@ -593,10 +443,10 @@
     </state>
     <state x="598" y="370" width="325" height="247" key="VCS.EditChangelistDialog/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1598379585859" />
     <state x="598" y="370" key="VCS.EditChangelistDialog/0.0.1440.900@0.0.1440.900" timestamp="1598443168293" />
-    <state x="320" y="186" key="Vcs.Push.Dialog.v2" timestamp="1599395992386">
+    <state x="320" y="186" key="Vcs.Push.Dialog.v2" timestamp="1599396226360">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="320" y="186" key="Vcs.Push.Dialog.v2/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1599395992386" />
+    <state x="320" y="186" key="Vcs.Push.Dialog.v2/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1599396226360" />
     <state x="320" y="186" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1598439391559" />
     <state x="463" y="109" key="VcsDiffUtil.ChangesDialog" timestamp="1598441672102">
       <screen x="0" y="0" width="1440" height="900" />
@@ -617,10 +467,10 @@
     </state>
     <state x="468" y="88" key="git4idea.branch.GitSmartOperationDialog/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1598355747575" />
     <state x="468" y="88" key="git4idea.branch.GitSmartOperationDialog/0.0.1440.900@0.0.1440.900" timestamp="1598439116109" />
-    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup" timestamp="1599394172826">
+    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup" timestamp="1599398269223">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1599394172826" />
+    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1599398269223" />
     <state x="385" y="196" width="670" height="676" key="search.everywhere.popup/0.0.1440.900@0.0.1440.900" timestamp="1598982465807" />
   </component>
 </project>

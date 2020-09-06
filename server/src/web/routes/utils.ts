@@ -1,5 +1,6 @@
 import { ERROR_MSG_INVALID_REQ } from "../../constants";
 import List from "../../models/list";
+import Link from "../../models/link";
 
 const emojiMap = require('../public/emojis.json');
 const { validationResult } = require('express-validator');
@@ -87,7 +88,7 @@ function serializeSearchResult (response) {
 }
 
 
-function serializeLink (link): LinkResponseInt {
+function serializeLink (link: Link): LinkResponseInt {
   return {
     uid: link.uid,
     object_type: 'link',

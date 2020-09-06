@@ -15,7 +15,8 @@ export const webEnv = () => envalid.cleanEnv(process.env, {
 
 export const workerEnv = () => envalid.cleanEnv(process.env, {
   REDIS_URL: str({ default: 'redis://127.0.0.1:6379' }),
-  WORKER_CONCURRENCY: num({ default: 2 }),
+  LIST_WORKER_CONCURRENCY: num({ default: 1 }),
+  LINK_WORKER_CONCURRENCY: num({ default: 3 }),
   CLOUDINARY_CLOUD_NAME: str(),
   CLOUDINARY_API_KEY: str(),
   CLOUDINARY_API_SECRET: str(),

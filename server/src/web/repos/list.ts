@@ -16,7 +16,7 @@ export default function ListRepository (): ListRepositoryInt {
         .createQueryBuilder('list')
         .leftJoinAndSelect('list.repository', 'r')
         // TODO: test IN NATURAL LANGUAGE MODE WITH QUERY EXPANSION
-        .where(`§
+        .where(`
         MATCH(r.url, r.homepage, r.description, r.topics)
         AGAINST ('${query}')
       `)

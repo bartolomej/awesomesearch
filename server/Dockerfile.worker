@@ -22,4 +22,4 @@ COPY . .
 RUN npx tsc
 
 EXPOSE 8001
-CMD [ "node", "build/worker.js" ]
+CMD [ "node", "build/worker/index.js" ]

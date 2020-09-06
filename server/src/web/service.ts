@@ -124,11 +124,24 @@ export default function WebService ({
 
   // TODO: implement field search
   async function search (query, page = 0, limit = 15) {
-    const result = (await Promise.all([
-      linkRepository.search(query, limit, page),
-      listRepository.search(query, limit, page),
-      // @ts-ignore
-    ])).flat();
+    let result;
+    try {
+      const [links, lists] = await Promise.all([
+        linkRepository.search(query, limit, page),
+        listRepository.search(query, limit, page),
+      ]);
+      const sources = await Promise.all(
+        // @ts-ignore
+        links.map(l => listRepository.get(l.source))
+      );
+      for (let i = 0; i < links.length; i++) {
+        links[i].source = sources[i];
+      }
+      result = [...links, ...lists];
+    } catch (e) {
+      result = [];
+      log.error(`Search query failed: ${e}`)
+    }
     return {
       page,
       next: result.length > 0 ? page + 1 : null,
