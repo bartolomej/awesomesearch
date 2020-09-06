@@ -18,5 +18,10 @@ RUN yarn install
 # <dest> is an absolute path or a path relative to WORKDIR !
 COPY . .
 
+# compile ts to js
+RUN npx tsc
+# copy public assets to ./build dir
+RUN yarn run copy-assets
+
 EXPOSE 8000
-CMD [ "node", "src/web/index.js" ]
+CMD [ "node", "build/web/index.js" ]

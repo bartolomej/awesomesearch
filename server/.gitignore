@@ -16,3 +16,4 @@ graph.ddot.svg
 src/tests/res
 .cache
 data
+build

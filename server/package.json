@@ -2,7 +2,7 @@
   "name": "awesomesearch-api",
   "version": "1.0.0",
   "description": "",
-  "main": "src/worker.js",
+  "main": "src/worker.ts",
   "engines": {
     "node": ">=12"
   },
@@ -10,10 +10,12 @@
     "test": "jest",
     "test:load:staging": "yarn run start:web:dev && artillery run -e staging src/test/load-test.yml ",
     "test:load:production": "yarn run start:web:dev && artillery run -e production src/test/load-test.yml ",
+    "build": "tsc",
+    "copy-assets": "cp -r src/web/public/ build/web/public",
     "start": "NODE_ENV=production ENV_PATH=.env.production nf start",
     "start:dev": "NODE_ENV=development ENV_PATH=.env.development nf start",
-    "start:web:dev": "NODE_ENV=development ENV_PATH=.env.development nodemon src/web/index.js",
-    "start:web:prod": "NODE_ENV=production ENV_PATH=.env.production nodemon src/web/index.js",
+    "start:web:dev": "NODE_ENV=development ENV_PATH=.env.development nodemon src/web/index.ts",
+    "start:web:prod": "NODE_ENV=production ENV_PATH=.env.production nodemon src/web/index.ts",
     "docker:build:web": "docker build -t bartolomej/awesomesearch.server.web -f Dockerfile.web .",
     "docker:build:worker": "docker build -t bartolomej/awesomesearch.server.worker -f Dockerfile.worker .",
     "coverage": "jest --coverage",
@@ -34,11 +36,10 @@
     "url": "https://github.com/bartolomej/awesomesearch-api/issues"
   },
   "homepage": "https://github.com/bartolomej/awesomesearch-api#readme",
-  "devDependencies": {
-    "@jest/globals": "26.0.1",
-    "jest": "25.1.0"
-  },
   "dependencies": {
+    "@jest/globals": "26.0.1",
+    "@types/bull": "^3.14.2",
+    "@types/jest": "26.0.10",
     "artillery": "1.6.1",
     "bull": "3.14.0",
     "bull-board": "0.7.0",
@@ -57,6 +58,7 @@
     "flexsearch": "0.6.32",
     "foreman": "3.0.1",
     "ioredis": "4.16.3",
+    "jest": "25.1.0",
     "meow": "6.0.1",
     "morgan": "1.10.0",
     "mysql": "2.18.1",
@@ -67,11 +69,13 @@
     "remark-parse": "7.0.2",
     "rimraf": "3.0.2",
     "throng": "4.0.0",
+    "ts-jest": "26.3.0",
     "typeorm": "0.2.25",
+    "typescript": "4.0.2",
     "ua-parser-js": "0.7.21",
     "unified": "8.4.2",
     "unist-util-select": "3.0.1",
-    "uuid": "latest",
+    "uuid": "8.3.0",
     "winston": "3.2.1"
   }
 }

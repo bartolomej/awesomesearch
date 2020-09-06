@@ -1,4 +1,4 @@
-FROM node:12
+FROM buildkite/puppeteer:5.2.1
 
 # Create app directory
 # sets the working directory for any RUN, CMD, ENTRYPOINT, COPY and ADD instructions that follow it
@@ -18,5 +18,8 @@ RUN yarn install
 # <dest> is an absolute path or a path relative to WORKDIR !
 COPY . .
 
+# compile ts to js
+RUN npx tsc
+
 EXPOSE 8001
-CMD [ "node", "src/worker.js" ]
+CMD [ "node", "build/worker.js" ]

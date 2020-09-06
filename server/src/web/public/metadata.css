@@ -1,30 +1,30 @@
 #container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    max-width: 50%;
-    margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  max-width: 50%;
+  margin: 0 auto;
 }
 
 img {
-    margin: 30px;
-    max-width: 300px;
+  margin: 30px;
+  max-width: 300px;
 }
 
 ul > li > span:first-child {
-    font-weight: bold;
-    text-transform: uppercase;
-    margin-right: 5px;
+  font-weight: bold;
+  text-transform: uppercase;
+  margin-right: 5px;
 }
 
 ul > li {
-    margin: 8px 0;
+  margin: 8px 0;
 }
 
 @media (max-width: 700px) {
-   #container {
-        width: 90%;
-   }
+  #container {
+    width: 90%;
+  }
 }

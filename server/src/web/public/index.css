@@ -1,39 +1,39 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
 
 * {
-    margin: 0;
-    padding: 0;
-    font-family: 'Montserrat', sans-serif;
-    text-decoration: none;
+  margin: 0;
+  padding: 0;
+  font-family: 'Montserrat', sans-serif;
+  text-decoration: none;
 }
 
 body {
-    background: #F5F7FB;
+  background: #F5F7FB;
 }
 
 input, button {
-    outline: none;
+  outline: none;
 }
 
 input {
-    padding: 6px;
-    font-size: 14px;
-    border-radius: 8px;
-    border: none;
+  padding: 6px;
+  font-size: 14px;
+  border-radius: 8px;
+  border: none;
 }
 
 button {
-    padding: 10px;
-    margin: 20px;
-    border-radius: 10px;
-    border: #fc5fa8 1px solid;
-    color: #fc5fa8;
-    transition: 0.5s all ease;
-    font-weight: bold;
-    cursor: pointer;
+  padding: 10px;
+  margin: 20px;
+  border-radius: 10px;
+  border: #fc5fa8 1px solid;
+  color: #fc5fa8;
+  transition: 0.5s all ease;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 button:hover {
-    background: #fc5fa8;
-    color: white;
+  background: #fc5fa8;
+  color: white;
 }

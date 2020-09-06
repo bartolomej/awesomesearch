@@ -1,43 +1,43 @@
 #container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
 #container > div {
-    margin-bottom: 50px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  margin-bottom: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 #container > div > a {
-    color: #fc5fa8;
-    margin-top: 10px;
+  color: #fc5fa8;
+  margin-top: 10px;
 }
 
 a:hover {
-    color: #f09e22;
+  color: #f09e22;
 }
 
 img {
-    width: 300px;
+  width: 300px;
 }
 
 li {
-    display: flex;
-    flex-direction: column;
-    margin: 10px;
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
 }
 
 .endpoint {
-    font-weight: bold;
-    color: #fc5fa8;
+  font-weight: bold;
+  color: #fc5fa8;
 }
 
 .description {
-    font-weight: normal;
-    color: #494368;
+  font-weight: normal;
+  color: #494368;
 }

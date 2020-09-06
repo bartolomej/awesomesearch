@@ -1,0 +1,78 @@
+version: '3.8'
+
+# NOTE: .env file is automatically read
+# variables inside .env can be used for variable substitution
+# https://github.com/docker/compose/issues/4223#issuecomment-280077263
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    container_name: awesomesearch.server.web
+    depends_on:
+      - db
+      - redis
+    environment:
+      - DB_HOST=awesomesearch.server.db
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_NAME=${DB_NAME}
+      - WEB_CONCURRENCY=${WEB_CONCURRENCY}
+      - REDIS_URL=redis:6379
+      - PORT=8000
+    ports:
+      - '8000:8000'
+    volumes:
+      - .:/home/node/app
+      - node_modules:/home/node/app/node_modules
+    networks:
+      - awesome-network
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    container_name: awesomesearch.server.worker
+    depends_on:
+      - redis
+    environment:
+      - REDIS_URL=redis:6379
+      - WORKER_CONCURRENCY=${WORKER_CONCURRENCY}
+      - GH_USERNAME=${GH_USERNAME}
+      - GH_TOKEN=${GH_TOKEN}
+      - CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME}
+      - CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY}
+      - CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET}
+    ports:
+      - '8001:8001'
+    volumes:
+      - .:/home/node/app
+      - node_modules:/home/node/app/node_modules
+    networks:
+      - awesome-network
+  redis:
+    image: redis
+    container_name: awesomesearch.server.redis
+    networks:
+      - awesome-network
+  db:
+    image: mysql
+    container_name: awesomesearch.server.db
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - dbdata:/data/db
+    networks:
+      - awesome-network
+    environment:
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_USER=${DB_USERNAME}
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+
+networks:
+  awesome-network:
+    driver: bridge
+
+volumes:
+  dbdata:
+  node_modules:

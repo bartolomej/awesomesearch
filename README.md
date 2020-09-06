@@ -1,4 +1,4 @@
-![](./src/web/public/banner.png)
+![](./server/src/web/public/banner.png)
 
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 [![Awesome](https://awesome.re/badge-flat2.svg)](https://awesome.re)
@@ -38,7 +38,7 @@ You can deploy your own instance of this server in a few minutes by following th
 
 2. **Configure environment variables**
 
-    Create `.env` file in root directory, containing all required environmental variables defined in `.env.example` template.
+    Create `.env` file in `./server` directory, containing all required environmental variables defined in `./server/.env.example` template.
 
 3. **Build and run docker containers**
 
