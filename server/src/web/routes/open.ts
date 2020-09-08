@@ -150,10 +150,10 @@ export default function OpenRoutes ({
     searchFetchRules(),
     utils.validateReqParams,
     async (req, res, next) => {
-      const { q, p, limit } = req.query;
+      const { q, page, limit } = req.query;
       try {
         const searchRes = await webService.search(q,
-          p ? parseInt(p) : 0,
+          page ? parseInt(page) : 0,
           limit ? parseInt(limit) : 15
         );
         res.send(utils.serializeSearchResult(searchRes));

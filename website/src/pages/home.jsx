@@ -4,9 +4,7 @@ import styled from '@emotion/styled/macro';
 import Layout from '../components/layout';
 import SearchField from "../components/searchfield";
 import Result from "../components/result";
-import { useInView } from "react-intersection-observer";
 import UseAnimations from "react-useanimations";
-import { getAllLists, getStats, getSuggestions } from "../data/api";
 import {
   AnimationWrapper,
   Body,
@@ -19,26 +17,20 @@ import {
 } from "../style/ui";
 import Animation from "../components/animation";
 import useSWR from 'swr';
+import { request } from "../utils";
 
 
 function HomePage () {
-  const [ref, inView, entry] = useInView({ threshold: 0 });
-  const { data: stats } = useSWR('stats', getStats);
+  const { data: stats } = useSWR('stats', request('/stats'));
   const {
     data: suggestions,
     mutate: mutateSuggestions
-  } = useSWR('suggestions', getSuggestions(''));
+  } = useSWR('suggestions', request(`/suggest?q=`));
   const {
     data: lists,
     error: listsError
-  } = useSWR('lists', () => getAllLists());
+  } = useSWR('lists', () => request(`/list`));
   const history = useHistory();
-
-  // useEffect(() => {
-  //   if (inView === true) {
-  //     nextPage(query, nextPageIndex);
-  //   }
-  // }, [inView]);
 
   return (
     <Layout>
@@ -50,7 +42,7 @@ function HomePage () {
         <Title>Search {stats && <span>{stats.link_count}</span>} links from <a
           target="_blank" href="https://awesome.re">awesome</a></Title>
         <SearchField
-          onChange={q => mutateSuggestions(getSuggestions(q))}
+          onChange={q => mutateSuggestions(request(`/suggest?q=${q}`))}
           onSubmit={q => history.push(`/search/${q}`)}
           placeholder={"Search anything ..."}
           suggestions={suggestions ? suggestions.result : []}
@@ -75,7 +67,8 @@ function HomePage () {
                   uid={r.uid}
                   // TODO: navigate to list subpage
                   // onSourceClick={uid => setShowSource(uid)}
-                  innerRef={i === lists.length - 5 ? ref : null}
+                  // TODO: implement pagination (for when there are lots of lists)
+                  // innerRef={i === lists.length - 5 ? ref : null}
                   title={r.title}
                   url={r.url}
                   type={r.object_type}

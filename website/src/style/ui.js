@@ -118,12 +118,12 @@ export const Logo = styled(logo)`
 export const Body = styled.div`
   position: relative;
   z-index: 1;
-  min-height: 80vh;
+  min-height: 60vh;
   background: ${p => p.theme.color.light};
 `;
 
 export const ResultsWrapper = styled.div`
-  min-height: 60vh;
+  min-height: 40vh;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;

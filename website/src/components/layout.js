@@ -18,7 +18,7 @@ const Layout = ({ children }) => (
       {children}
       <Footer>
         <AnimationWrapper>
-          <Animation speed={0.02} color={'rgb(254,206,168)'}/>
+          <Animation speed={0} color={'rgb(254,206,168)'}/>
         </AnimationWrapper>
         © {new Date().getFullYear()}, Built with
         <a href="https://www.gatsbyjs.org">Gatsby</a>

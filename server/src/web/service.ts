@@ -44,7 +44,6 @@ export interface WebServiceInt {
 
 interface SearchResult {
   page: number;
-  next: number | null;
   result: Array<List | Link>;
 }
 
@@ -143,11 +142,7 @@ export default function WebService ({
       result = [];
       log.error(`Search query failed: ${e}`)
     }
-    return {
-      page,
-      next: result.length > 0 ? page + 1 : null,
-      result
-    };
+    return { page, result };
   }
 
   async function suggest (query, page = 0, limit = 15): Promise<SuggestResult> {

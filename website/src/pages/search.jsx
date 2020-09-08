@@ -1,6 +1,5 @@
 import { useHistory, useParams } from "react-router-dom";
-import useSWR from "swr";
-import { getSearchResults, getStats, getSuggestions } from "../data/api";
+import useSWR, { useSWRInfinite } from "swr";
 import Layout from "../components/layout";
 import Animation from "../components/animation";
 import SearchField from "../components/searchfield";
@@ -12,26 +11,45 @@ import {
   Body,
   Header,
   LoadingWrapper,
-  Logo, ResultsWrapper,
+  Logo,
+  ResultsWrapper,
   Title
 } from "../style/ui";
+import { useInView } from "react-intersection-observer";
+import { request } from "../utils";
 
 
 function SearchPage () {
+  const [ref, inView, entry] = useInView({ threshold: 0 });
   const { query } = useParams();
   const history = useHistory();
 
-  const { data: stats } = useSWR('stats', getStats);
+  const { data: stats } = useSWR('stats', request(`/stats`));
   const {
     data: suggestions,
     mutate: mutateSuggestions
-  } = useSWR(`suggestions-${query}`, getSuggestions(query));
+  } = useSWR(`suggestions-${query}`, request(`/suggest?q=${query}`));
   const {
-    data: search,
-    error: searchError
-  } = useSWR(`search-${query}`, () => getSearchResults(query));
+    data: searchRes,
+    error: searchError,
+    size,
+    setSize
+  } = useSWRInfinite(
+    (index, d) => {
+      if (d && d.result.length === 0) return null;
+      return `/search?q=${query}&page=${index}&limit=20`
+    },
+    request
+  );
 
-  console.log(query)
+  React.useEffect(() => {
+    if (inView === true) {
+      setSize(size + 1);
+    }
+  }, [inView]);
+  const search = searchRes ? [].concat(...searchRes.map(r => r.result)) : [];
+
+  console.log({ search, searchError, size })
 
   return (
     <Layout>
@@ -44,7 +62,7 @@ function SearchPage () {
           target="_blank" href="https://awesome.re">awesome</a></Title>
         <SearchField
           initialText={query}
-          onChange={q => mutateSuggestions(getSuggestions(q))}
+          onChange={q => mutateSuggestions(request(`/suggest?q=${query}`))}
           onSubmit={q => history.push(`/search/${q}`)}
           placeholder={"Search anything ..."}
           suggestions={suggestions ? suggestions.result : []}
@@ -59,14 +77,14 @@ function SearchPage () {
             />
           </LoadingWrapper>
         )}
-        {search && search.result.length > 0 && (
+        {search && search.length > 0 && (
           <ResultsWrapper>
-            {search.result.map((r, i) => (
+            {search.map((r, i) => (
               <Result
                 key={r.uid}
                 uid={r.uid}
                 // onSourceClick={uid => setShowSource(uid)}
-                // innerRef={i === search.result.length - 5 ? ref : null}
+                innerRef={i === search.length - 5 ? ref : null}
                 title={r.title}
                 url={r.url}
                 type={r.object_type}

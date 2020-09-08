@@ -28,57 +28,16 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b335f404-2176-45ea-ab88-fac23c9df1b6" name="cra" comment="">
-      <change afterPath="$PROJECT_DIR$/website/public/banner.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/website/public/logo.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/website/public/manifest.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/website/public/robots.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/website/src/App.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/website/src/App.test.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/website/src/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/website/src/pages/search.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/website/src/serviceWorker.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/website/src/setupTests.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/scripts/seed-db.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/scripts/seed-db.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/.env.production" beforeDir="false" afterPath="$PROJECT_DIR$/website/.env.production" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/website/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/gatsby-config.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/gatsby-node.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/website/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/website/public/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/renovate.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/src/components/description.js" beforeDir="false" afterPath="$PROJECT_DIR$/website/src/components/description.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/src/components/layout.js" beforeDir="false" afterPath="$PROJECT_DIR$/website/src/components/layout.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/src/components/modal.js" beforeDir="false" afterPath="$PROJECT_DIR$/website/src/components/modal.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/src/components/repository.js" beforeDir="false" afterPath="$PROJECT_DIR$/website/src/components/repository.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/src/components/result.js" beforeDir="false" afterPath="$PROJECT_DIR$/website/src/components/result.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/src/components/searchfield.js" beforeDir="false" afterPath="$PROJECT_DIR$/website/src/components/searchfield.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/src/components/seo.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/src/pages/404.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/src/pages/about.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/src/pages/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/website/src/pages/home.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/src/store/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/website/src/data/api.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/src/style/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/website/src/style/index.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/src/style/ui.js" beforeDir="false" afterPath="$PROJECT_DIR$/website/src/style/ui.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/src/templates/article.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/static/banner.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/static/logo.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/website/yarn.lock" afterDir="false" />
-    </list>
-    <list id="df5c9592-b435-4736-b9e4-8053067b0417" name="swr" comment="extra result info on hover">
+    <list default="true" id="b335f404-2176-45ea-ab88-fac23c9df1b6" name="cra" comment="move to cra, add swr">
+      <change afterPath="$PROJECT_DIR$/website/src/utils.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/web/routes/utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/web/routes/utils.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/gatsby-browser.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/gatsby-ssr.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/src/components/searchfield.js" beforeDir="false" afterPath="$PROJECT_DIR$/website/src/components/searchfield.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/src/pages/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/website/src/pages/home.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/src/store/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/website/src/data/api.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/src/store/index.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/src/store/lists.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/src/store/reduxWrapper.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/src/store/search.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/web/routes/open.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/web/routes/open.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/web/service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/web/service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/website/src/components/layout.js" beforeDir="false" afterPath="$PROJECT_DIR$/website/src/components/layout.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/website/src/data/api.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/website/src/pages/home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/website/src/pages/home.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/website/src/pages/search.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/website/src/pages/search.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/website/src/style/ui.js" beforeDir="false" afterPath="$PROJECT_DIR$/website/src/style/ui.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,53 +59,6 @@
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="LineStatusTrackerManager">
-    <file path="$PROJECT_DIR$/website/src/pages/home.jsx">
-      <ranges>
-        <range start1="0" end1="2" start2="0" end2="3" changelist="df5c9592-b435-4736-b9e4-8053067b0417" />
-        <range start1="3" end1="4" start2="4" end2="4" changelist="b335f404-2176-45ea-ab88-fac23c9df1b6" />
-        <range start1="5" end1="10" start2="5" end2="5" changelist="df5c9592-b435-4736-b9e4-8053067b0417" />
-        <range start1="13" end1="17" start2="8" end2="19" changelist="df5c9592-b435-4736-b9e4-8053067b0417" />
-        <range start1="18" end1="19" start2="20" end2="21" changelist="df5c9592-b435-4736-b9e4-8053067b0417" />
-        <range start1="21" end1="39" start2="23" end2="24" changelist="df5c9592-b435-4736-b9e4-8053067b0417" />
-        <range start1="40" end1="48" start2="25" end2="35" changelist="df5c9592-b435-4736-b9e4-8053067b0417" />
-        <range start1="49" end1="65" start2="36" end2="41" changelist="df5c9592-b435-4736-b9e4-8053067b0417" />
-        <range start1="68" end1="88" start2="44" end2="44" changelist="df5c9592-b435-4736-b9e4-8053067b0417" />
-        <range start1="93" end1="94" start2="49" end2="50" changelist="df5c9592-b435-4736-b9e4-8053067b0417" />
-        <range start1="96" end1="98" start2="52" end2="54" changelist="df5c9592-b435-4736-b9e4-8053067b0417" />
-        <range start1="99" end1="100" start2="55" end2="56" changelist="df5c9592-b435-4736-b9e4-8053067b0417" />
-        <range start1="103" end1="104" start2="59" end2="60" changelist="df5c9592-b435-4736-b9e4-8053067b0417" />
-        <range start1="111" end1="132" start2="67" end2="68" changelist="df5c9592-b435-4736-b9e4-8053067b0417" />
-        <range start1="139" end1="141" start2="75" end2="78" changelist="df5c9592-b435-4736-b9e4-8053067b0417" />
-        <range start1="158" end1="177" start2="95" end2="95" changelist="df5c9592-b435-4736-b9e4-8053067b0417" />
-        <range start1="180" end1="181" start2="98" end2="99" changelist="df5c9592-b435-4736-b9e4-8053067b0417" />
-        <range start1="201" end1="323" start2="119" end2="119" changelist="b335f404-2176-45ea-ab88-fac23c9df1b6" />
-        <range start1="324" end1="350" start2="120" end2="121" changelist="df5c9592-b435-4736-b9e4-8053067b0417" />
-      </ranges>
-    </file>
-    <file path="$PROJECT_DIR$/server/package.json">
-      <ranges>
-        <range start1="12" end1="13" start2="12" end2="13" changelist="df5c9592-b435-4736-b9e4-8053067b0417" />
-        <range start1="25" end1="27" start2="25" end2="27" changelist="b335f404-2176-45ea-ab88-fac23c9df1b6" />
-      </ranges>
-    </file>
-    <file path="$PROJECT_DIR$/website/src/components/searchfield.js">
-      <ranges>
-        <range start1="1" end1="3" start2="1" end2="3" changelist="b335f404-2176-45ea-ab88-fac23c9df1b6" />
-        <range start1="6" end1="8" start2="6" end2="8" changelist="df5c9592-b435-4736-b9e4-8053067b0417" />
-        <range start1="68" end1="69" start2="68" end2="69" changelist="df5c9592-b435-4736-b9e4-8053067b0417" />
-        <range start1="106" end1="108" start2="106" end2="108" changelist="df5c9592-b435-4736-b9e4-8053067b0417" />
-        <range start1="143" end1="144" start2="143" end2="144" changelist="df5c9592-b435-4736-b9e4-8053067b0417" />
-      </ranges>
-    </file>
-    <file path="$PROJECT_DIR$/website/src/data/api.js">
-      <ranges>
-        <range start1="1" end1="2" start2="1" end2="2" changelist="b335f404-2176-45ea-ab88-fac23c9df1b6" />
-        <range start1="10" end1="11" start2="10" end2="11" changelist="df5c9592-b435-4736-b9e4-8053067b0417" />
-        <range start1="14" end1="15" start2="14" end2="15" changelist="df5c9592-b435-4736-b9e4-8053067b0417" />
-      </ranges>
-    </file>
   </component>
   <component name="ProjectId" id="1gXeKX0BdclGhp6Nyfc6m0BS31C" />
   <component name="ProjectViewState">
@@ -176,6 +88,7 @@
       <recent name="$PROJECT_DIR$/server" />
     </key>
     <key name="es6.move.members.recent.items">
+      <recent name="$PROJECT_DIR$/website/src/utils.js" />
       <recent name="$PROJECT_DIR$/website/src/style/ui.js" />
       <recent name="$PROJECT_DIR$/website/src/pages/search.jsx" />
       <recent name="$PROJECT_DIR$/website/src/App.jsx" />
@@ -252,7 +165,7 @@
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="b335f404-2176-45ea-ab88-fac23c9df1b6" name="cra" comment="" />
-      <changelist id="df5c9592-b435-4736-b9e4-8053067b0417" name="typescript" comment="" />
+      <changelist id="" name="typescript" comment="" />
       <created>1598265301577</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -268,7 +181,7 @@
       <workItem from="1598981208539" duration="2476000" />
       <workItem from="1599295984008" duration="12693000" />
       <workItem from="1599386447371" duration="19965000" />
-      <workItem from="1599558641887" duration="11067000" />
+      <workItem from="1599558641887" duration="17605000" />
     </task>
     <task id="LOCAL-00001" summary="moved server code to server/src">
       <created>1598379264652</created>
@@ -312,7 +225,14 @@
       <option name="project" value="LOCAL" />
       <updated>1599410363482</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="move to cra, add swr">
+      <created>1599571239710</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1599571239713</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -364,7 +284,8 @@
     <MESSAGE value="refactor server codebase to ts" />
     <MESSAGE value="fix stuck jobs" />
     <MESSAGE value="extra result info on hover" />
-    <option name="LAST_COMMIT_MESSAGE" value="extra result info on hover" />
+    <MESSAGE value="move to cra, add swr" />
+    <option name="LAST_COMMIT_MESSAGE" value="move to cra, add swr" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="WindowStateProjectService">
@@ -399,10 +320,10 @@
     <state x="880" y="69" key="#xdebugger.evaluate/0.0.1440.820/-245.-1057.1920.1057@0.0.1440.820" timestamp="1599390902361" />
     <state x="674" y="149" key="#xdebugger.evaluate/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1598965191277" />
     <state x="674" y="149" key="#xdebugger.evaluate/0.0.1440.900@0.0.1440.900" timestamp="1598968060015" />
-    <state x="0" y="0" width="1203" height="900" key="CommitChangelistDialog2" timestamp="1599410362877">
+    <state x="0" y="0" width="1203" height="900" key="CommitChangelistDialog2" timestamp="1599571239083">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="0" y="0" width="1203" height="900" key="CommitChangelistDialog2/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1599410362877" />
+    <state x="0" y="0" width="1203" height="900" key="CommitChangelistDialog2/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1599571239083" />
     <state x="0" y="0" key="CommitChangelistDialog2/0.0.1440.900@0.0.1440.900" timestamp="1598439469183" />
     <state x="100" y="100" width="1240" height="700" key="DiffContextDialog" timestamp="1599306470733">
       <screen x="0" y="0" width="1440" height="900" />
@@ -541,15 +462,19 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state width="500" height="445" key="SwitcherDM/0.0.1440.900@0.0.1440.900" timestamp="1598524222325" />
+    <state x="571" y="365" key="VCS.ChangelistChooser" timestamp="1599571171385">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="571" y="365" key="VCS.ChangelistChooser/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1599571171385" />
     <state x="598" y="370" width="325" height="247" key="VCS.EditChangelistDialog" timestamp="1599566698279">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="598" y="370" width="325" height="247" key="VCS.EditChangelistDialog/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1599566698279" />
     <state x="598" y="370" key="VCS.EditChangelistDialog/0.0.1440.900@0.0.1440.900" timestamp="1598443168293" />
-    <state x="320" y="186" key="Vcs.Push.Dialog.v2" timestamp="1599410399249">
+    <state x="320" y="186" key="Vcs.Push.Dialog.v2" timestamp="1599571241996">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="320" y="186" key="Vcs.Push.Dialog.v2/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1599410399249" />
+    <state x="320" y="186" key="Vcs.Push.Dialog.v2/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1599571241996" />
     <state x="320" y="186" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1598439391559" />
     <state x="463" y="109" key="VcsDiffUtil.ChangesDialog" timestamp="1598441672102">
       <screen x="0" y="0" width="1440" height="900" />
@@ -560,10 +485,10 @@
     </state>
     <state x="516" y="367" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1599560019445" />
     <state x="516" y="367" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1440.900@0.0.1440.900" timestamp="1598439262047" />
-    <state x="72" y="189" width="1368" height="522" key="find.popup" timestamp="1599570300129">
+    <state x="72" y="189" width="1368" height="522" key="find.popup" timestamp="1599578075547">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="72" y="189" width="1368" height="522" key="find.popup/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1599570300129" />
+    <state x="72" y="189" width="1368" height="522" key="find.popup/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1599578075547" />
     <state x="77" y="189" width="1363" height="522" key="find.popup/0.0.1440.900@0.0.1440.900" timestamp="1598982191074" />
     <state x="468" y="88" key="git4idea.branch.GitSmartOperationDialog" timestamp="1598439116109">
       <screen x="0" y="0" width="1440" height="900" />
