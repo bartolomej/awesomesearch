@@ -20,15 +20,15 @@ import { request } from "../utils";
 
 
 function SearchPage () {
-  const [ref, inView, entry] = useInView({ threshold: 0 });
+  const [ref, inView] = useInView({ threshold: 0 });
   const { query } = useParams();
   const history = useHistory();
 
-  const { data: stats } = useSWR('stats', request(`/stats`));
+  const { data: stats } = useSWR('stats', () => request(`/stats`));
   const {
     data: suggestions,
     mutate: mutateSuggestions
-  } = useSWR(`suggestions-${query}`, request(`/suggest?q=${query}`));
+  } = useSWR(`suggestions-${query}`, () => request(`/suggest?q=${query}`));
   const {
     data: searchRes,
     error: searchError,
@@ -49,21 +49,16 @@ function SearchPage () {
   }, [inView]);
   const search = searchRes ? [].concat(...searchRes.map(r => r.result)) : [];
 
-  console.log({ search, searchError, size })
-
   return (
     <Layout>
       <Header>
-        <AnimationWrapper>
-          <Animation speed={0} color={'rgb(254,206,168)'}/>
-        </AnimationWrapper>
         <Logo/>
         <Title>Search {stats && <span>{stats.link_count}</span>} links from <a
           target="_blank" href="https://awesome.re">awesome</a></Title>
         <SearchField
           initialText={query}
-          onChange={q => mutateSuggestions(request(`/suggest?q=${query}`))}
-          onSubmit={q => history.push(`/search/${q}`)}
+          onChange={q => mutateSuggestions(request(`/suggest?q=${q}`))}
+          onSubmit={q => q === '' ? history.push('/') : history.push(`/search/${q}`)}
           placeholder={"Search anything ..."}
           suggestions={suggestions ? suggestions.result : []}
         />
@@ -83,7 +78,7 @@ function SearchPage () {
               <Result
                 key={r.uid}
                 uid={r.uid}
-                // onSourceClick={uid => setShowSource(uid)}
+                onSourceClick={uid => history.push(`/list/${uid}`)}
                 innerRef={i === search.length - 5 ? ref : null}
                 title={r.title}
                 url={r.url}

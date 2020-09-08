@@ -59,7 +59,8 @@ function Result ({
           text={description || 'No description.'}
           emojis={emojis}
         />
-        {source && (
+        {/* Only show details of source list when source field is an object */}
+        {source instanceof Object && (
           <SourceWrapper>
             <a target="_blank" rel="noopener"
                href={`https://github.com/${source.uid.split('.')[0]}`}>

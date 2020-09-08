@@ -35,9 +35,6 @@ function HomePage () {
   return (
     <Layout>
       <Header>
-        <AnimationWrapper>
-          <Animation speed={0} color={'rgb(254,206,168)'}/>
-        </AnimationWrapper>
         <Logo/>
         <Title>Search {stats && <span>{stats.link_count}</span>} links from <a
           target="_blank" href="https://awesome.re">awesome</a></Title>
@@ -65,8 +62,7 @@ function HomePage () {
                 <Result
                   key={r.uid}
                   uid={r.uid}
-                  // TODO: navigate to list subpage
-                  // onSourceClick={uid => setShowSource(uid)}
+                  onSourceClick={uid => history.push(`/list/${uid}`)}
                   // TODO: implement pagination (for when there are lots of lists)
                   // innerRef={i === lists.length - 5 ? ref : null}
                   title={r.title}

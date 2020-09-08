@@ -18,10 +18,6 @@ const SearchField = ({ placeholder, initialText = '', onChange, onSubmit, sugges
     }
   }, [text]);
 
-  useEffect(() => {
-    setSuggestionList(suggestions);
-  }, [suggestions]);
-
   function onClick (e) {
     if (!inputRef.current) return;
     // hide suggestions if clicked outside the field

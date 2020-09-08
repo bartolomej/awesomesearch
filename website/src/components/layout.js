@@ -11,25 +11,27 @@ import Animation from "./animation";
 
 const Layout = ({ children }) => (
   <ThemeProvider theme={theme}>
-    <Container>
+    <main>
+      <TopAnimationWrapper>
+        <Animation speed={0.01} color={'rgb(254,206,168)'}/>
+      </TopAnimationWrapper>
       <Navigation>
         <Link to="/about">About</Link>
       </Navigation>
       {children}
+      <AnimationWrapper>
+        <Animation speed={0} color={'rgb(254,206,168)'}/>
+      </AnimationWrapper>
       <Footer>
-        <AnimationWrapper>
-          <Animation speed={0} color={'rgb(254,206,168)'}/>
-        </AnimationWrapper>
-        © {new Date().getFullYear()}, Built with
-        <a href="https://www.gatsbyjs.org">Gatsby</a>
+        © {new Date().getFullYear()}, Built by
+        <a
+          target="_blank"
+          rel="noopener noreferrer"
+          href="https://www.github.com/bartolomej">bartolomej</a>
       </Footer>
-    </Container>
+    </main>
   </ThemeProvider>
 );
-
-const Container = styled.main`
-  background: ${p => p.theme.color.light};
-`;
 
 const Navigation = styled.nav`
   width: 100vw;
@@ -49,15 +51,25 @@ const Footer = styled.footer`
   color: ${p => p.theme.color.light};
   background: ${p => p.theme.color.dark};
   a {
+    z-index: 1;
     margin: 0 4px;
     padding: 2px 2px;
     ${p => LinkCss(
-      p.theme.color.red,
-      p.theme.color.red,
-      p.theme.color.red,
-      p.theme.color.white
-    )};
+  p.theme.color.red,
+  p.theme.color.red,
+  p.theme.color.red,
+  p.theme.color.white
+)};
   }
+`;
+
+const TopAnimationWrapper = styled.div`
+  ${BackgroundAppear};
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50vh;
 `;
 
 const AnimationWrapper = styled.div`
@@ -70,15 +82,13 @@ const AnimationWrapper = styled.div`
 `;
 
 const Link = styled(RouterLink)`
-  color: ${p => p.theme.color.white};
+  color: ${p => p.theme.color.red};
   margin-right: 20px;
-  padding: 5px !important;
-  ${p => LinkCss(
-  p.theme.color.red,
-  p.theme.color.red,
-  p.theme.color.red,
-  p.theme.color.white
-)};
+  padding: 5px 0;
+  transition: 0.2s ease-in-out all;
+  &:hover {
+    box-shadow: inset 0 -2px 0 ${p => p.theme.color.red};
+  }
 `;
 
 Layout.propTypes = {

@@ -4,6 +4,7 @@ import SearchPage from "./pages/search";
 import HomePage from "./pages/home";
 import { ThemeProvider } from "emotion-theming";
 import theme from "./style/theme";
+import ListPage from "./pages/list";
 
 
 const IndexPage = () => {
@@ -16,6 +17,11 @@ const IndexPage = () => {
             exact
             path="/search/:query"
             children={<SearchPage/>}
+          />
+          <Route
+            exact
+            path="/list/:uid"
+            children={<ListPage/>}
           />
           <Route exact path="/">
             <HomePage/>

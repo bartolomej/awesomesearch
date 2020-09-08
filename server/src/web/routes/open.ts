@@ -52,7 +52,10 @@ export default function OpenRoutes ({
 
   router.get('/list/:uid', async (req, res, next) => {
     try {
-      res.send(utils.serializeList(await webService.getList(req.params.uid)));
+      res.send({
+        ...utils.serializeList(await webService.getList(req.params.uid)),
+        link_count: await linkRepository.getCount(req.params.uid)
+      });
     } catch (e) {
       next(e);
     }

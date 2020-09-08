@@ -10,13 +10,17 @@ a {
   text-decoration: none;
 }
 
+body {
+  background: #2A363B;
+}
+
 button {
-    cursor: pointer;
-    outline: none;
-    background: none;
+  cursor: pointer;
+  outline: none;
+  background: none;
 }
 
 button, input {
-    border: none;
-    outline: none;
+  border: none;
+  outline: none;
 }

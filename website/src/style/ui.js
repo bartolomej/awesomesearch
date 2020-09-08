@@ -60,23 +60,13 @@ export const Header = styled.header`
   justify-content: center;
   align-items: center;
   position: relative;
-  background: ${p => p.theme.color.dark};
-`;
-
-export const AnimationWrapper = styled.div`
-  ${BackgroundAppear};
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 50vh;
 `;
 
 export const Title = styled.p`
   font-size: ${p => p.theme.size(1.8)};
   color: ${p => p.theme.color.white};
   margin-top: 10px;
-  margin-bottom: 30px;
+  margin-bottom: 25px;
   z-index: 1;
   & > span {
     color: ${p => p.theme.color.red};
@@ -127,7 +117,7 @@ export const ResultsWrapper = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-evenly;
+  justify-content: center;
   margin: 0 auto;
   padding: 80px 0;
   width: 80%;
