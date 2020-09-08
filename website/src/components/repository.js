@@ -1,5 +1,5 @@
-import styled from "@emotion/styled";
-import glasses from "../assets/glasses.svg";
+import styled from "@emotion/styled/macro";
+import { ReactComponent as glasses } from "../assets/glasses.svg";
 import { ButtonCss, SubtitleCss } from "../style/ui";
 import Description from "./description";
 import theme from "../style/theme";

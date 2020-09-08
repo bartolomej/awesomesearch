@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link as GLink } from 'gatsby';
-import styled from '@emotion/styled';
+import { Link as RouterLink } from 'react-router-dom';
+import styled from '@emotion/styled/macro';
 import { ThemeProvider } from 'emotion-theming';
 import theme from '../style/theme';
 import "../style/index.css";
@@ -69,16 +69,16 @@ const AnimationWrapper = styled.div`
   height: 30vh;
 `;
 
-const Link = styled(GLink)`
+const Link = styled(RouterLink)`
   color: ${p => p.theme.color.white};
   margin-right: 20px;
   padding: 5px !important;
   ${p => LinkCss(
-    p.theme.color.red,
-    p.theme.color.red,
-    p.theme.color.red,
-    p.theme.color.white
-  )};
+  p.theme.color.red,
+  p.theme.color.red,
+  p.theme.color.red,
+  p.theme.color.white
+)};
 `;
 
 Layout.propTypes = {

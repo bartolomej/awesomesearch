@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "@emotion/styled";
+import styled from "@emotion/styled/macro";
 import Image, { Shimmer } from 'react-shimmer'
 import Description from "./description";
 import { LinkCss } from "../style/ui";
@@ -48,7 +48,7 @@ function Result ({
             <Title>{title}</Title>
           </ButtonWrapper>
         ) : (
-          <LinkWrapper target="_blank" href={url}>
+          <LinkWrapper target="_blank" rel="noopener" href={url}>
             {previewImage}
             <Title>{title}</Title>
           </LinkWrapper>
@@ -61,7 +61,7 @@ function Result ({
         />
         {source && (
           <SourceWrapper>
-            <a target="_blank"
+            <a target="_blank" rel="noopener"
                href={`https://github.com/${source.uid.split('.')[0]}`}>
               <img src={source.image_url} alt={'List author'}/>
             </a>

@@ -9,12 +9,12 @@ export interface ListResponseInt {
   uid: string;
   object_type: 'list';
   title: string;
+  author: string;
   description: string;
   emojis: Array<EmojiResponse>;
   url: string;
-  website_name: 'Github';
+  website_name: string;
   image_url: string;
-  icon_url: string;
   tags: Array<String>;
   stars: number;
   forks: number;
@@ -61,17 +61,17 @@ function validateReqParams (req, res, next) {
   }
 }
 
-function serializeList (list): ListResponseInt {
+function serializeList (list: List): ListResponseInt {
   return {
     uid: list.uid,
     object_type: 'list',
     title: list.title,
+    author: list.author,
     description: list.description,
     emojis: serializeEmojis(list.emojis),
     url: list.url,
     website_name: list.websiteName,
     image_url: list.image,
-    icon_url: list.icon,
     tags: list.tags,
     stars: list.stars,
     forks: list.forks,

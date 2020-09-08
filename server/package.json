@@ -10,7 +10,7 @@
     "test": "jest",
     "test:load:staging": "yarn run start:web:dev && artillery run -e staging src/test/load-test.yml ",
     "test:load:production": "yarn run start:web:dev && artillery run -e production src/test/load-test.yml ",
-    "build": "tsc",
+    "build": "tsc && yarn run copy-assets",
     "copy-assets": "cp -r src/web/public/ build/web/public",
     "start": "NODE_ENV=production ENV_PATH=.env.production nf start",
     "start:dev": "NODE_ENV=development ENV_PATH=.env.development nf start",
@@ -23,8 +23,8 @@
     "repo-graph-ddot": "depcruise --exclude \"^node_modules\" --output-type ddot src | dot -T svg > graph.ddot.svg",
     "repo-graph-dot": "depcruise --exclude \"^node_modules\" --output-type dot src | dot -T svg > graph.dot.svg",
     "loc": "find ./src -name '*.js' | xargs wc -l | sort -nr",
-    "db:seed": "N_LISTS=20 N_LINKS_PER_LIST=5 node server/scripts/seed-db.js",
-    "db:reset": "node server/scripts/reset-db.js"
+    "db:seed": "N_LISTS=20 N_LINKS_PER_LIST=5 node src/scripts/seed-db.ts",
+    "db:reset": "node src/scripts/reset-db.ts"
   },
   "repository": {
     "type": "git",

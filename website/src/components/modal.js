@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "@emotion/styled";
+import styled from "@emotion/styled/macro";
 import UseAnimations from "react-useanimations";
 
 
@@ -35,7 +35,7 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   animation: showUp 250ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    
+
   @keyframes showUp {
     0% {
       opacity: 0;

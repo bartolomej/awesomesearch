@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import styled from "@emotion/styled";
-import searchIcon from '../assets/search.svg';
+import styled from "@emotion/styled/macro";
+import { ReactComponent as searchIcon } from '../assets/search.svg';
 import { ButtonCss } from "../style/ui";
 
 
-const SearchField = ({ placeholder, onChange, onSubmit, suggestions }) => {
-  const [text, setText] = useState('');
+const SearchField = ({ placeholder, initialText = '', onChange, onSubmit, suggestions }) => {
+  const [text, setText] = useState(initialText);
   const [suggestionList, setSuggestionList] = useState([]);
   const inputRef = React.useRef();
 
@@ -66,7 +66,7 @@ const SearchField = ({ placeholder, onChange, onSubmit, suggestions }) => {
         />
         <Submit onClick={onSubmitClick}>Search</Submit>
       </InnerContainer>
-      {suggestionList.length > 0 && (
+      {suggestionList && suggestionList.length > 0 && (
         <SuggestionContainer>
           {suggestionList.map(s => (
             <SuggestionItem
@@ -104,8 +104,8 @@ const InnerContainer = styled.div`
   align-items: center;
   transition: 0.2s ease-in-out all;
   &:focus-within {
-    box-shadow: 
-      ${p => p.theme.opacity(p.theme.color.red, 150)} 4px 4px 16px, 
+    box-shadow:
+      ${p => p.theme.opacity(p.theme.color.red, 150)} 4px 4px 16px,
       ${p => p.theme.opacity(p.theme.color.red, 150)} -4px -4px 16px;
   }
 `;
@@ -141,7 +141,7 @@ const SuggestionContainer = styled.div`
   flex-direction: column;
   align-items: flex-start;
   padding: 10px;
-  box-sizing: border-box; 
+  box-sizing: border-box;
   border-radius: 10px;
   margin-top: 10px;
 `;

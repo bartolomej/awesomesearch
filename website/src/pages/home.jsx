@@ -1,0 +1,121 @@
+import React from 'react';
+import { useHistory } from 'react-router-dom';
+import styled from '@emotion/styled/macro';
+import Layout from '../components/layout';
+import SearchField from "../components/searchfield";
+import Result from "../components/result";
+import { useInView } from "react-intersection-observer";
+import UseAnimations from "react-useanimations";
+import { getAllLists, getStats, getSuggestions } from "../data/api";
+import {
+  AnimationWrapper,
+  Body,
+  Header,
+  LoadingWrapper,
+  Logo,
+  ResultsWrapper,
+  Subtitle,
+  Title
+} from "../style/ui";
+import Animation from "../components/animation";
+import useSWR from 'swr';
+
+
+function HomePage () {
+  const [ref, inView, entry] = useInView({ threshold: 0 });
+  const { data: stats } = useSWR('stats', getStats);
+  const {
+    data: suggestions,
+    mutate: mutateSuggestions
+  } = useSWR('suggestions', getSuggestions(''));
+  const {
+    data: lists,
+    error: listsError
+  } = useSWR('lists', () => getAllLists());
+  const history = useHistory();
+
+  // useEffect(() => {
+  //   if (inView === true) {
+  //     nextPage(query, nextPageIndex);
+  //   }
+  // }, [inView]);
+
+  return (
+    <Layout>
+      <Header>
+        <AnimationWrapper>
+          <Animation speed={0} color={'rgb(254,206,168)'}/>
+        </AnimationWrapper>
+        <Logo/>
+        <Title>Search {stats && <span>{stats.link_count}</span>} links from <a
+          target="_blank" href="https://awesome.re">awesome</a></Title>
+        <SearchField
+          onChange={q => mutateSuggestions(getSuggestions(q))}
+          onSubmit={q => history.push(`/search/${q}`)}
+          placeholder={"Search anything ..."}
+          suggestions={suggestions ? suggestions.result : []}
+        />
+      </Header>
+      <Body>
+        {!lists && (
+          <LoadingWrapper>
+            <UseAnimations
+              animationKey="infinity"
+              size={150}
+            />
+          </LoadingWrapper>
+        )}
+        {(lists && !listsError) && (
+          <>
+            <Subtitle>Browse lists</Subtitle>
+            <ResultsWrapper>
+              {lists.map((r, i) => (
+                <Result
+                  key={r.uid}
+                  uid={r.uid}
+                  // TODO: navigate to list subpage
+                  // onSourceClick={uid => setShowSource(uid)}
+                  innerRef={i === lists.length - 5 ? ref : null}
+                  title={r.title}
+                  url={r.url}
+                  type={r.object_type}
+                  description={r.description}
+                  screenshot={r.screenshot_url || r.image_url}
+                  emojis={r.emojis}
+                  displayOnHover={
+                    <RepositoryStats
+                      forksCount={r.forks}
+                      starsCount={r.stars}
+                    />
+                  }
+                />
+              ))}
+            </ResultsWrapper>
+          </>
+        )}
+      </Body>
+    </Layout>
+  )
+}
+
+function RepositoryStats ({ starsCount, forksCount }) {
+
+  const Wrapper = styled.div`
+    flex-direction: column;
+  `;
+
+  const Stat = styled.div`
+    color: ${p => p.theme.color.light};
+    font-weight: bold;
+    font-size: 14px;
+  `;
+
+  return (
+    <Wrapper>
+      <Stat>⭐️ {starsCount} stars</Stat>
+      <Stat>⚒️️ {forksCount} forks</Stat>
+    </Wrapper>
+  )
+}
+
+export default HomePage;

@@ -1,5 +1,5 @@
 async function request (path) {
-  const response = await fetch(`${process.env.GATSBY_API_HOST}${path}`);
+  const response = await fetch(`${process.env.REACT_APP_API_HOST}${path}`);
   const body = await response.json();
   if (!response.ok) {
     throw new Error(body.message);
@@ -8,11 +8,11 @@ async function request (path) {
   }
 }
 
-export function search (query, page = 0, limit = 20) {
+export function getSearchResults (query, page = 0, limit = 20) {
   return request(`/search?q=${query}&page=${page}&limit=${limit}`)
 }
 
-export function suggest (query, page = 0) {
+export function getSuggestions (query, page = 0) {
   return request(`/suggest?q=${query}&page=${page}`)
 }
 

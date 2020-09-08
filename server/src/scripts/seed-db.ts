@@ -1,12 +1,13 @@
-const faker = require('faker');
-const typeorm = require('../src/web/typeorm');
-const logger = require('../src/logger')('db-seed');
-const linkRepository = require('../src/web/repos/link');
-const listRepository = require('../src/web/repos/list');
-const List = require('../src/models/list');
-const Link = require('../src/models/link');
-const Repository = require('../src/models/repository');
-const Website = require('../src/models/website');
+import faker from 'faker';
+import * as typeorm from '../web/typeorm';
+import logger from "../logger";
+import LinkRepository from "../web/repos/link";
+import ListRepository from "../web/repos/list";
+import List from "../models/list";
+import Link from "../models/link";
+import Repository from "../models/repository";
+import Website from "../models/website";
+
 
 const {
   N_LISTS,
