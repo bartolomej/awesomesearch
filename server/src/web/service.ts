@@ -11,8 +11,9 @@ import { Job, Queue } from "bull";
 import { ListServiceInt } from "../services/list";
 import { GithubServiceInt } from "../services/github";
 import FlexSearch from 'flexsearch';
+import SearchLog from "../models/searchlog";
 
-interface WebServiceProps {
+export interface WebServiceProps {
   listRepository: ListRepositoryInt;
   linkRepository: LinkRepositoryInt;
   githubService: GithubServiceInt;
@@ -22,42 +23,49 @@ interface WebServiceProps {
   linkQueue: Queue;
 }
 
+interface ListQueryParams {
+  query: string;
+  page?: number;
+  limit?: number;
+  useragent?: string;
+}
+
+interface LinkQueryParams extends ListQueryParams {
+  listUid?: string;
+}
+
+interface IndexStats {
+  id: number;
+  items: number;
+  cache: boolean;
+  matcher: number;
+  threshold: number;
+  resolution: number;
+  contextual: number;
+}
+
 export interface WebServiceInt {
-  search (q: string, page?: number, limit?: number): Promise<SearchResult>;
+  searchLinks (q: LinkQueryParams): Promise<[Array<Link>, number]>;
+
+  searchLists (q: ListQueryParams): Promise<[Array<List>, number]>;
 
   suggest (q: string, page?: number, limit?: number): Promise<SuggestResult>;
 
   buildSuggestionIndex (batchSize: number): Promise<void>;
 
-  getList (uid: string): Promise<List>;
-
-  getLink (uid: string): Promise<Link>;
+  getSuggestionIndexStats (): IndexStats;
 
   queueList (url: string): Promise<Job>;
 
   queueLink (url: string, source: string): Promise<Job>;
 
-  getStats (): Promise<StatsResult>;
-
   queueFromRoot (): Promise<Array<Job>>;
 }
 
-interface SearchResult {
-  page: number;
-  result: Array<List | Link>;
-}
-
-interface SuggestResult {
+export interface SuggestResult {
   page: number;
   next: number | null;
-  result: Array<any>;
-}
-
-interface StatsResult {
-  linkCount: number;
-  listCount: number;
-  searchCount: number;
-  keywordsIndex: Object;
+  results: Array<any>;
 }
 
 export default function WebService ({
@@ -84,15 +92,7 @@ export default function WebService ({
 
   listQueue.on('global:completed', async (jobId, result) => {
     log.debug(`Received completed list job: ${jobId}`);
-    await _onListCompleted(List.createFromJson(result));
-  });
-
-  linkQueue.on('global:completed', async (jobId, result) => {
-    log.debug(`Received completed link job: ${jobId}`);
-    await _onLinkCompleted(Link.createFromJson(result));
-  });
-
-  async function _onListCompleted (list: List) {
+    const list = List.createFromJson(result);
     try {
       await listRepository.save(list);
     } catch (e) {
@@ -106,10 +106,11 @@ export default function WebService ({
     await Promise.all(
       list.urls.map(url => queueLink(url, list.uid))
     )
-  }
+  });
 
-
-  async function _onLinkCompleted (link) {
+  linkQueue.on('global:completed', async (jobId, result) => {
+    log.debug(`Received completed link job: ${jobId}`);
+    const link = Link.createFromJson(result);
     try {
       await linkRepository.save(link);
     } catch (e) {
@@ -119,30 +120,30 @@ export default function WebService ({
         log.error(e)
       }
     }
+  });
+
+  async function searchLinks ({
+    query, listUid, page = 0, limit = 15, useragent
+  }): Promise<[Array<Link>, number]> {
+    const [links, total] = await Promise.all([
+      linkRepository.search({ query, listUid, limit, page }),
+      linkRepository.countSearchResults(query),
+      // log search to db
+      searchLogRepository.save(new SearchLog(query, useragent))
+    ])
+    return [links, total];
   }
 
-  // TODO: implement field search
-  // TODO: measure and improve performance
-  async function search (query, page = 0, limit = 15) {
-    let result;
-    try {
-      const [links, lists] = await Promise.all([
-        linkRepository.search(query, limit, page),
-        listRepository.search(query, limit, page),
-      ]);
-      const sources = await Promise.all(
-        // @ts-ignore
-        links.map(l => listRepository.get(l.source))
-      );
-      for (let i = 0; i < links.length; i++) {
-        links[i].source = sources[i];
-      }
-      result = [...links, ...lists];
-    } catch (e) {
-      result = [];
-      log.error(`Search query failed: ${e}`)
-    }
-    return { page, result };
+  async function searchLists ({
+    query, page = 0, limit = 15, useragent
+  }): Promise<[Array<List>, number]> {
+    const [lists, total] = await Promise.all([
+      listRepository.search({ query, limit, page }),
+      listRepository.countSearchResults(query),
+      // log search to db
+      searchLogRepository.save(new SearchLog(query, useragent))
+    ]);
+    return [lists, total];
   }
 
   async function suggest (query, page = 0, limit = 15): Promise<SuggestResult> {
@@ -156,7 +157,7 @@ export default function WebService ({
     return {
       page: parseInt(searchRes.page),
       next: searchRes.next ? parseInt(searchRes.next) : null,
-      result: searchRes.result
+      results: searchRes.result
     };
   }
 
@@ -181,41 +182,8 @@ export default function WebService ({
     }
   }
 
-  async function getList (uid) {
-    try {
-      return await listRepository.get(uid)
-    } catch (e) {
-      log.error(`Error fetching list ${uid} from db: ${e}`);
-      throw e;
-    }
-  }
-
-  async function getLink (uid) {
-    try {
-      const link = await linkRepository.get(uid);
-      if (link.source) {
-        try {
-          // @ts-ignore
-          link.source = await listRepository.get(link.source);
-        } catch (e) {
-          log.error(`Error fetching source list ${link.source} for ${uid}: ${e}`);
-        }
-      }
-      return link;
-    } catch (e) {
-      log.error(`Error fetching link ${uid} from db: ${e}`);
-      throw e;
-    }
-  }
-
-
-  async function getStats () {
-    return {
-      linkCount: await linkRepository.getCount(),
-      listCount: await listRepository.getCount(),
-      searchCount: await searchLogRepository.getTotalCount(),
-      keywordsIndex: keywordIndex.info()
-    }
+  function getSuggestionIndexStats () {
+    return keywordIndex.info();
   }
 
   async function queueLink (url: string, source: string = null) {
@@ -237,14 +205,13 @@ export default function WebService ({
   }
 
   return {
-    search,
+    searchLinks,
+    searchLists,
     suggest,
     queueFromRoot,
     queueLink,
     buildSuggestionIndex,
-    getLink,
-    getList,
+    getSuggestionIndexStats,
     queueList,
-    getStats
   }
 }

@@ -1,10 +1,17 @@
 import * as typeorm from "../web/typeorm";
 import { getRepository } from "typeorm";
 import logger from "../logger";
+import { webEnv } from "../env";
 
 async function main () {
   const log = logger('script:reset-db');
-  await typeorm.create();
+  const env = webEnv();
+  await typeorm.create({
+    database: env.DB_NAME,
+    username: env.DB_USERNAME,
+    password: env.DB_PASSWORD,
+    host: env.DB_HOST
+  });
   await removeAll();
   log.debug(`Removed all entities from db`);
   process.exit(0);

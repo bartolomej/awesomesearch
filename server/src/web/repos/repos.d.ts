@@ -3,8 +3,20 @@ import List from '../../models/list';
 import SearchLog from "../../models/searchlog";
 import { SearchLogQueryParams } from "./searchlog";
 
+interface ListQueryParams {
+  query: string;
+  limit?: number;
+  page?: number;
+}
+
+interface LinkQueryParams extends ListQueryParams {
+  listUid?: string;
+}
+
 export interface LinkRepositoryInt {
-  search (query: string, limit?: number, page?: number): Promise<Array<Link>>;
+  search (q: LinkQueryParams): Promise<Array<Link>>;
+
+  countSearchResults (query: string, listUid?: string): Promise<number>;
 
   save (link: Link): Promise<Link>;
 
@@ -24,7 +36,9 @@ export interface LinkRepositoryInt {
 }
 
 export interface ListRepositoryInt {
-  search (query: string, limit?: number, page?: number): Promise<Array<List>>;
+  search (q: ListQueryParams): Promise<Array<List>>;
+
+  countSearchResults (query: string): Promise<number>;
 
   save (list: List): Promise<List>;
 
@@ -44,11 +58,11 @@ export interface SearchLogRepositoryInt {
 
   getTotalCount (): Promise<number>;
 
-  getSortedByDate (obj?: SearchLogQueryParams): Promise<Array<SearchLog>>;
+  getSortedByDate (obj: SearchLogQueryParams): Promise<Array<SearchLog>>;
 
-  getCountByQuery (obj?: SearchLogQueryParams): Promise<Array<QueryCountStats>>;
+  getCountByQuery (obj: SearchLogQueryParams): Promise<Array<QueryCountStats>>;
 
-  getCountByDate (obj?: SearchLogQueryParams): Promise<Array<DateCountStats>>;
+  getCountByDate (obj: SearchLogQueryParams): Promise<Array<DateCountStats>>;
 }
 
 export interface QueryCountStats {

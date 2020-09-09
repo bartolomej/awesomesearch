@@ -11,7 +11,7 @@ export default function ListRepository (): ListRepositoryInt {
 
   const log = logger('list-repository');
 
-  async function search (query: string, limit: number, page: number): Promise<Array<List>> {
+  async function search ({ query, limit = 20, page = 0 }): Promise<Array<List>> {
     return (await getRepository(List)
         .createQueryBuilder('list')
         .leftJoinAndSelect('list.repository', 'r')
@@ -24,6 +24,19 @@ export default function ListRepository (): ListRepositoryInt {
         .take(limit)
         .getMany()
     ).map(utils.deserializeList);
+  }
+
+  async function countSearchResults (query: string) {
+    const sqlQuery = getRepository(List)
+      .createQueryBuilder('list')
+      .select('COUNT(list.uid)', 'count')
+      .leftJoin('list.repository', 'r')
+      .where(`
+        MATCH(r.url, r.homepage, r.description, r.topics)
+        AGAINST ('${query}')
+      `)
+    const result = await sqlQuery.execute()
+    return parseInt(result[0].count);
   }
 
   async function save (list: List): Promise<List> {
@@ -66,7 +79,7 @@ export default function ListRepository (): ListRepositoryInt {
     return parseInt(result[0].c);
   }
 
-  async function getAllTopics (page: number, limit: number): Promise<Array<string>> {
+  async function getAllTopics (page: number = 0, limit: number = 20): Promise<Array<string>> {
     // split keywords into arrays
     // remove repeated keywords with set constructor
     // @ts-ignore
@@ -101,6 +114,7 @@ export default function ListRepository (): ListRepositoryInt {
     exists,
     getCount,
     search,
-    getAllTopics
+    getAllTopics,
+    countSearchResults
   }
 }

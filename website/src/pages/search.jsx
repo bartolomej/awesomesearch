@@ -36,8 +36,8 @@ function SearchPage () {
     setSize
   } = useSWRInfinite(
     (index, d) => {
-      if (d && d.result.length === 0) return null;
-      return `/search?q=${query}&page=${index}&limit=20`
+      if (d && d.results.length === 0) return null;
+      return `/link/search?q=${query}&page=${index}&limit=20`
     },
     request
   );
@@ -47,7 +47,8 @@ function SearchPage () {
       setSize(size + 1);
     }
   }, [inView]);
-  const search = searchRes ? [].concat(...searchRes.map(r => r.result)) : [];
+
+  const search = searchRes ? [].concat(...searchRes.map(r => r.results)) : [];
 
   return (
     <Layout>
@@ -60,7 +61,7 @@ function SearchPage () {
           onChange={q => mutateSuggestions(request(`/suggest?q=${q}`))}
           onSubmit={q => q === '' ? history.push('/') : history.push(`/search/${q}`)}
           placeholder={"Search anything ..."}
-          suggestions={suggestions ? suggestions.result : []}
+          suggestions={suggestions ? suggestions.results : []}
         />
       </Header>
       <Body>

@@ -6,7 +6,7 @@ export default class Link {
 
   uid: string;
   url: string;
-  source: string | List;
+  source: string;
   website: Website;
   repository: Repository;
 

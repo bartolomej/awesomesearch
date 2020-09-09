@@ -6,21 +6,33 @@ import Repository from "./entity/repository";
 import Website from "./entity/website";
 import SearchLog from "./entity/searchlog";
 
+interface TypeormProps {
+  host: string;
+  port?: number;
+  username: string;
+  password: string;
+  database: string;
+  connectionName?: string
+}
 
-export async function create (name = "default"): Promise<Connection> {
-  const connectionManager = getConnectionManager();
-  if (connectionManager.has(name)) {
-    return connectionManager.get(name);
-  }
+export async function create ({
+  host = 'localhost',
+  connectionName = 'default',
+  username,
+  password,
+  database,
+  port = 3306
+}: TypeormProps): Promise<Connection> {
   // @ts-ignore
   return await createConnection({
-    name,
     type: "mysql",
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
+    charset: "utf8mb4_unicode_ci",
+    insecureAuth: true,
+    host,
+    port,
+    username,
+    password,
+    database,
     entities: [
       Link,
       List,

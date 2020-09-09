@@ -21,7 +21,7 @@ export default function SearchLogRepository (): SearchLogRepositoryInt {
   }
 
   async function getSortedByDate (
-    { start, end, page, limit }: SearchLogQueryParams
+    { start, end, page = 0, limit = 20 }: SearchLogQueryParams
   ): Promise<Array<SearchLog>> {
     const query = await getRepository(SearchLog)
       .createQueryBuilder('l')
@@ -48,7 +48,7 @@ export default function SearchLogRepository (): SearchLogRepositoryInt {
   }
 
   async function getCountByQuery (
-    { start, end, page, limit }: SearchLogQueryParams
+    { start, end, page = 0, limit = 20 }: SearchLogQueryParams
   ): Promise<Array<QueryCountStats>> {
     const query = await getRepository(SearchLog)
       .createQueryBuilder('l')
@@ -69,7 +69,7 @@ export default function SearchLogRepository (): SearchLogRepositoryInt {
   }
 
   async function getCountByDate (
-    { start, end, page, limit }: SearchLogQueryParams
+    { start, end, page = 0, limit = 20 }: SearchLogQueryParams
   ): Promise<Array<DateCountStats>> {
     const query = await getRepository(SearchLog)
       .createQueryBuilder('l')

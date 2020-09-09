@@ -5,26 +5,37 @@ import { request } from "../utils";
 import { useInView } from "react-intersection-observer";
 import Layout from "../components/layout";
 import {
-  AnimationWrapper,
   Body,
   Header,
   LoadingWrapper,
   ResultsWrapper,
   Title
 } from "../style/ui";
-import Animation from "../components/animation";
 import UseAnimations from "react-useanimations";
 import Result from "../components/result";
 import styled from "@emotion/styled";
 import Description from "../components/description";
 import theme from "../style/theme";
+import SearchField from "../components/searchfield";
 
 
 function ListPage () {
   const history = useHistory();
   const [ref, inView] = useInView({ threshold: 0 });
-  const { uid } = useParams();
+  const { uid, query } = useParams();
 
+  const {
+    data: searchRes,
+    error: searchError,
+    size: searchSize,
+    setSize: setSearchSize
+  } = useSWRInfinite(
+    (index, d) => {
+      if (d && d.results.length === 0) return null;
+      return `/list/${uid}/link/search?q=${query}&page=${index}&limit=20`
+    },
+    url => query ? request(url) : {}
+  );
   const {
     data: list,
     error: listError
@@ -53,6 +64,7 @@ function ListPage () {
   }, [inView]);
 
   const links = linkRes ? [].concat(...linkRes) : [];
+  const search = searchRes ? [].concat(...searchRes.map(r => r.results)) : [];
 
   return (
     <Layout>
@@ -80,6 +92,10 @@ function ListPage () {
               href={`https://github.com/topics/${t}`}>{t}</Tag>
           )}
         </TagWrapper>
+        <SearchField
+          onSubmit={q => q === '' ? history.push('/') : history.push(`/list/${uid}/search/${q}`)}
+          placeholder={`Search in ${list ? list.title : '-'} ...`}
+        />
       </Header>
       <Body>
         {!links && (
@@ -90,7 +106,7 @@ function ListPage () {
             />
           </LoadingWrapper>
         )}
-        {links && links.length > 0 && (
+        {!query && links && links.length > 0 && (
           <ResultsWrapper>
             {links.map((r, i) => (
               <Result
@@ -102,7 +118,23 @@ function ListPage () {
                 type={r.object_type}
                 description={r.description}
                 screenshot={r.screenshot_url || r.image_url}
-                source={r.source}
+                emojis={r.emojis}
+              />
+            ))}
+          </ResultsWrapper>
+        )}
+        {query && search && search.length > 0 && (
+          <ResultsWrapper>
+            {search.map((r, i) => (
+              <Result
+                key={r.uid}
+                uid={r.uid}
+                innerRef={i === search.length - 5 ? ref : null}
+                title={r.title}
+                url={r.url}
+                type={r.object_type}
+                description={r.description}
+                screenshot={r.screenshot_url || r.image_url}
                 emojis={r.emojis}
               />
             ))}
@@ -131,7 +163,7 @@ const BackButton = styled.button`
 `;
 
 const TagWrapper = styled.div`
-  margin: 20px 0;
+  margin: 5px 0 20px 0;
   z-index: 1;
 `;
 

@@ -10,19 +10,39 @@ const utils = require('./utils');
 export default function LinkRepository (): LinkRepositoryInt {
 
 
-  async function search (query: string, limit: number, page: number): Promise<Link[]> {
-    return (await getRepository(Link)
-        .createQueryBuilder('link')
-        .leftJoinAndSelect('link.repository', 'r')
-        .leftJoinAndSelect('link.website', 'w')
-        .where(`
+  async function search ({ query, listUid, limit = 20, page = 0 }): Promise<Link[]> {
+    const sqlQuery = getRepository(Link)
+      .createQueryBuilder('link')
+      .leftJoinAndSelect('link.repository', 'r')
+      .leftJoinAndSelect('link.website', 'w')
+      .where(`
         MATCH(w.url, w.title, w.name, w.description, w.author, w.keywords)
         AGAINST ('${query}' IN NATURAL LANGUAGE MODE)
-      `)
+      `);
+    if (listUid) {
+      sqlQuery.andWhere(`link.source = :listUid`, { listUid });
+    }
+    return (await sqlQuery
         .skip(limit * page)
         .take(limit)
         .getMany()
     ).map(utils.deserializeLink);
+  }
+
+  async function countSearchResults (query: string, listUid: string) {
+    const sqlQuery = getRepository(Link)
+      .createQueryBuilder('link')
+      .select('COUNT(link.uid)', 'count')
+      .leftJoin('link.website', 'w')
+      .where(`
+        MATCH(w.url, w.title, w.name, w.description, w.author, w.keywords)
+        AGAINST ('${query}' IN NATURAL LANGUAGE MODE)
+      `)
+    if (listUid) {
+      sqlQuery.andWhere(`link.source = :listUid`, { listUid });
+    }
+    const result = await sqlQuery.execute()
+    return parseInt(result[0].count);
   }
 
   async function save (link: Link): Promise<Link> {
@@ -131,6 +151,7 @@ export default function LinkRepository (): LinkRepositoryInt {
     exists,
     getRandomObject,
     getAllKeywords,
-    search
+    search,
+    countSearchResults
   }
 }

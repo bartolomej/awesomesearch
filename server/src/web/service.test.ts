@@ -4,10 +4,10 @@ import Website from "../models/website";
 import Link from "../models/link";
 import List from "../models/list";
 import { LinkRepositoryInt, ListRepositoryInt } from "./repos/repos";
-import SearchLogRepository from "./repos/searchlog";
 import Bull, { Job, Queue } from "bull";
 import GithubService from "../services/github";
 import ListService from "../services/list";
+import SearchLogRepository from "./repos/searchlog";
 
 /**
  * Each test case initializes web service with mocked dependencies.
@@ -35,31 +35,37 @@ describe('Web service tests', function () {
     }]);
 
     // test that result is indexed
-    const searchResult = await service.search('portfolios');
-    expect(searchResult.result).toEqual([list]);
+    const searchResult = await service.searchLists({ query: 'portfolios' });
+    expect(searchResult).toEqual([list]);
 
     // test that result is written to db
-    expect(listRepository.get(list.repository.uid)).toEqual(list);
+    expect(await listRepository.get(list.repository.uid)).toEqual(list);
   });
 
   it('should handle link result given completed job', async function () {
-    const { linkQueue, linkRepository, service } = webServiceFactory();
+    const { linkQueue, linkRepository, listRepository, service } = webServiceFactory();
 
+    const listUrl = 'https://github.com/amnashanwar/awesome-portfolios';
+    const linkUrl = 'https://link.com';
+    const source = new List(listUrl, new Repository(listUrl), [linkUrl]);
     const link = new Link(
-      'https://link.com', 'amnashanwar.awesome-portfolios',
+      linkUrl, source.uid,
       new Website('https://link.com', 'LinkTest')
     );
     const job = {
       id: 1,
       data: { source: link.source, url: link.url }
     };
+
     linkQueue._setJob(job.id, job);
+    await listRepository.save(source);
     await linkQueue._completeJob('1', JSON.stringify(link));
 
-    const searchResult = await service.search('link');
-    expect(searchResult.result).toEqual([link]);
-
-    expect(linkRepository.get(link.uid)).toEqual(link);
+    const searchResult = await service.searchLinks({ query: 'link' });
+    expect(searchResult).toEqual([{
+      ...link,
+      source: { ...source }
+    }]);
   });
 
 });
@@ -69,19 +75,18 @@ function webServiceFactory () {
   const linkQueue = MockQueue();
   const listRepository = MockListRepository();
   const linkRepository = MockLinkRepository();
-  const searchLogRepository = SearchLogRepository();
   const githubService = GithubService({
     accessToken: null,
     githubUsername: null
   });
   const service = WebService({
-    searchLogRepository,
     listRepository,
     linkRepository,
     listQueue,
     linkQueue,
     listService: ListService({ githubService }),
     githubService,
+    searchLogRepository: SearchLogRepository()
   });
   return { listQueue, linkQueue, listRepository, linkRepository, service }
 }
@@ -153,15 +158,18 @@ function MockQueue (): MockBullQueue {
 function MockListRepository (): ListRepositoryInt {
   let store = {};
   return {
+    countSearchResults (query: string): Promise<number> {
+      return Promise.resolve(searchMock(store, query).length);
+    },
     exists (uid: string): Promise<boolean> {
       return Promise.resolve(store[uid] !== undefined);
     },
     get (uid: string): Promise<List> {
       const object = store[uid];
       if (object) {
-        return object;
+        return Promise.resolve(object);
       } else {
-        throw new Error('Entity not found');
+        return Promise.reject(new Error('Entity not found'));
       }
     },
     getAll (limit: number, page: number): Promise<Array<List>> {
@@ -179,7 +187,7 @@ function MockListRepository (): ListRepositoryInt {
       store[list.uid] = list;
       return Promise.resolve(store[list.uid]);
     },
-    search (query: string, limit?: number, page?: number): Promise<Array<List>> {
+    search ({ query, limit, page }): Promise<Array<List>> {
       return Promise.resolve(searchMock(store, query));
     }
   }
@@ -188,6 +196,9 @@ function MockListRepository (): ListRepositoryInt {
 function MockLinkRepository (): LinkRepositoryInt {
   let store = {};
   return {
+    countSearchResults (query: string, listUid?: string): Promise<number> {
+      return Promise.resolve(searchMock(store, query).length);
+    },
     exists (uid: string): Promise<boolean> {
       return Promise.resolve(store[uid] !== undefined);
     },
@@ -220,7 +231,7 @@ function MockLinkRepository (): LinkRepositoryInt {
       store[link.uid] = link;
       return Promise.resolve(store[link.uid]);
     },
-    search (query: string, limit?: number, page?: number): Promise<Array<Link>> {
+    search ({ query, limit, page }): Promise<Array<Link>> {
       return Promise.resolve(searchMock(store, query));
     }
   }

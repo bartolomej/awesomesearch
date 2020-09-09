@@ -7,6 +7,7 @@ import List from "../models/list";
 import Link from "../models/link";
 import Repository from "../models/repository";
 import Website from "../models/website";
+import { webEnv } from "../env";
 
 
 const {
@@ -21,8 +22,14 @@ async function main () {
 
 
   try {
-    const con = await typeorm.create();
-    log.debug(`Connected to database: ${con.name}`)
+    const env = webEnv();
+    await typeorm.create({
+      database: env.DB_NAME,
+      username: env.DB_USERNAME,
+      password: env.DB_PASSWORD,
+      host: env.DB_HOST
+    });
+    log.debug(`Connected to database`)
   } catch (e) {
     log.error(`Error while connecting to db: ${e}`);
     process.exit(1);

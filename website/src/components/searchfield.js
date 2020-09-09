@@ -57,7 +57,9 @@ const SearchField = ({ placeholder, initialText = '', onChange, onSubmit, sugges
           placeholder={placeholder}
           onChange={e => {
             setText(e.target.value);
-            onChange(e.target.value);
+            if (typeof onChange === 'function') {
+              onChange(e.target.value);
+            }
           }}
         />
         <Submit onClick={onSubmitClick}>Search</Submit>

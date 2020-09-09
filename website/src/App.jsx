@@ -23,9 +23,16 @@ const IndexPage = () => {
             path="/list/:uid"
             children={<ListPage/>}
           />
-          <Route exact path="/">
-            <HomePage/>
-          </Route>
+          <Route
+            exact
+            path="/list/:uid/search/:query"
+            children={<ListPage/>}
+          />
+          <Route
+            exact
+            path="/"
+            children={<HomePage/>}
+          />
         </Switch>
       </Router>
     </ThemeProvider>

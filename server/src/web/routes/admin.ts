@@ -32,8 +32,18 @@ export default function AdminRoutes ({
   // https://github.com/vcapretz/bull-board
   router.use('/admin/queue', UI)
 
-  router.get('/admin/search', async (req, res) => {
-    res.send(await searchLogRepository.getSortedByDate());
+  router.get('/admin/search', async (req, res, next) => {
+    const { start, end, page, limit } = req.query;
+    try {
+      res.send(await searchLogRepository.getSortedByDate({
+        start: new Date(start),
+        end: new Date(end),
+        page,
+        limit
+      }));
+    } catch (e) {
+      next(e)
+    }
   });
 
   router.get('/admin/search/stats',
@@ -65,8 +75,10 @@ export default function AdminRoutes ({
 
   router.get('/admin/stats', async (req, res, next) => {
     try {
-      const rateLimit = await githubService.getRateLimit();
-      res.send({ rate_limit: rateLimit })
+      res.send({
+        rate_limit: await githubService.getRateLimit(),
+        suggestion_index: webService.getSuggestionIndexStats()
+      })
     } catch (e) {
       next(e);
     }

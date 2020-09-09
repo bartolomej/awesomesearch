@@ -39,18 +39,13 @@ export default async function Server (routes = []) {
   });
 
   // express error handler
-  app.use((err, req, res) => {
-    const details = {
-      errorObject: err
-    };
-    const error = {
-      // @ts-ignore
-      message: err.message,
-      details: process.env.NODE_ENV === 'development' ? details : undefined
-    };
-    log.debug(`Error in response: ${error}`);
-    // @ts-ignore
-    res.status(err.statusCode || 400).send(error);
+  // NOTE: next param is required !
+  // https://expressjs.com/en/guide/error-handling.html#writing-error-handlers
+  app.use((err, req, res, next) => {
+    log.debug(`Error in response: ${err}`);
+    res.status(err.statusCode || 400).send({
+      message: err.message
+    });
   });
 
   // start the server on port <PORT> or 3000

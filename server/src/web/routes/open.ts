@@ -1,5 +1,4 @@
 import express from 'express';
-import SearchLog from "../../models/searchlog";
 import { WebServiceInt } from "../service";
 import {
   LinkRepositoryInt,
@@ -8,8 +7,8 @@ import {
 } from "../repos/repos";
 import { MetaServiceInt } from "../../services/metadata";
 import { ERROR_MSG_NOT_FOUND } from "../../constants";
+import * as utils from './utils';
 
-const utils = require('./utils');
 const { query } = require('express-validator');
 
 // REQUEST PARAMS VALIDATION RULES
@@ -50,12 +49,38 @@ export default function OpenRoutes ({
     res.send('AwesomeSearch API is running 🙌')
   });
 
-  router.get('/list/:uid', async (req, res, next) => {
+
+  router.get('/link/search',
+    searchFetchRules(),
+    utils.validateReqParams,
+    async (req, res, next) => {
+      const { q, page, limit } = req.query;
+      try {
+        const [links, count] = await webService.searchLinks({
+          query: q,
+          page: page ? parseInt(page) : 0,
+          limit: limit ? parseInt(limit) : 15,
+          useragent: req.useragent.source
+        });
+        const lists = await Promise.all(
+          links.map(l => listRepository.get(l.source))
+        );
+        res.send(utils.serializeSearchResult(
+          links.map((l, i) => utils.serializeLink(l, lists[i])),
+          { total_results: count }
+        ));
+      } catch (e) {
+        next(e);
+      }
+    }
+  );
+
+  router.get('/link/random', async (req, res, next) => {
+    const { n } = req.query;
     try {
-      res.send({
-        ...utils.serializeList(await webService.getList(req.params.uid)),
-        link_count: await linkRepository.getCount(req.params.uid)
-      });
+      // @ts-ignore
+      res.send((await linkRepository.getRandomObject(n ? parseInt(n) : 6))
+        .map(l => utils.serializeLink(l)));
     } catch (e) {
       next(e);
     }
@@ -63,11 +88,36 @@ export default function OpenRoutes ({
 
   router.get('/link/:uid', async (req, res, next) => {
     try {
-      res.send(utils.serializeLink(await webService.getLink(req.params.uid)));
+      const link = await linkRepository.get(req.params.uid);
+      res.send({
+        ...utils.serializeLink(link),
+        // @ts-ignore
+        source: await listRepository.get(link.source)
+      });
     } catch (e) {
       next(e);
     }
   });
+
+  router.get('/suggest',
+    searchFetchRules(),
+    utils.validateReqParams,
+    async (req, res, next) => {
+      const { q, page, limit } = req.query;
+      try {
+        const searchRes = await webService.suggest(q,
+          page || true,
+          limit ? parseInt(limit) : 10
+        );
+        res.send(utils.serializeSearchResult(searchRes.results, {
+          page: searchRes.page,
+          next: searchRes.next
+        }));
+      } catch (e) {
+        next(e);
+      }
+    }
+  );
 
   router.get('/list',
     listFetchRules(),
@@ -87,17 +137,52 @@ export default function OpenRoutes ({
     }
   );
 
+  router.get('/list/:uid', async (req, res, next) => {
+    try {
+      res.send({
+        ...utils.serializeList(await listRepository.get(req.params.uid)),
+        link_count: await linkRepository.getCount(req.params.uid),
+      });
+    } catch (e) {
+      next(e);
+    }
+  });
+
   router.get('/list/:uid/link',
     listFetchRules(),
     utils.validateReqParams,
     async (req, res, next) => {
       const { limit, page } = req.query;
       try {
-        const links = await linkRepository.getAll(limit || 10, page || 0, req.params.uid);
-        if (links.length === 0) {
-          return next(new Error(ERROR_MSG_NOT_FOUND));
-        }
-        res.send(links.map(utils.serializeLink));
+        const links = await linkRepository.getAll(
+          limit || 10,
+          page || 0,
+          req.params.uid
+        );
+        res.send(links.map(l => utils.serializeLink(l)));
+      } catch (e) {
+        next(e);
+      }
+    }
+  );
+
+  router.get('/list/:uid/link/search',
+    searchFetchRules(),
+    utils.validateReqParams,
+    async (req, res, next) => {
+      const { q, page, limit } = req.query;
+      try {
+        const [links, count] = await webService.searchLinks({
+          query: q,
+          page: page ? parseInt(page) : 0,
+          limit: limit ? parseInt(limit) : 15,
+          listUid: req.params.uid,
+          useragent: req.useragent.source
+        });
+        res.send(utils.serializeSearchResult(
+          links.map(l => utils.serializeLink(l)),
+          { total_results: count }
+        ))
       } catch (e) {
         next(e);
       }
@@ -121,57 +206,22 @@ export default function OpenRoutes ({
     }
   );
 
-  router.get('/link/random', async (req, res, next) => {
-    const { n } = req.query;
-    try {
-      // @ts-ignore
-      res.send((await linkRepository.getRandomObject(n ? parseInt(n) : 6))
-        .map(utils.serializeLink));
-    } catch (e) {
-      next(e);
-    }
-  });
-
-  router.get('/suggest',
-    searchFetchRules(),
-    utils.validateReqParams,
-    async (req, res, next) => {
-      const { q, page, limit } = req.query;
-      try {
-        const searchRes = await webService.suggest(q,
-          page || true,
-          limit ? parseInt(limit) : 10
-        );
-        res.send(searchRes);
-      } catch (e) {
-        next(e);
-      }
-    }
-  );
-
-  router.get('/search',
-    searchFetchRules(),
-    utils.validateReqParams,
-    async (req, res, next) => {
-      const { q, page, limit } = req.query;
-      try {
-        const searchRes = await webService.search(q,
-          page ? parseInt(page) : 0,
-          limit ? parseInt(limit) : 15
-        );
-        res.send(utils.serializeSearchResult(searchRes));
-        // log search to db
-        await searchLogRepository.save(new SearchLog(q, req.useragent.source))
-      } catch (e) {
-        next(e);
-      }
-    }
-  );
-
   router.get('/stats', async (req, res, next) => {
+    const [
+      link_count,
+      list_count,
+      total_search_count
+    ] = await Promise.all([
+      linkRepository.getCount(),
+      listRepository.getCount(),
+      searchLogRepository.getTotalCount(),
+    ]);
     try {
-      const stats = await webService.getStats();
-      res.send(utils.serializeStats(stats))
+      res.send({
+        link_count,
+        list_count,
+        total_search_count,
+      })
     } catch (e) {
       next(e);
     }

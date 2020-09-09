@@ -37,7 +37,12 @@ async function start () {
   const linkQueue = createQueue('link');
 
   try {
-    const con = await typeorm.create();
+    const con = await typeorm.create({
+      database: env.DB_NAME,
+      username: env.DB_USERNAME,
+      password: env.DB_PASSWORD,
+      host: env.DB_HOST
+    });
     log.debug(`Connected to database: ${con.name}`)
   } catch (e) {
     log.error(`Error while connecting to db: ${e}`);
@@ -48,11 +53,11 @@ async function start () {
   const webService = WebService({
     listRepository,
     linkRepository,
-    searchLogRepository,
     listQueue,
     linkQueue,
     listService,
-    githubService
+    githubService,
+    searchLogRepository
   });
 
   // pass queues to 3rd party bull dashboard module

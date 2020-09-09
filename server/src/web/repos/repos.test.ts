@@ -10,21 +10,22 @@ import LinkRepository from "./link";
 import * as typeorm from '../typeorm';
 import { getRepository } from "typeorm";
 
-const path = require('path');
-
 describe('Link repository tests', function () {
 
   const linkRepository = LinkRepository();
   const listRepository = ListRepository();
   beforeAll(async () => {
-    webEnv();
-    await typeorm.create();
+    const env = webEnv();
+    await typeorm.create({
+      database: env.DB_NAME,
+      username: env.DB_USERNAME,
+      password: env.DB_PASSWORD,
+      host: env.DB_HOST
+    });
   });
-
-  // TODO: investigate why typeorm doesn't reconnect after connection is closed !
-  // THROWS ERRORS LIKE: not connected to db
-  // for now we just don't close connections in tests ¯\_(ツ)_/¯
-
+  afterAll(async () => {
+    await typeorm.close();
+  });
   afterEach(async () => {
     await removeAll();
   });
@@ -121,18 +122,37 @@ describe('Link repository tests', function () {
     expect(links[1]).toEqual(link2);
   });
 
+  // TODO query returns empty result set ?!?!?!?!?!?
   it('should perform link fts based on a given query', async function () {
     await Promise.all([
-      exampleLink({ user: 'bart', repo: 'repo1' }),
-      exampleLink({ user: 'bartek', repo: 'repo2' }),
-      exampleLink({ user: 'tony', repo: 'repo3' }),
-    ].map(linkRepository.save));
+        exampleLink({
+          user: 'bart',
+          repo: 'repo1',
+          description: 'Bart stands for Bartolomej...'
+        }),
+        exampleLink({
+          user: 'bartek',
+          repo: 'repo2',
+          description: 'Bartek stands for idk...'
+        }),
+        exampleLink({
+          user: 'tony',
+          repo: 'repo3',
+          description: 'Tony is a real name.'
+        }),
+      ].map(linkRepository.save)
+    );
 
-    const result = await linkRepository.search('bart');
+    const result = await linkRepository.search({ query: 'bartolomej' });
 
     expect(result).toEqual([
       exampleLink({ user: 'bart', repo: 'repo1' })
     ]);
+  });
+
+  it('should count total search results', async function () {
+    const result = await linkRepository.countSearchResults('hello')
+    expect(result).toBe(0);
   });
 
   it('should fetch all distinct keywords', async function () {
@@ -141,7 +161,7 @@ describe('Link repository tests', function () {
       exampleLink({ user: 'bartek', repo: 'repo2', keywords: ['foo', 'bar1'] }),
     ].map(linkRepository.save));
 
-    const result = await linkRepository.getAllKeywords();
+    const result = await linkRepository.getAllKeywords(2, 0);
 
     expect(result).toEqual(['foo', 'bar', 'bar1'])
   });
@@ -152,10 +172,17 @@ describe('List repository tests', function () {
 
   const listRepository = ListRepository();
   beforeAll(async () => {
-    require('dotenv').config({ path: path.join(__dirname, '..', '..', '..', '.env.development') })
-    await typeorm.create();
+    const env = webEnv();
+    await typeorm.create({
+      database: env.DB_NAME,
+      username: env.DB_USERNAME,
+      password: env.DB_PASSWORD,
+      host: env.DB_HOST
+    });
   });
-
+  afterAll(async () => {
+    await typeorm.close();
+  });
   afterEach(async () => {
     await removeAll();
   });
@@ -175,7 +202,7 @@ describe('List repository tests', function () {
       await listRepository.get('invalidUid');
       expect(1).toBe(2);
     } catch (e) {
-      expect(e.message).toEqual('Object not found')
+      expect(e.message).toEqual('Entity not found')
     }
   });
 
@@ -187,7 +214,11 @@ describe('List repository tests', function () {
       exampleList({ user: 'tony' }),
     ].map(listRepository.save));
 
-    const result = await listRepository.search('bart');
+    const result = await listRepository.search({
+      query: 'bart',
+      limit: 4,
+      page: 0
+    });
 
     expect(result).toEqual([
       exampleList({ user: 'bart' })
@@ -200,9 +231,14 @@ describe('List repository tests', function () {
       exampleList({ user: 'bartek', topics: ['test1', 'test3'] }),
     ].map(listRepository.save));
 
-    const result = await listRepository.getAllTopics();
+    const result = await listRepository.getAllTopics(0, 2);
 
     expect(result).toEqual(['test1', 'test2', 'test3'])
+  });
+
+  it('should count total search results', async function () {
+    const result = await listRepository.countSearchResults('hello')
+    expect(result).toBe(0);
   });
 
 });
@@ -211,10 +247,17 @@ describe('SearchLog repository', function () {
 
   const searchLogRepository = SearchLogRepository();
   beforeAll(async () => {
-    require('dotenv').config({ path: path.join(__dirname, '..', '..', '..', '.env.development') })
-    await typeorm.create();
+    const env = webEnv();
+    await typeorm.create({
+      database: env.DB_NAME,
+      username: env.DB_USERNAME,
+      password: env.DB_PASSWORD,
+      host: env.DB_HOST
+    });
   });
-
+  afterAll(async () => {
+    await typeorm.close();
+  });
   beforeEach(async () => {
     await getRepository(SearchLog).query('DELETE FROM search_log WHERE 1=1');
   });
@@ -222,7 +265,7 @@ describe('SearchLog repository', function () {
   it('should save log', async function () {
     const log = new SearchLog('test', 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36');
     const saved = await searchLogRepository.save(log);
-    const all = await searchLogRepository.getSortedByDate();
+    const all = await searchLogRepository.getSortedByDate({});
 
     expect(all.length).toBe(1);
     expect(all[0]).toEqual(log);
@@ -254,7 +297,7 @@ describe('SearchLog repository', function () {
       await searchLogRepository.save(l);
     }
 
-    const stats = await searchLogRepository.getCountByQuery();
+    const stats = await searchLogRepository.getCountByQuery({});
     expect(stats).toEqual([
       { query: 'test1', count: 3 },
       { query: 'test', count: 2 },
@@ -264,7 +307,7 @@ describe('SearchLog repository', function () {
   it('should count all searches by date', async function () {
     const logs = await insertLogFor3days();
 
-    const count = await searchLogRepository.getCountByDate();
+    const count = await searchLogRepository.getCountByDate({});
     expect(count).toEqual([
       { datetime: datetimeToDate(logs[0].datetime), count: 1 },
       { datetime: datetimeToDate(logs[1].datetime), count: 1 },
@@ -337,15 +380,18 @@ function exampleLink ({
   repo = 'repo',
   stars = 12,
   forks = 23,
+  description = null,
   topics = ['topic1', 'topics2'],
   keywords = ['key1', 'key2']
 }) {
   const website = new Website(`https://example.com/${user}/${repo}`, 'example');
   website.keywords = keywords;
+  website.description = description;
   const repository = new Repository(`https://github.com/${user}/${repo}`);
   repository.stars = stars;
   repository.forks = forks;
   repository.topics = topics;
+  repository.description = description;
   return new Link(`https://github.com/${user}/${repo}`, 'user.example', website, repository);
 }
 

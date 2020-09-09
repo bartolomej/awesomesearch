@@ -1,5 +1,10 @@
 const envalid = require('envalid');
 const { str, num } = envalid;
+const { join } = require('path');
+
+const dotEnvPath = process.env.NODE_ENV !== 'production'
+  ? join(__dirname, '..', '.env.development')
+  : null;
 
 export const webEnv = () => envalid.cleanEnv(process.env, {
   PORT: num({ default: 3000 }),
@@ -11,6 +16,8 @@ export const webEnv = () => envalid.cleanEnv(process.env, {
   DB_NAME: str(),
   GH_USERNAME: str(),
   GH_TOKEN: str()
+}, {
+  dotEnvPath
 });
 
 export const workerEnv = () => envalid.cleanEnv(process.env, {
@@ -22,4 +29,6 @@ export const workerEnv = () => envalid.cleanEnv(process.env, {
   CLOUDINARY_API_SECRET: str(),
   GH_USERNAME: str(),
   GH_TOKEN: str()
+}, {
+  dotEnvPath
 });

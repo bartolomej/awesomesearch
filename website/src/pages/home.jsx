@@ -6,7 +6,6 @@ import SearchField from "../components/searchfield";
 import Result from "../components/result";
 import UseAnimations from "react-useanimations";
 import {
-  AnimationWrapper,
   Body,
   Header,
   LoadingWrapper,
@@ -15,17 +14,16 @@ import {
   Subtitle,
   Title
 } from "../style/ui";
-import Animation from "../components/animation";
 import useSWR from 'swr';
 import { request } from "../utils";
 
 
 function HomePage () {
-  const { data: stats } = useSWR('stats', request('/stats'));
+  const { data: stats } = useSWR('stats', () => request('/stats'));
   const {
     data: suggestions,
     mutate: mutateSuggestions
-  } = useSWR('suggestions', request(`/suggest?q=`));
+  } = useSWR('suggestions', () => request(`/suggest?q=`));
   const {
     data: lists,
     error: listsError

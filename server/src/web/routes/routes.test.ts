@@ -24,6 +24,7 @@ describe('Route serialization utils tests', function () {
     expect(routeUtils.serializeList(list)).toEqual({
       uid: list.uid,
       object_type: 'list',
+      author: 'bartolomej',
       title: list.title,
       description: list.description,
       emojis: [
@@ -43,9 +44,9 @@ describe('Route serialization utils tests', function () {
 
   it('should serialize link with source object', function () {
     const link = exampleLink();
-    link.source = exampleList();
+    const list = exampleList();
 
-    expect(routeUtils.serializeLink(link)).toEqual({
+    expect(routeUtils.serializeLink(link, list)).toEqual({
       uid: link.uid,
       object_type: 'link',
       title: link.title,
@@ -64,55 +65,28 @@ describe('Route serialization utils tests', function () {
       screenshot_url: link.screenshot,
       tags: link.tags,
       source: {
-        uid: link.source.uid,
-        title: link.source.title,
-        image_url: link.source.image
+        uid: list.uid,
+        title: list.title,
+        image_url: list.image
       }
     })
   });
 
-  it('should serialize link with source uid', function () {
-    const link = exampleLink();
-    link.source = 'some.example'
-
-    expect(routeUtils.serializeLink(link)).toEqual({
-      uid: link.uid,
-      object_type: 'link',
-      title: link.title,
-      description: link.description,
-      emojis: [
-        {
-          key: 'zap',
-          url: "https://github.githubassets.com/images/icons/emoji/unicode/26a1.png?v8"
-        },
-      ],
-      url: link.url,
-      website_name: link.websiteName,
-      website_type: link.websiteType,
-      icon_url: link.icon,
-      image_url: link.image,
-      screenshot_url: link.screenshot,
-      tags: link.tags,
-      source: link.source
-    })
-  });
-
   it('should serialize search result', function () {
-    const result = {
-      page: 0,
-      next: null,
-      result: [
-        exampleLink(),
-        exampleList()
-      ]
-    }
-    const serialized = routeUtils.serializeSearchResult(result);
-    expect(serialized).toEqual({
-      ...result,
-      result: expect.any(Array)
+    const result = [
+      exampleLink(),
+      exampleList()
+    ];
+
+    const serialized = routeUtils.serializeSearchResult(result, {
+      total_results: result.length
     });
-    expect(serialized.result[0]).toMatchObject({ uid: result.result[0].uid });
-    expect(serialized.result[1]).toMatchObject({ uid: result.result[1].uid });
+    expect(serialized).toEqual({
+      total_results: result.length,
+      results: expect.any(Array)
+    });
+    expect(serialized.results[0]).toMatchObject({ uid: result[0].uid });
+    expect(serialized.results[1]).toMatchObject({ uid: result[1].uid });
   });
 
 })
