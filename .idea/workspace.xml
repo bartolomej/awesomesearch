@@ -28,34 +28,15 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a0476a08-2416-44af-8b88-c0d0a7a92246" name="improve worker performance" comment="">
+    <list default="true" id="24493c84-3177-4c22-afba-c2f754d88b1e" name="production config" comment="">
+      <change afterPath="$PROJECT_DIR$/server/docker-compose.prod.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/server/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/constants.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/constants.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/services/metadata.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/services/metadata.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/web/entity/link.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/repos/entity/link.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/web/entity/list.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/repos/entity/list.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/web/entity/repository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/repos/entity/repository.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/web/entity/searchlog.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/repos/entity/searchlog.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/web/entity/website.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/repos/entity/website.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/web/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/web/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/web/repos/link.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/repos/link.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/web/repos/list.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/repos/list.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/web/repos/repos.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/repos/repos.d.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/web/repos/repos.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/repos/repos.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/web/repos/searchlog.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/repos/searchlog.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/web/repos/utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/repos/utils.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/web/routes/utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/web/routes/utils.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/web/service.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/web/service.test.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/web/service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/web/service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/web/typeorm.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/typeorm.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/worker/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/worker/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/worker/processors/link.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/worker/processors/link.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/worker/processors/list.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/worker/processors/list.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/src/components/layout.js" beforeDir="false" afterPath="$PROJECT_DIR$/website/src/components/layout.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/package.json" afterDir="false" />
     </list>
     <list id="b335f404-2176-45ea-ab88-fac23c9df1b6" name="add about page" comment="refactor server code, search specific list">
       <change afterPath="$PROJECT_DIR$/website/src/pages/about.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/website/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/website/src/App.jsx" afterDir="false" />
     </list>
     <list id="b4411356-9fd1-4684-b1c7-3a2011c53c6b" name="repeating cron parsing jobs" comment="">
@@ -90,14 +71,40 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="LineStatusTrackerManager">
-    <file path="$PROJECT_DIR$/server/src/web/service.ts">
+    <file path="$PROJECT_DIR$/server/package.json">
       <ranges>
-        <range start1="6" end1="7" start2="6" end2="7" changelist="a0476a08-2416-44af-8b88-c0d0a7a92246" />
-        <range start1="8" end1="9" start2="8" end2="12" changelist="a0476a08-2416-44af-8b88-c0d0a7a92246" />
-        <range start1="98" end1="102" start2="101" end2="109" changelist="a0476a08-2416-44af-8b88-c0d0a7a92246" />
-        <range start1="116" end1="117" start2="123" end2="124" changelist="a0476a08-2416-44af-8b88-c0d0a7a92246" />
-        <range start1="118" end1="119" start2="125" end2="130" changelist="a0476a08-2416-44af-8b88-c0d0a7a92246" />
-        <range start1="198" end1="199" start2="209" end2="210" changelist="fc78fd17-7a4a-4abb-88e1-70862aba4e4d" />
+        <range start1="18" end1="20" start2="18" end2="20" changelist="24493c84-3177-4c22-afba-c2f754d88b1e" />
+        <range start1="41" end1="41" start2="41" end2="42" changelist="fc78fd17-7a4a-4abb-88e1-70862aba4e4d" />
+      </ranges>
+    </file>
+    <file path="$PROJECT_DIR$/.idea/workspace.xml">
+      <ranges>
+        <range start1="30" end1="31" start2="30" end2="32" changelist="24493c84-3177-4c22-afba-c2f754d88b1e" />
+        <range start1="33" end1="55" start2="34" end2="35" changelist="24493c84-3177-4c22-afba-c2f754d88b1e" />
+        <range start1="58" end1="58" start2="38" end2="39" changelist="24493c84-3177-4c22-afba-c2f754d88b1e" />
+        <range start1="92" end1="93" start2="73" end2="80" changelist="24493c84-3177-4c22-afba-c2f754d88b1e" />
+        <range start1="94" end1="100" start2="81" end2="103" changelist="24493c84-3177-4c22-afba-c2f754d88b1e" />
+        <range start1="291" end1="292" start2="294" end2="295" changelist="24493c84-3177-4c22-afba-c2f754d88b1e" />
+        <range start1="297" end1="297" start2="300" end2="301" changelist="24493c84-3177-4c22-afba-c2f754d88b1e" />
+        <range start1="317" end1="318" start2="321" end2="322" changelist="24493c84-3177-4c22-afba-c2f754d88b1e" />
+        <range start1="403" end1="404" start2="407" end2="415" changelist="24493c84-3177-4c22-afba-c2f754d88b1e" />
+        <range start1="474" end1="475" start2="485" end2="488" changelist="24493c84-3177-4c22-afba-c2f754d88b1e" />
+        <range start1="478" end1="479" start2="491" end2="492" changelist="24493c84-3177-4c22-afba-c2f754d88b1e" />
+        <range start1="482" end1="483" start2="495" end2="496" changelist="24493c84-3177-4c22-afba-c2f754d88b1e" />
+        <range start1="510" end1="511" start2="523" end2="524" changelist="b335f404-2176-45ea-ab88-fac23c9df1b6" />
+        <range start1="513" end1="514" start2="526" end2="527" changelist="b335f404-2176-45ea-ab88-fac23c9df1b6" />
+        <range start1="532" end1="533" start2="545" end2="546" changelist="b335f404-2176-45ea-ab88-fac23c9df1b6" />
+        <range start1="537" end1="538" start2="550" end2="551" changelist="b335f404-2176-45ea-ab88-fac23c9df1b6" />
+        <range start1="540" end1="541" start2="553" end2="554" changelist="b335f404-2176-45ea-ab88-fac23c9df1b6" />
+        <range start1="545" end1="546" start2="558" end2="559" changelist="b335f404-2176-45ea-ab88-fac23c9df1b6" />
+        <range start1="548" end1="549" start2="561" end2="562" changelist="b335f404-2176-45ea-ab88-fac23c9df1b6" />
+        <range start1="553" end1="554" start2="566" end2="567" changelist="b335f404-2176-45ea-ab88-fac23c9df1b6" />
+        <range start1="556" end1="557" start2="569" end2="570" changelist="b335f404-2176-45ea-ab88-fac23c9df1b6" />
+        <range start1="561" end1="562" start2="574" end2="575" changelist="b335f404-2176-45ea-ab88-fac23c9df1b6" />
+        <range start1="658" end1="659" start2="671" end2="672" changelist="24493c84-3177-4c22-afba-c2f754d88b1e" />
+        <range start1="661" end1="662" start2="674" end2="675" changelist="24493c84-3177-4c22-afba-c2f754d88b1e" />
+        <range start1="663" end1="664" start2="676" end2="677" changelist="b335f404-2176-45ea-ab88-fac23c9df1b6" />
+        <range start1="666" end1="667" start2="679" end2="680" changelist="b335f404-2176-45ea-ab88-fac23c9df1b6" />
       </ranges>
     </file>
   </component>
@@ -289,12 +296,13 @@
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="b335f404-2176-45ea-ab88-fac23c9df1b6" name="cra" comment="" />
-      <changelist id="a0476a08-2416-44af-8b88-c0d0a7a92246" name="improve-fts" comment="" />
+      <changelist id="" name="improve-fts" comment="" />
       <changelist id="fc78fd17-7a4a-4abb-88e1-70862aba4e4d" name="topic filtering" comment="" />
       <changelist id="b4411356-9fd1-4684-b1c7-3a2011c53c6b" name="repeating cron parsing jobs" comment="" />
       <changelist id="" name="generate uuid" comment="" />
       <changelist id="" name="fix heroku deploy" comment="" />
       <changelist id="" name="improve search" comment="" />
+      <changelist id="24493c84-3177-4c22-afba-c2f754d88b1e" name="production config" comment="" />
       <created>1598265301577</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -315,7 +323,7 @@
       <workItem from="1599680939306" duration="1263000" />
       <workItem from="1599729676775" duration="8787000" />
       <workItem from="1599817605655" duration="5993000" />
-      <workItem from="1600164269347" duration="9934000" />
+      <workItem from="1600164269347" duration="13190000" />
     </task>
     <task id="LOCAL-00001" summary="moved server code to server/src">
       <created>1598379264652</created>
@@ -401,7 +409,14 @@
       <option name="project" value="LOCAL" />
       <updated>1600173228732</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="env vars for parallel workers, move repos to src/">
+      <created>1600175019773</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1600175019773</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -472,15 +487,17 @@
     <MESSAGE value="refactor server code, search specific list" />
     <MESSAGE value="generate uuid" />
     <MESSAGE value="improve search experience" />
-    <option name="LAST_COMMIT_MESSAGE" value="improve search experience" />
+    <MESSAGE value="improve worker performance" />
+    <MESSAGE value="env vars for parallel workers, move repos to src/" />
+    <option name="LAST_COMMIT_MESSAGE" value="env vars for parallel workers, move repos to src/" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="184" y="40" width="1071" height="748" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1600165942202">
+    <state x="184" y="40" width="1071" height="748" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1600197126641">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="184" y="40" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1440.900/-245.-1057.1920.1057@0.0.1440.900" timestamp="1599395404817" />
-    <state x="184" y="40" width="1071" height="748" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1600165942202" />
+    <state x="184" y="40" width="1071" height="748" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1600197126641" />
     <state x="184" y="40" width="1071" height="860" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1440.900@0.0.1440.900" timestamp="1598968121580" />
     <state x="100" y="31" width="1240" height="869" key="#com.intellij.execution.junit2.states.ComparisonFailureState$DiffDialog" timestamp="1600174765480">
       <screen x="0" y="0" width="1440" height="900" />
@@ -656,10 +673,10 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="571" y="365" key="VCS.ChangelistChooser/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1599736183822" />
-    <state x="598" y="370" width="325" height="247" key="VCS.EditChangelistDialog" timestamp="1600168591411">
+    <state x="598" y="370" width="325" height="247" key="VCS.EditChangelistDialog" timestamp="1600196947592">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="598" y="370" width="325" height="247" key="VCS.EditChangelistDialog/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1600168591411" />
+    <state x="598" y="370" width="325" height="247" key="VCS.EditChangelistDialog/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1600196947592" />
     <state x="598" y="370" key="VCS.EditChangelistDialog/0.0.1440.900@0.0.1440.900" timestamp="1598443168293" />
     <state x="320" y="186" key="Vcs.Push.Dialog.v2" timestamp="1599672613752">
       <screen x="0" y="0" width="1440" height="900" />

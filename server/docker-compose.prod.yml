@@ -22,7 +22,7 @@ services:
       - REDIS_URL=redis:6379
       - PORT=8000
     ports:
-      - '8000:8000'
+      - '8000:80'
     volumes:
       - .:/home/node/app
       - node_modules:/home/node/app/node_modules
