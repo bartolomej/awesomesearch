@@ -1,17 +1,16 @@
 import { useHistory, useParams } from "react-router-dom";
 import useSWR, { useSWRInfinite } from "swr";
 import Layout from "../components/layout";
-import Animation from "../components/animation";
 import SearchField from "../components/searchfield";
 import UseAnimations from "react-useanimations";
 import Result from "../components/result";
 import React from "react";
 import {
-  AnimationWrapper,
+  BackButton,
   Body,
   Header,
   LoadingWrapper,
-  Logo,
+  Logo, ResultsCountTitle,
   ResultsWrapper,
   Title
 } from "../style/ui";
@@ -53,6 +52,9 @@ function SearchPage () {
   return (
     <Layout>
       <Header>
+        <BackButton onClick={() => history.replace(`/`)}>
+          Back
+        </BackButton>
         <Logo/>
         <Title>Search {stats && <span>{stats.link_count}</span>} links from <a
           target="_blank" href="https://awesome.re">awesome</a></Title>
@@ -72,6 +74,9 @@ function SearchPage () {
               size={150}
             />
           </LoadingWrapper>
+        )}
+        {query && searchRes && (
+          <ResultsCountTitle>Found {searchRes ? searchRes[0].total_results : '-'} links</ResultsCountTitle>
         )}
         {search && search.length > 0 && (
           <ResultsWrapper>

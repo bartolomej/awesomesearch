@@ -62,10 +62,12 @@ function Lists () {
                 </tr>
                 </thead>
                 <tbody>
-                {lists.map(l => (
+                {lists.results && lists.results.map(l => (
                   <tr key={l.uid}>
                     <td>{l.uid}</td>
-                    <td><img style={{ width: 30, height: 30, borderRadius: '50%'}} src={l.image_url} /></td>
+                    <td><img
+                      style={{ width: 30, height: 30, borderRadius: '50%' }}
+                      src={l.image_url}/></td>
                     <td>{l.title}</td>
                     <td>{l.link_count}</td>
                     <td><a target="_blank" href={l.url}>{l.url}</a></td>

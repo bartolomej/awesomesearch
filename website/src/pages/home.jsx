@@ -54,9 +54,9 @@ function HomePage () {
         )}
         {(lists && !listsError) && (
           <>
-            <Subtitle>Browse lists</Subtitle>
+            <Subtitle>Browse {lists ? lists.total_results : '-'} lists</Subtitle>
             <ResultsWrapper>
-              {lists.map((r, i) => (
+              {lists.results.map((r, i) => (
                 <Result
                   key={r.uid}
                   uid={r.uid}

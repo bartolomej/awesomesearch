@@ -7,18 +7,27 @@ import { ERROR_MSG_NOT_FOUND } from "../../constants";
 const { getRepository } = require('typeorm');
 const utils = require('./utils');
 
+const SEARCH_MODE = 'NATURAL LANGUAGE MODE';
+
 export default function LinkRepository (): LinkRepositoryInt {
 
-
+  // NOTICE: mysql full-text search might cause scaling issues
+  // TRY OUT THESE OSS IF THAT HAPPENS:
+  // https://github.com/meilisearch/MeiliSearch
+  // https://github.com/valeriansaliou/sonic
   async function search ({ query, listUid, limit = 20, page = 0 }): Promise<Link[]> {
     const sqlQuery = getRepository(Link)
       .createQueryBuilder('link')
       .leftJoinAndSelect('link.repository', 'r')
       .leftJoinAndSelect('link.website', 'w')
       .where(`
-        MATCH(w.url, w.title, w.name, w.description, w.author, w.keywords)
-        AGAINST ('${query}' IN NATURAL LANGUAGE MODE)
-      `);
+        MATCH (w.url, w.title, w.name, w.description, w.author, w.keywords)
+        AGAINST ('${query}' IN ${SEARCH_MODE})
+      `)
+      .orWhere(`
+        MATCH (r.url, r.homepage, r.description, r.topics)
+        AGAINST ('${query}' IN ${SEARCH_MODE})
+      `)
     if (listUid) {
       sqlQuery.andWhere(`link.source = :listUid`, { listUid });
     }
@@ -33,10 +42,15 @@ export default function LinkRepository (): LinkRepositoryInt {
     const sqlQuery = getRepository(Link)
       .createQueryBuilder('link')
       .select('COUNT(link.uid)', 'count')
+      .leftJoin('link.repository', 'r')
       .leftJoin('link.website', 'w')
       .where(`
-        MATCH(w.url, w.title, w.name, w.description, w.author, w.keywords)
-        AGAINST ('${query}' IN NATURAL LANGUAGE MODE)
+        MATCH (w.url, w.title, w.name, w.description, w.author, w.keywords)
+        AGAINST ('${query}' IN ${SEARCH_MODE})
+      `)
+      .orWhere(`
+        MATCH (r.url, r.homepage, r.description, r.topics)
+        AGAINST ('${query}' IN ${SEARCH_MODE})
       `)
     if (listUid) {
       sqlQuery.andWhere(`link.source = :listUid`, { listUid });

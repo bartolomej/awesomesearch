@@ -14,6 +14,11 @@ export interface SearchResultDetails {
   total_results: number;
 }
 
+export interface KeywordResultDetails {
+  page: number;
+  next: number | null;
+}
+
 export function validateReqParams (req, res, next) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -23,9 +28,9 @@ export function validateReqParams (req, res, next) {
   }
 }
 
-export function serializeSearchResult<T, R> (
+export function serializeSearchResult<T> (
   results: Array<T>,
-  details: R
+  details: SearchResultDetails | KeywordResultDetails
 ) {
   return {
     ...details,

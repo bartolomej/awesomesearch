@@ -6,7 +6,6 @@ import {
   SearchLogRepositoryInt
 } from "../repos/repos";
 import { MetaServiceInt } from "../../services/metadata";
-import { ERROR_MSG_NOT_FOUND } from "../../constants";
 import * as utils from './utils';
 
 const { query } = require('express-validator');
@@ -125,12 +124,18 @@ export default function OpenRoutes ({
     async (req, res, next) => {
       const { limit, page } = req.query;
       try {
-        const lists = await listRepository.getAll(limit || 10, page || 0);
+        const [lists, count] = await Promise.all([
+          listRepository.getAll(limit || 10, page || 0),
+          listRepository.getCount()
+        ]);
         // append link count to result object
-        res.send(await Promise.all(lists.map(async l => ({
-          ...utils.serializeList(l),
-          link_count: await linkRepository.getCount(l.uid)
-        }))));
+        res.send(utils.serializeSearchResult(
+          await Promise.all(lists.map(async l => ({
+            ...utils.serializeList(l),
+            link_count: await linkRepository.getCount(l.uid)
+          }))),
+          { total_results: count }
+        ));
       } catch (e) {
         next(e);
       }

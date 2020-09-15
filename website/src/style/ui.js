@@ -1,7 +1,7 @@
 import { css } from '@emotion/core';
 import theme from "./theme";
-import styled from "@emotion/styled/macro";
 import { ReactComponent as logo } from "../assets/logo.svg";
+import styled from "@emotion/styled";
 
 
 export const LinkCss = (bg0, bg1, txt0, txt1) => css`
@@ -62,7 +62,7 @@ export const Header = styled.header`
   position: relative;
 `;
 
-export const Title = styled.p`
+export const Title = styled.h1`
   font-size: ${p => p.theme.size(1.8)};
   color: ${p => p.theme.color.white};
   margin-top: 10px;
@@ -91,7 +91,7 @@ export const Title = styled.p`
 
 export const Subtitle = styled.h3`
   ${SubtitleCss};
-  padding-top: 2em;
+  padding-bottom: 2em;
 `;
 
 export const Logo = styled(logo)`
@@ -109,6 +109,7 @@ export const Body = styled.div`
   position: relative;
   z-index: 1;
   min-height: 60vh;
+  padding: 60px 0;
   background: ${p => p.theme.color.light};
 `;
 
@@ -119,7 +120,6 @@ export const ResultsWrapper = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   margin: 0 auto;
-  padding: 80px 0;
   width: 80%;
 `;
 
@@ -140,4 +140,23 @@ export const LoadingWrapper = styled.div`
     color: ${p => p.theme.color.red};
     filter: glow(1);
   }
+`;
+
+export const ResultsCountTitle = styled.strong`
+  color: ${p => p.theme.color.dark};
+  font-size: ${p => p.theme.size(1.6)};
+  text-align: center;
+  display: block;
+  padding-bottom: 50px;
+`;
+
+export const BackButton = styled.button`
+  border: 1px solid ${p => p.theme.color.light};
+  color: ${p => p.theme.color.light};
+  padding: 10px 20px;
+  border-radius: 20px;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 1;
 `;

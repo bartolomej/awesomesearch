@@ -5,11 +5,13 @@ import { request } from "../utils";
 import { useInView } from "react-intersection-observer";
 import Layout from "../components/layout";
 import {
+  BackButton,
   Body,
   Header,
+  LinkCss,
   LoadingWrapper,
+  ResultsCountTitle,
   ResultsWrapper,
-  Title
 } from "../style/ui";
 import UseAnimations from "react-useanimations";
 import Result from "../components/result";
@@ -69,11 +71,14 @@ function ListPage () {
   return (
     <Layout>
       <Header>
-        <BackButton onClick={() => history.goBack()}>
+        <BackButton onClick={() => history.replace(`/`)}>
           Back
         </BackButton>
         <ListImage src={list ? list.image_url : ''}/>
-        <Title>{list ? list.title : 'Loading...'}</Title>
+        <TitleLink href={list ? list.url : ''} rel="noopener noreferrer"
+                   target="_blank">
+          {list ? list.title : 'Loading...'}
+        </TitleLink>
         <Description
           color={theme.color.light}
           text={list ? list.description : 'Loading...'}
@@ -93,8 +98,11 @@ function ListPage () {
           )}
         </TagWrapper>
         <SearchField
-          onSubmit={q => q === '' ? history.push('/') : history.push(`/list/${uid}/search/${q}`)}
           placeholder={`Search in ${list ? list.title : '-'} ...`}
+          onSubmit={q => q === ''
+            ? history.push(`/list/${uid}`)
+            : history.push(`/list/${uid}/search/${q}`)
+          }
         />
       </Header>
       <Body>
@@ -105,6 +113,9 @@ function ListPage () {
               size={150}
             />
           </LoadingWrapper>
+        )}
+        {query && searchRes && (
+          <ResultsCountTitle>Found {searchRes ? searchRes[0].total_results : '-'} links</ResultsCountTitle>
         )}
         {!query && links && links.length > 0 && (
           <ResultsWrapper>
@@ -145,21 +156,23 @@ function ListPage () {
   )
 }
 
+const TitleLink = styled.a`
+  margin: 10px 0 20px 0;
+  font-size: ${p => p.theme.size(1.8)};
+  color: ${p => p.theme.color.white};
+  padding: 2px 4px;
+  ${p => LinkCss(
+  p.theme.color.red,
+  p.theme.color.red,
+  p.theme.color.red,
+  p.theme.color.white
+)};
+`;
+
 const ListImage = styled.img`
   width: 100px;
   height: 100px;
   border-radius: 50%;
-`;
-
-const BackButton = styled.button`
-  border: 1px solid ${p => p.theme.color.light};
-  color: ${p => p.theme.color.light};
-  padding: 10px 20px;
-  border-radius: 20px;
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  z-index: 1;
 `;
 
 const TagWrapper = styled.div`
@@ -188,6 +201,6 @@ const InfoItem = styled.span`
   color: ${p => p.theme.color.light};
   margin: 0 10px;
   display: inline-block;
-`
+`;
 
 export default ListPage;
