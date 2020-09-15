@@ -1,10 +1,10 @@
 import "reflect-metadata";
 import { Connection, createConnection, getConnectionManager } from "typeorm";
-import Link from "./entity/link";
-import List from "./entity/list";
-import Repository from "./entity/repository";
-import Website from "./entity/website";
-import SearchLog from "./entity/searchlog";
+import Link from "./repos/entity/link";
+import List from "./repos/entity/list";
+import Repository from "./repos/entity/repository";
+import Website from "./repos/entity/website";
+import SearchLog from "./repos/entity/searchlog";
 
 interface TypeormProps {
   host: string;

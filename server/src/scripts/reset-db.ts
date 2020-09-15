@@ -1,4 +1,4 @@
-import * as typeorm from "../web/typeorm";
+import * as typeorm from "../typeorm";
 import { getRepository } from "typeorm";
 import logger from "../logger";
 import { webEnv } from "../env";

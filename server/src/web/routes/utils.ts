@@ -68,7 +68,6 @@ export function serializeLink (link: Link, list?: List) {
     icon_url: link.icon,
     image_url: link.image,
     screenshot_url: link.screenshot,
-    tags: link.tags,
     source: serializeSource(list)
   }
 }

@@ -5,7 +5,7 @@ import {
 } from "./repos";
 
 import { getRepository } from 'typeorm';
-import SearchLog from "../../models/searchlog";
+import SearchLog from "../models/searchlog";
 
 export interface SearchLogQueryParams {
   start?: Date;

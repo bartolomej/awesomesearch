@@ -1,6 +1,6 @@
-import Link from "../../models/link";
-import List from '../../models/list';
-import SearchLog from "../../models/searchlog";
+import Link from "../models/link";
+import List from '../models/list';
+import SearchLog from "../models/searchlog";
 import { SearchLogQueryParams } from "./searchlog";
 
 interface ListQueryParams {

@@ -43,7 +43,7 @@ describe('Website metadata parsing tests', function () {
     `;
     const metadata = await metaService.getParsedWebsite(mockData, 'https://glitch.com');
     expect(metadata).toEqual({
-      uid: 'glitch.com',
+      uid: 'cb3f64b5-acd2-5bba-b8fe-4625218c6173',
       author: null,
       icon: 'https://glitch.com/favicon.ico?v=3',
       name: null,
@@ -59,6 +59,7 @@ describe('Website metadata parsing tests', function () {
   });
 
   it('should parse react-native website html', async function () {
+    jest.setTimeout(10000);
     const mockData = `
     <!DOCTYPE html>
     <html lang="en">
@@ -82,7 +83,7 @@ describe('Website metadata parsing tests', function () {
     `;
     const metadata = await metaService.getParsedWebsite(mockData, 'https://reactnative.dev');
     expect(metadata).toEqual({
-      uid: 'reactnative.dev',
+      uid: 'ca4266bf-9523-5298-b901-4c0d63884936',
       author: null,
       icon: 'https://reactnative.dev/favicon.ico',
       name: null,

@@ -1,7 +1,7 @@
 import { WebServiceInt } from "../service";
 import { query } from "express-validator";
 import { GithubServiceInt } from "../../services/github";
-import { SearchLogRepositoryInt } from "../repos/repos";
+import { SearchLogRepositoryInt } from "../../repos/repos";
 
 const router = require('express').Router();
 const { UI } = require('bull-board');

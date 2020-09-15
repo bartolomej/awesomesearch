@@ -26,7 +26,6 @@ function start () {
     join(__dirname, 'processors/link.js')
   );
 
-  log.info(`Worker process ${process.pid} started 🙌`);
 }
 
 // handle critical uncaught errors
@@ -37,6 +36,11 @@ process.on('unhandledRejection', (reason) => {
 
 process.on('uncaughtException', (err, origin) => {
   log.error('Uncaught exception' + err + origin);
+});
+
+process.on("SIGTERM", function () {
+  // TODO: SIGTERM used by docker - handle it!
+  process.exit();
 });
 
 start();

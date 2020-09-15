@@ -1,8 +1,8 @@
 import { LinkRepositoryInt } from "./repos";
-import Website from "../../models/website";
-import Link from "../../models/link";
-import Repository from "../../models/repository";
-import { ERROR_MSG_NOT_FOUND } from "../../constants";
+import Website from "../models/website";
+import Link from "../models/link";
+import Repository from "../models/repository";
+import { ERROR_MSG_NOT_FOUND } from "../constants";
 
 const { getRepository } = require('typeorm');
 const utils = require('./utils');
@@ -101,14 +101,15 @@ export default function LinkRepository (): LinkRepositoryInt {
   async function getAll (limit: number, page: number, source: string): Promise<Link[]> {
     const query = getRepository(Link)
       .createQueryBuilder('link')
-      .leftJoinAndSelect('link.repository', 'repository')
-      .leftJoinAndSelect('link.website', 'website')
+      .leftJoinAndSelect('link.repository', 'r')
+      .leftJoinAndSelect('link.website', 'w')
     if (source) {
       query.where('link.source = :source', { source })
     }
     query
       .skip(page * limit)
-      .take(limit);
+      .take(limit)
+      .orderBy('w.url', 'ASC')
     return (await query.getMany()).map(utils.deserializeLink);
   }
 

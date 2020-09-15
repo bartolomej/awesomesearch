@@ -1,9 +1,9 @@
-import { ERROR_MSG_NOT_FOUND } from "../../constants";
+import { ERROR_MSG_NOT_FOUND } from "../constants";
 
-import Link from "../../models/link";
-import List from "../../models/list";
-import Website from "../../models/website";
-import Repository from "../../models/repository";
+import Link from "../models/link";
+import List from "../models/list";
+import Website from "../models/website";
+import Repository from "../models/repository";
 
 /**
  * Deserializes objects received from db to domain models.

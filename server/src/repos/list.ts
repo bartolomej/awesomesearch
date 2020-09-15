@@ -1,8 +1,8 @@
 import { ListRepositoryInt } from "./repos";
-import logger from "../../logger";
-import List from "../../models/list";
-import Repository from "../../models/repository";
-import { ERROR_MSG_NOT_FOUND } from "../../constants";
+import logger from "../logger";
+import List from "../models/list";
+import Repository from "../models/repository";
+import { ERROR_MSG_NOT_FOUND, TYPEORM_DUP_ENTRY_CODE } from "../constants";
 
 const { getRepository } = require('typeorm');
 const utils = require('./utils');
@@ -43,7 +43,7 @@ export default function ListRepository (): ListRepositoryInt {
     await getRepository(Repository)
       .save(utils.serializeRepo(list.repository))
       .catch(e => {
-        if (/ER_DUP_ENTRY/.test(e.message)) {
+        if (new RegExp(TYPEORM_DUP_ENTRY_CODE).test(e.message)) {
           log.info(`Repository ${list.repository.uid} exists in db.`);
         } else {
           throw e;

@@ -4,9 +4,12 @@ import {
   LinkRepositoryInt,
   ListRepositoryInt,
   SearchLogRepositoryInt
-} from "./repos/repos";
+} from "../repos/repos";
 import logger from "../logger";
-import { ERROR_MSG_NOT_FOUND } from "../constants";
+import {
+  TYPEORM_DUP_ENTRY_CODE,
+  TYPEORM_NOT_FOUND_CODE
+} from "../constants";
 import { Job, Queue } from "bull";
 import { ListServiceInt } from "../services/list";
 import { GithubServiceInt } from "../services/github";
@@ -96,10 +99,13 @@ export default function WebService ({
     try {
       await listRepository.save(list);
     } catch (e) {
-      if (e.message === ERROR_MSG_NOT_FOUND) {
-        log.info(e.message);
+      if (new RegExp(TYPEORM_NOT_FOUND_CODE).test(e.message)) {
+        log.info(e.message)
+      }
+      if (new RegExp(TYPEORM_DUP_ENTRY_CODE).test(e.message)) {
+        log.info(`Duplicate list entity: ${list.uid}`)
       } else {
-        log.error(e);
+        log.error(e)
       }
     }
     // post link jobs for found urls
@@ -114,8 +120,11 @@ export default function WebService ({
     try {
       await linkRepository.save(link);
     } catch (e) {
-      if (e.message === ERROR_MSG_NOT_FOUND) {
+      if (e.message === TYPEORM_NOT_FOUND_CODE) {
         log.info(e.message)
+      }
+      if (e.message === TYPEORM_DUP_ENTRY_CODE) {
+        log.info(`Duplicate link entity: ${link.uid}`)
       } else {
         log.error(e)
       }

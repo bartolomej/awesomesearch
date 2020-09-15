@@ -1,8 +1,8 @@
 import faker from 'faker';
-import * as typeorm from '../web/typeorm';
+import * as typeorm from '../typeorm';
 import logger from "../logger";
-import LinkRepository from "../web/repos/link";
-import ListRepository from "../web/repos/list";
+import LinkRepository from "../repos/link";
+import ListRepository from "../repos/list";
 import List from "../models/list";
 import Link from "../models/link";
 import Repository from "../models/repository";

@@ -9,11 +9,11 @@ import {
   ListRepositoryInt,
   QueryCountStats,
   SearchLogRepositoryInt
-} from "./repos/repos";
+} from "../repos/repos";
 import Bull, { Job, Queue } from "bull";
 import GithubService from "../services/github";
 import ListService from "../services/list";
-import { SearchLogQueryParams } from "./repos/searchlog";
+import { SearchLogQueryParams } from "../repos/searchlog";
 import SearchLog from "../models/searchlog";
 
 /**

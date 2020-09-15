@@ -13,7 +13,7 @@ const Layout = ({ children }) => (
   <ThemeProvider theme={theme}>
     <main>
       <TopAnimationWrapper>
-        <Animation speed={0.01} color={'rgb(254,206,168)'}/>
+        <Animation speed={0} color={'rgb(254,206,168)'}/>
       </TopAnimationWrapper>
       <Navigation>
         <Link to="/about">About</Link>

@@ -4,7 +4,7 @@ import {
   LinkRepositoryInt,
   ListRepositoryInt,
   SearchLogRepositoryInt
-} from "../repos/repos";
+} from "../../repos/repos";
 import { MetaServiceInt } from "../../services/metadata";
 import * as utils from './utils';
 

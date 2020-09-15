@@ -1,6 +1,6 @@
-import LinkRepository from "./repos/link";
-import ListRepository from "./repos/list";
-import SearchLogRepository from "./repos/searchlog";
+import LinkRepository from "../repos/link";
+import ListRepository from "../repos/list";
+import SearchLogRepository from "../repos/searchlog";
 import { webEnv } from "../env";
 import OpenRoutes from "./routes/open";
 import AdminRoutes from "./routes/admin";
@@ -8,7 +8,7 @@ import WebService from "./service";
 import MetaService from "../services/metadata";
 import GithubService from "../services/github";
 import Server from "./server";
-import * as typeorm from './typeorm';
+import * as typeorm from '../typeorm';
 import logger from "../logger";
 import { createQueue } from '../queue';
 import ListService from "../services/list";
@@ -109,4 +109,9 @@ process.on('unhandledRejection', (reason, promise) => {
 
 process.on('uncaughtException', (err, origin) => {
   log.error(`Uncaught exception: ${err}: ${origin}`);
+});
+
+process.on("SIGTERM", function () {
+  // TODO: SIGTERM used by docker - handle it!
+  process.exit();
 });
