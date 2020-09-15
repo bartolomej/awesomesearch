@@ -15,5 +15,10 @@ module.exports = {
     "**/test/**/*.test.(ts|js)",
     "**/*.test.(ts|js)"
   ],
-  testEnvironment: "node"
+  testEnvironment: "node",
+  // ignore tests in build
+  testPathIgnorePatterns: [
+    "<rootDir>/build/",
+    "<rootDir>/node_modules/"
+  ]
 };

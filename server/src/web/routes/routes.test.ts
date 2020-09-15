@@ -63,7 +63,6 @@ describe('Route serialization utils tests', function () {
       icon_url: link.icon,
       image_url: link.image,
       screenshot_url: link.screenshot,
-      tags: link.tags,
       source: {
         uid: list.uid,
         title: list.title,

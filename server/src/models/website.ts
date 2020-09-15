@@ -1,4 +1,5 @@
 const normalizeUrlLib = require('normalize-url');
+import { v5 as uuidv5 } from 'uuid';
 
 export default class Website {
 
@@ -42,21 +43,9 @@ export default class Website {
     })
   }
 
-  static computeUid (url) {
-    // formats url in form: domain-name.domain.path1.path2...
-    // example: github.com.microsoft.vscode
-    const normalized = normalizeUrlLib(url, {
-      stripHash: true,
-      stripWWW: true,
-      stripProtocol: true,
-      removeTrailingSlash: true,
-    });
-    return normalized.replace(/\//g, '.');
-  }
-
   setUrl (url) {
     this.url = Website.normalizeUrl(url);
-    this.uid = Website.computeUid(this.url);
+    this.uid = uuidv5(this.url, uuidv5.URL);
   }
 
 }

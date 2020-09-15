@@ -29,28 +29,14 @@ describe('Repository model tests', function () {
 });
 
 
-describe('Link model tests', function () {
-
-  it('should compute uid given url: case 1', function () {
-    const uid = Website.computeUid('https://reactnative.dev/subpage');
-    expect(uid).toEqual('reactnative.dev.subpage');
-  });
-
-  it('should compute uid given url: case 2', function () {
-    const uid = Website.computeUid('http://www.github.com/bartolomej/cool-links/#readme');
-    expect(uid).toEqual('github.com.bartolomej.cool-links');
-  });
-
-})
-
-
 describe('List model tests', function () {
 
   it('should normalize url on init', function () {
     // @ts-ignore
     const awesome = new List('https://github.com/jthegedus/awesome-firebase/#readme');
-    expect(awesome.uid).toEqual('jthegedus.awesome-firebase');
-    expect(awesome.url).toEqual('https://github.com/jthegedus/awesome-firebase/#readme');
+    // uuid generation is deterministic (based on url)
+    expect(awesome.uid).toEqual('c7549952-ad61-5803-853e-2dc2a278bf59');
+    expect(awesome.url).toEqual('https://github.com/jthegedus/awesome-firebase#readme');
   });
 
   it('should validate url on child awesome repo', function () {

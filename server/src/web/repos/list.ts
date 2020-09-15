@@ -90,6 +90,7 @@ export default function ListRepository (): ListRepositoryInt {
       .where('CHAR_LENGTH(repo.topics) > 1')
       .skip(page * limit)
       .take(limit)
+      .orderBy('repo.topics', 'ASC')
       .getMany())
       .map(r => utils.split(r.topics)).flat())];
   }

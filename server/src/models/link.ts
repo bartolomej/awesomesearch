@@ -1,6 +1,6 @@
 import Website from "./website";
 import Repository from "./repository";
-import List from "./list";
+import { v5 as uuidv5 } from 'uuid';
 
 export default class Link {
 
@@ -108,7 +108,7 @@ export default class Link {
 
   setUrl (url) {
     this.url = Website.normalizeUrl(url);
-    this.uid = Website.computeUid(url);
+    this.uid = uuidv5(this.url, uuidv5.URL);
   }
 
 }

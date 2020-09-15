@@ -1,4 +1,6 @@
-const normalizeUrl = require('normalize-url');
+const normalizeUrlLib = require('normalize-url');
+const gh = require('parse-github-url');
+import { v5 as uuidv5 } from 'uuid';
 
 export default class Repository {
 
@@ -50,11 +52,11 @@ export default class Repository {
   }
 
   get user () {
-    return this.uid.split('.')[0];
+    return Repository.parseUrl(this.url).user;
   }
 
   get name () {
-    return this.uid.split('.')[1];
+    return Repository.parseUrl(this.url).name;
   }
 
   static isGithubRepository (url) {
@@ -62,29 +64,28 @@ export default class Repository {
   }
 
   static parseUrl (url) {
-    const parsed = normalizeUrl(url, {
+    const normalized = Repository.normalizeUrl(url, {
       stripWWW: true,
-      stripProtocol: true,
-      stripHash: true,
-      removeTrailingSlash: true
-    })
-      .replace('github.com/', '')
-      .split('/');
-    return { user: parsed[0], name: parsed[1] }
+      stripHash: true
+    });
+    const parsed = gh(normalized);
+    return {
+      user: parsed.owner,
+      name: parsed.name
+    }
   }
 
-  static parseUid (url) {
-    const { user, name } = Repository.parseUrl(url);
-    return `${user}.${name}`;
+  static normalizeUrl (url, opts?) {
+    return normalizeUrlLib(url, {
+      stripWWW: true,
+      removeTrailingSlash: true,
+      ...opts
+    });
   }
 
   setUrl (url) {
-    this.url = normalizeUrl(url, {
-      stripWWW: true,
-      stripHash: true,
-      removeTrailingSlash: true
-    });
-    this.uid = Repository.parseUid(url);
+    this.url = Repository.normalizeUrl(url);
+    this.uid = uuidv5(this.url, uuidv5.URL);
   }
 
 }

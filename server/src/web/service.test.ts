@@ -3,11 +3,18 @@ import Repository from "../models/repository";
 import Website from "../models/website";
 import Link from "../models/link";
 import List from "../models/list";
-import { LinkRepositoryInt, ListRepositoryInt } from "./repos/repos";
+import {
+  DateCountStats,
+  LinkRepositoryInt,
+  ListRepositoryInt,
+  QueryCountStats,
+  SearchLogRepositoryInt
+} from "./repos/repos";
 import Bull, { Job, Queue } from "bull";
 import GithubService from "../services/github";
 import ListService from "../services/list";
-import SearchLogRepository from "./repos/searchlog";
+import { SearchLogQueryParams } from "./repos/searchlog";
+import SearchLog from "../models/searchlog";
 
 /**
  * Each test case initializes web service with mocked dependencies.
@@ -36,7 +43,10 @@ describe('Web service tests', function () {
 
     // test that result is indexed
     const searchResult = await service.searchLists({ query: 'portfolios' });
-    expect(searchResult).toEqual([list]);
+    expect(searchResult).toEqual([
+      [list],
+      1 // total results count
+    ]);
 
     // test that result is written to db
     expect(await listRepository.get(list.repository.uid)).toEqual(list);
@@ -62,10 +72,10 @@ describe('Web service tests', function () {
     await linkQueue._completeJob('1', JSON.stringify(link));
 
     const searchResult = await service.searchLinks({ query: 'link' });
-    expect(searchResult).toEqual([{
-      ...link,
-      source: { ...source }
-    }]);
+    expect(searchResult).toEqual([
+      [link],
+      1 // total results count
+    ]);
   });
 
 });
@@ -86,7 +96,7 @@ function webServiceFactory () {
     linkQueue,
     listService: ListService({ githubService }),
     githubService,
-    searchLogRepository: SearchLogRepository()
+    searchLogRepository: MockSearchLogRepository()
   });
   return { listQueue, linkQueue, listRepository, linkRepository, service }
 }
@@ -151,6 +161,30 @@ function MockQueue (): MockBullQueue {
     getJob (jobId: Bull.JobId): Promise<Bull.Job<any> | null> {
       const job = completedJobs[jobId] || queuedJobs[jobId];
       return Promise.resolve(job);
+    }
+  }
+}
+
+function MockSearchLogRepository (): SearchLogRepositoryInt {
+  let index = 0;
+  let store = {};
+  return {
+    getCountByDate (obj: SearchLogQueryParams): Promise<Array<DateCountStats>> {
+      throw new Error('Method not implemented');
+    },
+    getCountByQuery (obj: SearchLogQueryParams): Promise<Array<QueryCountStats>> {
+      throw new Error('Method not implemented');
+    },
+    getSortedByDate (obj: SearchLogQueryParams): Promise<Array<SearchLog>> {
+      throw new Error('Method not implemented');
+    },
+    getTotalCount (): Promise<number> {
+      return Promise.resolve(Object.keys(store).length);
+    },
+    save (log: SearchLog): Promise<SearchLog> {
+      index++;
+      store[index] = log;
+      return Promise.resolve(log);
     }
   }
 }

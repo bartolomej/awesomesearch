@@ -1,4 +1,5 @@
 import Repository from './repository';
+import { v5 as uuidv5 } from 'uuid';
 
 export default class List {
 
@@ -76,7 +77,8 @@ export default class List {
   }
 
   setUrl (url: string) {
-    this.uid = Repository.parseUid(url);
+    this.url = Repository.normalizeUrl(url);
+    this.uid = uuidv5(this.url, uuidv5.URL);
   }
 
 }
