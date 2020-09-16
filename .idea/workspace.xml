@@ -28,12 +28,11 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d2f71258-d8c2-4704-aa3d-13cc226d49a3" name="update docs" comment="">
-      <change afterPath="$PROJECT_DIR$/install.sh" afterDir="false" />
+    <list default="true" id="d2e6e7f3-14ee-4d9e-aa9a-df2153af0851" name="netlify deployment" comment="">
+      <change afterPath="$PROJECT_DIR$/dashboard/netlify.toml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/website/netlify.toml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/website/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dashboard/.env.production" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/.env.production" afterDir="false" />
     </list>
     <list id="b335f404-2176-45ea-ab88-fac23c9df1b6" name="add about page" comment="refactor server code, search specific list">
       <change afterPath="$PROJECT_DIR$/website/src/pages/about.jsx" afterDir="false" />
@@ -45,12 +44,6 @@
     <list id="24493c84-3177-4c22-afba-c2f754d88b1e" name="dokku deployment" comment="dokku deployment">
       <change afterPath="$PROJECT_DIR$/server/README.md" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/server/setup-dokku.sh" afterDir="false" />
-    </list>
-    <list id="d2e6e7f3-14ee-4d9e-aa9a-df2153af0851" name="netlify deployment" comment="">
-      <change afterPath="$PROJECT_DIR$/dashboard/netlify.toml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/website/netlify.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/.env.production" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/.env.production" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/.env.production" beforeDir="false" afterPath="$PROJECT_DIR$/website/.env.production" afterDir="false" />
     </list>
     <list id="b4411356-9fd1-4684-b1c7-3a2011c53c6b" name="repeating cron parsing jobs" comment="">
       <change beforePath="$PROJECT_DIR$/server/src/models/link.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/models/link.ts" afterDir="false" />
@@ -246,15 +239,15 @@
     <list>
       <item itemvalue="Docker.rebuild &amp; run" />
       <item itemvalue="Jest.All server tests" />
-      <item itemvalue="Node.js.worker process" />
-      <item itemvalue="Node.js.web process" />
-      <item itemvalue="npm.start website" />
-      <item itemvalue="npm.start dashboard" />
       <item itemvalue="Jest.List repository tests.should fetch all topics" />
       <item itemvalue="Jest.Web service tests" />
       <item itemvalue="Jest.Web service tests.should handle link result given completed job" />
       <item itemvalue="Jest.Website metadata parsing tests.should parse react-native website html" />
       <item itemvalue="Jest.Link repository tests.should fetch links that belong to list" />
+      <item itemvalue="Node.js.worker process" />
+      <item itemvalue="Node.js.web process" />
+      <item itemvalue="npm.start website" />
+      <item itemvalue="npm.start dashboard" />
     </list>
     <recent_temporary>
       <list>
@@ -277,7 +270,7 @@
       <changelist id="" name="fix heroku deploy" comment="" />
       <changelist id="" name="improve search" comment="" />
       <changelist id="24493c84-3177-4c22-afba-c2f754d88b1e" name="production config" comment="" />
-      <changelist id="d2f71258-d8c2-4704-aa3d-13cc226d49a3" name="update docs" comment="" />
+      <changelist id="" name="update docs" comment="" />
       <changelist id="" name="heroku deployment" comment="" />
       <changelist id="d2e6e7f3-14ee-4d9e-aa9a-df2153af0851" name="netlify deployment" comment="" />
       <changelist id="6b7cb48d-ec2f-41c4-b2a7-e22a88642611" name="default" comment="" />
@@ -301,7 +294,7 @@
       <workItem from="1599680939306" duration="1263000" />
       <workItem from="1599729676775" duration="8787000" />
       <workItem from="1599817605655" duration="5993000" />
-      <workItem from="1600164269347" duration="24298000" />
+      <workItem from="1600164269347" duration="24782000" />
     </task>
     <task id="LOCAL-00001" summary="moved server code to server/src">
       <created>1598379264652</created>
@@ -436,7 +429,14 @@
       <option name="project" value="LOCAL" />
       <updated>1600292958351</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="update docs">
+      <created>1600294269252</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1600294269252</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -515,7 +515,8 @@
     <MESSAGE value="outdated lockfile" />
     <MESSAGE value="fixed procfile typo" />
     <MESSAGE value="fix env validation + init" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix env validation + init" />
+    <MESSAGE value="update docs" />
+    <option name="LAST_COMMIT_MESSAGE" value="update docs" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="WindowStateProjectService">
@@ -551,10 +552,10 @@
     <state x="86" y="-891" key="#xdebugger.evaluate/0.0.1440.820/-245.-1057.1920.1057@0.0.1440.820" timestamp="1599832177655" />
     <state x="86" y="-891" width="1075" height="751" key="#xdebugger.evaluate/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1599832540455" />
     <state x="674" y="149" key="#xdebugger.evaluate/0.0.1440.900@0.0.1440.900" timestamp="1598968060015" />
-    <state x="0" y="23" width="1203" height="797" key="CommitChangelistDialog2" timestamp="1600292958136">
+    <state x="0" y="23" width="1203" height="797" key="CommitChangelistDialog2" timestamp="1600294268989">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="0" y="23" width="1203" height="797" key="CommitChangelistDialog2/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1600292958136" />
+    <state x="0" y="23" width="1203" height="797" key="CommitChangelistDialog2/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1600294268989" />
     <state x="0" y="0" key="CommitChangelistDialog2/0.0.1440.900@0.0.1440.900" timestamp="1598439469183" />
     <state x="100" y="100" width="1240" height="700" key="DiffContextDialog" timestamp="1600169247857">
       <screen x="0" y="0" width="1440" height="900" />
@@ -704,10 +705,10 @@
     </state>
     <state x="598" y="370" width="325" height="247" key="VCS.EditChangelistDialog/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1600291613353" />
     <state x="598" y="370" key="VCS.EditChangelistDialog/0.0.1440.900@0.0.1440.900" timestamp="1598443168293" />
-    <state x="320" y="186" key="Vcs.Push.Dialog.v2" timestamp="1600292960353">
+    <state x="320" y="186" key="Vcs.Push.Dialog.v2" timestamp="1600294271112">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="320" y="186" key="Vcs.Push.Dialog.v2/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1600292960353" />
+    <state x="320" y="186" key="Vcs.Push.Dialog.v2/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1600294271112" />
     <state x="320" y="186" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1598439391559" />
     <state x="463" y="109" key="VcsDiffUtil.ChangesDialog" timestamp="1598441672102">
       <screen x="0" y="0" width="1440" height="900" />
