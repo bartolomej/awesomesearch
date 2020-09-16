@@ -10,6 +10,7 @@ export const webEnv = () => envalid.cleanEnv(process.env, {
   PORT: num({ default: 3000 }),
   REDIS_URL: str({ default: 'redis://127.0.0.1:6379' }),
   WEB_CONCURRENCY: num({ default: 1 }),
+  DB_URL: str(),
   DB_HOST: str({ default: 'localhost' }),
   DB_USERNAME: str(),
   DB_PASSWORD: str(),
@@ -17,7 +18,8 @@ export const webEnv = () => envalid.cleanEnv(process.env, {
   GH_USERNAME: str(),
   GH_TOKEN: str()
 }, {
-  dotEnvPath
+  dotEnvPath,
+  reporter
 });
 
 export const workerEnv = () => envalid.cleanEnv(process.env, {
@@ -30,5 +32,13 @@ export const workerEnv = () => envalid.cleanEnv(process.env, {
   GH_USERNAME: str(),
   GH_TOKEN: str()
 }, {
-  dotEnvPath
+  dotEnvPath,
+  reporter
 });
+
+function reporter ({ errors, env }) {
+  console.warn(`Some env variables may be configured incorrectly!`)
+  errors.forEach(err => {
+    console.error(err.message)
+  });
+}

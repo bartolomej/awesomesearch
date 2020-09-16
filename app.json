@@ -1,0 +1,47 @@
+{
+  "name": "AwesomeSearch",
+  "logo": "https://github.com/bartolomej/awesomesearch/blob/master/assets/banner.png?raw=true",
+  "description": "Awesome lists indexing engine.",
+  "repository": "https://github.com/bartolomej/awesomesearch",
+  "keywords": [
+    "nodejs",
+    "awesome",
+    "search"
+  ],
+  "success_url": "/",
+  "website": "https://awesomesearch.in",
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "free"
+    },
+    "worker": {
+      "quantity": 1,
+      "size": "free"
+    }
+  },
+  "env": {
+    "PROJECT_PATH": "server"
+  },
+  "buildpacks": [
+    {
+      "url": "https://github.com/timanovsky/subdir-heroku-buildpack"
+    },
+    {
+      "url": "heroku/nodejs"
+    },
+    {
+      "url": "https://buildpack-registry.s3.amazonaws.com/buildpacks/jontewks/puppeteer.tgz"
+    }
+  ],
+  "addons": [
+    {
+      "plan": "jawsdb:kitefin",
+      "as": "DB_URL"
+    },
+    {
+      "plan": "heroku-redis:hobby-dev",
+      "as": "REDIS_URL"
+    }
+  ]
+}

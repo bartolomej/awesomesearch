@@ -41,7 +41,8 @@ async function start () {
       database: env.DB_NAME,
       username: env.DB_USERNAME,
       password: env.DB_PASSWORD,
-      host: env.DB_HOST
+      host: env.DB_HOST,
+      url: env.DB_URL
     });
     log.debug(`Connected to database: ${con.name}`)
   } catch (e) {

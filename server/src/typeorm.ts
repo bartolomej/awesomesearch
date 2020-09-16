@@ -9,6 +9,7 @@ import SearchLog from "./repos/entity/searchlog";
 interface TypeormProps {
   host: string;
   port?: number;
+  url?: string;
   username: string;
   password: string;
   database: string;
@@ -18,6 +19,7 @@ interface TypeormProps {
 export async function create ({
   host = 'localhost',
   connectionName = 'default',
+  url,
   username,
   password,
   database,
@@ -33,6 +35,7 @@ export async function create ({
     username,
     password,
     database,
+    url,
     entities: [
       Link,
       List,
