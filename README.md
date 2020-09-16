@@ -1,4 +1,4 @@
-![](./server/src/web/public/banner.png)
+![](./assets/banner.png)
 
 [![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 [![Awesome](https://awesome.re/badge-flat2.svg)](https://awesome.re)

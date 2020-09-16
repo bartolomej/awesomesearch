@@ -28,20 +28,23 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="24493c84-3177-4c22-afba-c2f754d88b1e" name="dokku deployment" comment="fix prod config">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="3d717833-4f65-4eec-863f-0ea2bc870e85" name="heroku deployment" comment="heroku deployment">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/app.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/docker-compose.prod.yml" beforeDir="false" afterPath="$PROJECT_DIR$/server/docker-compose.prod.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/server/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/Procfile" beforeDir="false" afterPath="$PROJECT_DIR$/server/Procfile" afterDir="false" />
     </list>
     <list id="b335f404-2176-45ea-ab88-fac23c9df1b6" name="add about page" comment="refactor server code, search specific list">
       <change afterPath="$PROJECT_DIR$/website/src/pages/about.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/website/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/website/src/App.jsx" afterDir="false" />
     </list>
-    <list id="3d717833-4f65-4eec-863f-0ea2bc870e85" name="heroku deployment" comment="heroku deployment">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/app.json" afterDir="false" />
+    <list id="6b7cb48d-ec2f-41c4-b2a7-e22a88642611" name="default" comment="">
+      <change beforePath="$PROJECT_DIR$/server/src/services/image.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/services/image.ts" afterDir="false" />
+    </list>
+    <list id="24493c84-3177-4c22-afba-c2f754d88b1e" name="dokku deployment" comment="dokku deployment">
+      <change afterPath="$PROJECT_DIR$/server/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/setup-dokku.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <list id="d2e6e7f3-14ee-4d9e-aa9a-df2153af0851" name="netlify deployment" comment="">
       <change afterPath="$PROJECT_DIR$/dashboard/netlify.toml" afterDir="false" />
@@ -53,14 +56,11 @@
       <change beforePath="$PROJECT_DIR$/server/src/models/link.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/models/link.ts" afterDir="false" />
     </list>
     <list id="fc78fd17-7a4a-4abb-88e1-70862aba4e4d" name="topic parsing" comment="">
-      <change beforePath="$PROJECT_DIR$/server/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/server/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/services/list.test.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/services/list.test.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/services/list.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/services/list.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/web/service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/web/service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/server/yarn.lock" afterDir="false" />
     </list>
     <list id="d2f71258-d8c2-4704-aa3d-13cc226d49a3" name="update docs" comment="">
-      <change afterPath="$PROJECT_DIR$/server/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dashboard/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/website/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/website/README.md" afterDir="false" />
@@ -93,10 +93,24 @@
         <range start1="9" end1="27" start2="9" end2="9" changelist="d2f71258-d8c2-4704-aa3d-13cc226d49a3" />
       </ranges>
     </file>
-    <file path="$PROJECT_DIR$/app.json">
+    <file path="$PROJECT_DIR$/.idea/workspace.xml">
       <ranges>
-        <range start1="2" end1="3" start2="2" end2="3" changelist="3d717833-4f65-4eec-863f-0ea2bc870e85" />
-        <range start1="45" end1="46" start2="45" end2="51" changelist="24493c84-3177-4c22-afba-c2f754d88b1e" />
+        <range start1="30" end1="33" start2="30" end2="32" changelist="3d717833-4f65-4eec-863f-0ea2bc870e85" />
+        <range start1="34" end1="36" start2="33" end2="34" changelist="3d717833-4f65-4eec-863f-0ea2bc870e85" />
+        <range start1="41" end1="43" start2="39" end2="43" changelist="3d717833-4f65-4eec-863f-0ea2bc870e85" />
+        <range start1="44" end1="44" start2="44" end2="46" changelist="3d717833-4f65-4eec-863f-0ea2bc870e85" />
+        <range start1="55" end1="56" start2="57" end2="57" changelist="24493c84-3177-4c22-afba-c2f754d88b1e" />
+        <range start1="59" end1="60" start2="60" end2="60" changelist="24493c84-3177-4c22-afba-c2f754d88b1e" />
+        <range start1="62" end1="63" start2="62" end2="62" changelist="24493c84-3177-4c22-afba-c2f754d88b1e" />
+        <range start1="98" end1="99" start2="97" end2="98" changelist="24493c84-3177-4c22-afba-c2f754d88b1e" />
+        <range start1="321" end1="322" start2="320" end2="321" changelist="3d717833-4f65-4eec-863f-0ea2bc870e85" />
+        <range start1="428" end1="429" start2="427" end2="442" changelist="24493c84-3177-4c22-afba-c2f754d88b1e" />
+        <range start1="462" end1="469" start2="475" end2="475" changelist="24493c84-3177-4c22-afba-c2f754d88b1e" />
+        <range start1="510" end1="511" start2="516" end2="519" changelist="24493c84-3177-4c22-afba-c2f754d88b1e" />
+        <range start1="546" end1="547" start2="554" end2="555" changelist="24493c84-3177-4c22-afba-c2f754d88b1e" />
+        <range start1="549" end1="550" start2="557" end2="558" changelist="24493c84-3177-4c22-afba-c2f754d88b1e" />
+        <range start1="699" end1="700" start2="707" end2="708" changelist="24493c84-3177-4c22-afba-c2f754d88b1e" />
+        <range start1="702" end1="703" start2="710" end2="711" changelist="24493c84-3177-4c22-afba-c2f754d88b1e" />
       </ranges>
     </file>
   </component>
@@ -299,6 +313,7 @@
       <changelist id="d2f71258-d8c2-4704-aa3d-13cc226d49a3" name="update docs" comment="" />
       <changelist id="3d717833-4f65-4eec-863f-0ea2bc870e85" name="heroku deployment" comment="" />
       <changelist id="d2e6e7f3-14ee-4d9e-aa9a-df2153af0851" name="netlify deployment" comment="" />
+      <changelist id="6b7cb48d-ec2f-41c4-b2a7-e22a88642611" name="default" comment="" />
       <created>1598265301577</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -319,7 +334,7 @@
       <workItem from="1599680939306" duration="1263000" />
       <workItem from="1599729676775" duration="8787000" />
       <workItem from="1599817605655" duration="5993000" />
-      <workItem from="1600164269347" duration="19197000" />
+      <workItem from="1600164269347" duration="21960000" />
     </task>
     <task id="LOCAL-00001" summary="moved server code to server/src">
       <created>1598379264652</created>
@@ -426,7 +441,21 @@
       <option name="project" value="LOCAL" />
       <updated>1600285053803</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="dokku deployment">
+      <created>1600287338286</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1600287338286</updated>
+    </task>
+    <task id="LOCAL-00017" summary="outdated lockfile">
+      <created>1600290691047</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1600290691048</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -457,13 +486,6 @@
                     <value>
                       <list>
                         <option value="master" />
-                      </list>
-                    </value>
-                  </entry>
-                  <entry key="text">
-                    <value>
-                      <list>
-                        <option value="heroku" />
                       </list>
                     </value>
                   </entry>
@@ -508,7 +530,9 @@
     <MESSAGE value="env vars for parallel workers, move repos to src/" />
     <MESSAGE value="production docker config" />
     <MESSAGE value="heroku deployment" />
-    <option name="LAST_COMMIT_MESSAGE" value="heroku deployment" />
+    <MESSAGE value="dokku deployment" />
+    <MESSAGE value="outdated lockfile" />
+    <option name="LAST_COMMIT_MESSAGE" value="outdated lockfile" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="WindowStateProjectService">
@@ -544,10 +568,10 @@
     <state x="86" y="-891" key="#xdebugger.evaluate/0.0.1440.820/-245.-1057.1920.1057@0.0.1440.820" timestamp="1599832177655" />
     <state x="86" y="-891" width="1075" height="751" key="#xdebugger.evaluate/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1599832540455" />
     <state x="674" y="149" key="#xdebugger.evaluate/0.0.1440.900@0.0.1440.900" timestamp="1598968060015" />
-    <state x="0" y="23" width="1203" height="797" key="CommitChangelistDialog2" timestamp="1600285053570">
+    <state x="0" y="23" width="1203" height="797" key="CommitChangelistDialog2" timestamp="1600291266741">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="0" y="23" width="1203" height="797" key="CommitChangelistDialog2/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1600285053570" />
+    <state x="0" y="23" width="1203" height="797" key="CommitChangelistDialog2/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1600291266741" />
     <state x="0" y="0" key="CommitChangelistDialog2/0.0.1440.900@0.0.1440.900" timestamp="1598439469183" />
     <state x="100" y="100" width="1240" height="700" key="DiffContextDialog" timestamp="1600169247857">
       <screen x="0" y="0" width="1440" height="900" />
@@ -692,10 +716,10 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="571" y="365" key="VCS.ChangelistChooser/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1599736183822" />
-    <state x="598" y="370" width="325" height="247" key="VCS.EditChangelistDialog" timestamp="1600287263179">
+    <state x="598" y="370" width="325" height="247" key="VCS.EditChangelistDialog" timestamp="1600291613353">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="598" y="370" width="325" height="247" key="VCS.EditChangelistDialog/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1600287263179" />
+    <state x="598" y="370" width="325" height="247" key="VCS.EditChangelistDialog/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1600291613353" />
     <state x="598" y="370" key="VCS.EditChangelistDialog/0.0.1440.900@0.0.1440.900" timestamp="1598443168293" />
     <state x="320" y="186" key="Vcs.Push.Dialog.v2" timestamp="1600285055275">
       <screen x="0" y="0" width="1440" height="900" />

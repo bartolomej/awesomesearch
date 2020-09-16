@@ -1,6 +1,6 @@
 {
   "name": "AwesomeSearch",
-  "logo": "https://github.com/bartolomej/awesomesearch/blob/master/assets/banner.png?raw=true",
+  "logo": "https://github.com/bartolomej/awesomesearch/blob/master/assets/logo.png?raw=true",
   "description": "Awesome lists indexing engine.",
   "repository": "https://github.com/bartolomej/awesomesearch",
   "keywords": [
@@ -42,6 +42,9 @@
     {
       "plan": "heroku-redis:hobby-dev",
       "as": "REDIS_URL"
+    },
+    {
+      "plan": "timber-logging:free"
     }
   ],
   "scripts": {
