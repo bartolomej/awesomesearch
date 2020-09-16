@@ -43,5 +43,10 @@
       "plan": "heroku-redis:hobby-dev",
       "as": "REDIS_URL"
     }
-  ]
+  ],
+  "scripts": {
+    "dokku": {
+      "predeploy": "rm -r dashboard website && mv -v ./server/* ."
+    }
+  }
 }
