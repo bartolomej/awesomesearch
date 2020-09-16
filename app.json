@@ -37,11 +37,11 @@
   "addons": [
     {
       "plan": "jawsdb:kitefin",
-      "as": "DB_URL"
+      "as": "DB"
     },
     {
       "plan": "heroku-redis:hobby-dev",
-      "as": "REDIS_URL"
+      "as": "REDIS"
     },
     {
       "plan": "timber-logging:free"
