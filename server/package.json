@@ -39,6 +39,7 @@
   "dependencies": {
     "@jest/globals": "26.0.1",
     "@types/bull": "^3.14.2",
+    "@types/cheerio": "0.22.21",
     "@types/jest": "26.0.10",
     "artillery": "1.6.1",
     "bull": "3.14.0",
