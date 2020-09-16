@@ -1,4 +1,4 @@
-![](./src/images/banner.png)
+# Client app
 
 [![Awesome](https://awesome.re/badge-flat2.svg)](https://awesome.re)
 [![Netlify Status](https://api.netlify.com/api/v1/badges/0ac05498-6234-4998-acb5-b4493acf362e/deploy-status)](https://app.netlify.com/sites/awesomesearch/deploys)

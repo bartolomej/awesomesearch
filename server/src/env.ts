@@ -66,7 +66,6 @@ function reporter ({ errors, env }) {
     RULE,
     invalidVarsOutput.join('\n'),
     missingVarsOutput.join('\n'),
-    chalk.yellow('\n Exiting with error code 1'),
     RULE
   ]
     .filter(x => !!x)

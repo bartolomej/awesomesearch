@@ -1,4 +1,5 @@
-![](./public/banner.png)
+# Dashboard App
+
 [![Netlify Status](https://api.netlify.com/api/v1/badges/5de599ff-f07f-4d1c-bef5-0dd8468215aa/deploy-status)](https://app.netlify.com/sites/awesomesearch-dashboard/deploys)
 
 
