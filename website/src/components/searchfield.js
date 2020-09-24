@@ -122,7 +122,7 @@ const Field = styled.input`
   font-size: ${p => p.theme.size(1.1)};
   @media (max-width: 700px) {
     margin: 0 5px;
-    font-size: ${p => p.theme.size(1)};
+    font-size: ${p => p.theme.size(0.9)};
   }
 `;
 

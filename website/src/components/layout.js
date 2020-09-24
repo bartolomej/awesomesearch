@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
 import styled from '@emotion/styled/macro';
 import { ThemeProvider } from 'emotion-theming';
 import theme from '../style/theme';
@@ -9,34 +9,40 @@ import { BackgroundAppear, LinkCss } from "../style/ui";
 import Animation from "./animation";
 
 
-const Layout = ({ children }) => (
-  <ThemeProvider theme={theme}>
-    <main>
-      <TopAnimationWrapper>
-        <Animation speed={0} color={'rgb(254,206,168)'}/>
-      </TopAnimationWrapper>
-      <Navigation>
-        <Link to="/about">About</Link>
-      </Navigation>
-      {children}
-      <AnimationWrapper>
-        <Animation speed={0} color={'rgb(254,206,168)'}/>
-      </AnimationWrapper>
-      <Footer>
-        © {new Date().getFullYear()}, Built by
-        <a
-          target="_blank"
-          rel="noopener noreferrer"
-          href="https://www.github.com/bartolomej">bartolomej</a>
-      </Footer>
-    </main>
-  </ThemeProvider>
-);
+const Layout = ({ children }) => {
+  const { pathname } = useLocation();
+
+  return (
+    <ThemeProvider theme={theme}>
+      <main>
+        <TopAnimationWrapper>
+          <Animation speed={0} color={'rgb(254,206,168)'}/>
+        </TopAnimationWrapper>
+        <Navigation>
+          {pathname !== '/' && <Link to="/">Home</Link>}
+          {pathname !== '/about' && <Link to="/about">About</Link>}
+        </Navigation>
+        {children}
+        <Footer>
+          <BottomAnimationWrapper>
+            <Animation speed={0} color={'rgb(254,206,168)'}/>
+          </BottomAnimationWrapper>
+          © {new Date().getFullYear()}, Built by
+          <a
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://www.github.com/bartolomej">bartolomej</a>
+        </Footer>
+      </main>
+    </ThemeProvider>
+  )
+};
 
 const Navigation = styled.nav`
   width: 100vw;
-  height: 5vh;
   position: absolute;
+  top: 20px;
+  right: 20px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -45,6 +51,7 @@ const Navigation = styled.nav`
 
 const Footer = styled.footer`
   min-height: 30vh;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -72,9 +79,9 @@ const TopAnimationWrapper = styled.div`
   height: 50vh;
 `;
 
-const AnimationWrapper = styled.div`
+const BottomAnimationWrapper = styled.div`
   ${BackgroundAppear};
-  position: fixed;
+  position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
@@ -83,6 +90,7 @@ const AnimationWrapper = styled.div`
 
 const Link = styled(RouterLink)`
   color: ${p => p.theme.color.red};
+  font-weight: bold;
   margin-right: 20px;
   padding: 5px 0;
   transition: 0.2s ease-in-out all;

@@ -178,6 +178,11 @@ const ListImage = styled.img`
 const TagWrapper = styled.div`
   margin: 5px 0 20px 0;
   z-index: 1;
+  max-width: 800px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
 `;
 
 const Tag = styled.a`
@@ -186,7 +191,7 @@ const Tag = styled.a`
   font-size: 14px;
   border-radius: 15px;
   padding: 5px 10px;
-  margin: 0 5px;
+  margin: 0 5px 8px;
   display: inline-block;
   &:hover {
     background: ${p => p.theme.opacity(p.theme.color.red, 200)};

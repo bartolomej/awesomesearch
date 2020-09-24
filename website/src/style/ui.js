@@ -1,7 +1,9 @@
 import { css } from '@emotion/core';
 import theme from "./theme";
 import { ReactComponent as logo } from "../assets/logo.svg";
+import { ReactComponent as backIcon } from '../assets/arrow-left.svg';
 import styled from "@emotion/styled";
+import React from "react";
 
 
 export const LinkCss = (bg0, bg1, txt0, txt1) => css`
@@ -60,6 +62,9 @@ export const Header = styled.header`
   justify-content: center;
   align-items: center;
   position: relative;
+  @media (max-width: 700px) {
+    padding: 40px 0;
+  }
 `;
 
 export const Title = styled.h1`
@@ -109,7 +114,7 @@ export const Body = styled.div`
   position: relative;
   z-index: 1;
   min-height: 60vh;
-  padding: 60px 0;
+  ${p => p.withoutPadding ? 'padding-bottom: 80px;' : 'padding: 60px 0;'};
   background: ${p => p.theme.color.light};
 `;
 
@@ -150,13 +155,32 @@ export const ResultsCountTitle = styled.strong`
   padding-bottom: 50px;
 `;
 
-export const BackButton = styled.button`
-  border: 1px solid ${p => p.theme.color.light};
-  color: ${p => p.theme.color.light};
-  padding: 10px 20px;
+export const BackButton = ({ onClick }) => (
+  <BackButtonEle onClick={onClick}>
+    <LeftArrow/>
+  </BackButtonEle>
+)
+
+const BackButtonEle = styled.button`
   border-radius: 20px;
   position: absolute;
   top: 20px;
   left: 20px;
   z-index: 1;
+  path {
+    transform-origin: center;
+    transition: 0.2s ease-in-out all;
+    fill: ${p => p.theme.color.light};
+  }
+  &:hover {
+    path {
+      transform: scale(1.1);
+      fill: ${p => p.theme.color.red};
+    }
+  }
+`;
+
+const LeftArrow = styled(backIcon)`
+  width: 30px;
+  height: 30px;
 `;

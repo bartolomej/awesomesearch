@@ -5,6 +5,7 @@ import HomePage from "./pages/home";
 import { ThemeProvider } from "emotion-theming";
 import theme from "./style/theme";
 import ListPage from "./pages/list";
+import AboutPage from "./pages/about";
 
 
 const IndexPage = () => {
@@ -32,6 +33,11 @@ const IndexPage = () => {
             exact
             path="/"
             children={<HomePage/>}
+          />
+          <Route
+            exact
+            path="/about"
+            children={<AboutPage/>}
           />
         </Switch>
       </Router>
