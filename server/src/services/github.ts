@@ -77,6 +77,7 @@ export default function GithubService ({
     repository.description = info.description;
     repository.stars = info.stargazers_count;
     repository.forks = info.forks;
+    repository.homepage = info.homepage;
     if (fetchReadme) {
       repository.readme = readme;
     }

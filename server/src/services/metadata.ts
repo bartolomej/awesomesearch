@@ -113,8 +113,10 @@ export default function MetaService ({
     website.keywords = getMetaTag('keywords')
       ? getMetaTag('keywords')
         .split(',')
-        .map(k => k.trim())
-        .filter(value => value.length > 0)
+        .map(k => k.trim().toLowerCase())
+        // include only keywords that do not exceed size of 30 words
+        // because some websites put some other separating characters than ','
+        .filter(value => value.length > 0 && value.length < 30)
       : [];
 
     const imageMetaTagsList = [

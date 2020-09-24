@@ -24,7 +24,7 @@ const log = logger('link-worker');
 
 export default async function (job) {
   return await execute(
-    `Processing link: ${job.data.source}`,
+    `Processing link: ${job.data.url}`,
     linkService.getLinkWithMetadata(job.data.url, job.data.source)
   );
 }
