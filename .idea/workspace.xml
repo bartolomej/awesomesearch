@@ -28,18 +28,10 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d2e6e7f3-14ee-4d9e-aa9a-df2153af0851" name="website improvements" comment="add about page">
+    <list default="true" id="6b7cb48d-ec2f-41c4-b2a7-e22a88642611" name="default" comment="add google analytics">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/docker-compose.prod.yml" beforeDir="false" afterPath="$PROJECT_DIR$/server/docker-compose.prod.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/website/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/src/pages/about.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/website/src/pages/about.jsx" afterDir="false" />
-    </list>
-    <list id="6b7cb48d-ec2f-41c4-b2a7-e22a88642611" name="default" comment="">
       <change beforePath="$PROJECT_DIR$/server/src/services/image.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/services/image.ts" afterDir="false" />
-    </list>
-    <list id="24493c84-3177-4c22-afba-c2f754d88b1e" name="dokku deployment" comment="dokku deployment">
-      <change afterPath="$PROJECT_DIR$/server/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/server/setup-dokku.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/website/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/website/public/index.html" afterDir="false" />
     </list>
     <list id="b4411356-9fd1-4684-b1c7-3a2011c53c6b" name="repeating cron parsing jobs" comment="">
       <change beforePath="$PROJECT_DIR$/server/src/models/link.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/models/link.ts" afterDir="false" />
@@ -262,8 +254,6 @@
     <task active="true" id="Default" summary="Default task">
       <changelist id="fc78fd17-7a4a-4abb-88e1-70862aba4e4d" name="topic filtering" comment="" />
       <changelist id="b4411356-9fd1-4684-b1c7-3a2011c53c6b" name="repeating cron parsing jobs" comment="" />
-      <changelist id="24493c84-3177-4c22-afba-c2f754d88b1e" name="production config" comment="" />
-      <changelist id="d2e6e7f3-14ee-4d9e-aa9a-df2153af0851" name="netlify deployment" comment="" />
       <changelist id="6b7cb48d-ec2f-41c4-b2a7-e22a88642611" name="default" comment="" />
       <created>1598265301577</created>
       <option name="number" value="Default" />
@@ -289,7 +279,8 @@
       <workItem from="1600295031116" duration="99000" />
       <workItem from="1600864424583" duration="517000" />
       <workItem from="1600941860444" duration="11168000" />
-      <workItem from="1601291575395" duration="1166000" />
+      <workItem from="1601291575395" duration="2971000" />
+      <workItem from="1601297086521" duration="305000" />
     </task>
     <task id="LOCAL-00001" summary="moved server code to server/src">
       <created>1598379264652</created>
@@ -452,7 +443,21 @@
       <option name="project" value="LOCAL" />
       <updated>1600952943832</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="add nginx setup docs">
+      <created>1601293087227</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1601293087227</updated>
+    </task>
+    <task id="LOCAL-00025" summary="add nginx setup docs">
+      <created>1601293130925</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1601293130925</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -535,7 +540,8 @@
     <MESSAGE value="netlify deployment" />
     <MESSAGE value="fix homepage repo bug" />
     <MESSAGE value="add about page" />
-    <option name="LAST_COMMIT_MESSAGE" value="add about page" />
+    <MESSAGE value="add nginx setup docs" />
+    <option name="LAST_COMMIT_MESSAGE" value="add nginx setup docs" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="WindowStateProjectService">
@@ -575,10 +581,10 @@
     <state x="86" y="-891" key="#xdebugger.evaluate/0.0.1440.820/-245.-1057.1920.1057@0.0.1440.820" timestamp="1599832177655" />
     <state x="86" y="-891" width="1075" height="751" key="#xdebugger.evaluate/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1599832540455" />
     <state x="674" y="149" key="#xdebugger.evaluate/0.0.1440.900@0.0.1440.900" timestamp="1598968060015" />
-    <state x="0" y="23" width="1203" height="797" key="CommitChangelistDialog2" timestamp="1600952943564">
+    <state x="0" y="23" width="1203" height="797" key="CommitChangelistDialog2" timestamp="1601293130742">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="0" y="23" width="1203" height="797" key="CommitChangelistDialog2/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1600952943564" />
+    <state x="0" y="23" width="1203" height="797" key="CommitChangelistDialog2/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1601293130742" />
     <state x="0" y="0" key="CommitChangelistDialog2/0.0.1440.900@0.0.1440.900" timestamp="1598439469183" />
     <state x="100" y="100" width="1240" height="700" key="DiffContextDialog" timestamp="1600169247857">
       <screen x="0" y="0" width="1440" height="900" />
@@ -719,19 +725,19 @@
     </state>
     <state width="500" height="445" key="SwitcherDM/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1599655689324" />
     <state width="500" height="445" key="SwitcherDM/0.0.1440.900@0.0.1440.900" timestamp="1598524222325" />
-    <state x="571" y="365" key="VCS.ChangelistChooser" timestamp="1599736183822">
+    <state x="571" y="365" key="VCS.ChangelistChooser" timestamp="1601293102983">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="571" y="365" key="VCS.ChangelistChooser/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1599736183822" />
+    <state x="571" y="365" key="VCS.ChangelistChooser/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1601293102983" />
     <state x="598" y="370" width="325" height="247" key="VCS.EditChangelistDialog" timestamp="1600944507927">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="598" y="370" width="325" height="247" key="VCS.EditChangelistDialog/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1600944507927" />
     <state x="598" y="370" key="VCS.EditChangelistDialog/0.0.1440.900@0.0.1440.900" timestamp="1598443168293" />
-    <state x="320" y="186" key="Vcs.Push.Dialog.v2" timestamp="1600952945804">
+    <state x="320" y="186" key="Vcs.Push.Dialog.v2" timestamp="1601293132330">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="320" y="186" key="Vcs.Push.Dialog.v2/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1600952945804" />
+    <state x="320" y="186" key="Vcs.Push.Dialog.v2/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1601293132330" />
     <state x="320" y="186" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1598439391559" />
     <state x="463" y="109" key="VcsDiffUtil.ChangesDialog" timestamp="1598441672102">
       <screen x="0" y="0" width="1440" height="900" />
