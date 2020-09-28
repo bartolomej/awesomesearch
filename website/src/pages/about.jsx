@@ -88,7 +88,7 @@ const BlankLink = ({ href, children }) => (
 );
 
 const Container = styled.div`
-  max-width: 600px;
+  max-width: 700px;
   margin: 0 auto;
   p {
     margin: 10px 0 20px 0;
