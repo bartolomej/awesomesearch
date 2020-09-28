@@ -29,9 +29,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="6b7cb48d-ec2f-41c4-b2a7-e22a88642611" name="default" comment="add google analytics">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/services/image.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/services/image.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/website/public/index.html" afterDir="false" />
     </list>
     <list id="b4411356-9fd1-4684-b1c7-3a2011c53c6b" name="repeating cron parsing jobs" comment="">
       <change beforePath="$PROJECT_DIR$/server/src/models/link.ts" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/models/link.ts" afterDir="false" />
@@ -280,7 +278,7 @@
       <workItem from="1600864424583" duration="517000" />
       <workItem from="1600941860444" duration="11168000" />
       <workItem from="1601291575395" duration="2971000" />
-      <workItem from="1601297086521" duration="305000" />
+      <workItem from="1601297086521" duration="914000" />
     </task>
     <task id="LOCAL-00001" summary="moved server code to server/src">
       <created>1598379264652</created>
@@ -457,7 +455,14 @@
       <option name="project" value="LOCAL" />
       <updated>1601293130925</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="add google analytics">
+      <created>1601297462598</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1601297462598</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -516,7 +521,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="moved server code to server/src" />
     <MESSAGE value="removed unnecessary css" />
     <MESSAGE value="dockerized frontends" />
     <MESSAGE value="refactor server codebase to ts" />
@@ -541,7 +545,8 @@
     <MESSAGE value="fix homepage repo bug" />
     <MESSAGE value="add about page" />
     <MESSAGE value="add nginx setup docs" />
-    <option name="LAST_COMMIT_MESSAGE" value="add nginx setup docs" />
+    <MESSAGE value="add google analytics" />
+    <option name="LAST_COMMIT_MESSAGE" value="add google analytics" />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
   </component>
   <component name="WindowStateProjectService">
@@ -581,10 +586,10 @@
     <state x="86" y="-891" key="#xdebugger.evaluate/0.0.1440.820/-245.-1057.1920.1057@0.0.1440.820" timestamp="1599832177655" />
     <state x="86" y="-891" width="1075" height="751" key="#xdebugger.evaluate/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1599832540455" />
     <state x="674" y="149" key="#xdebugger.evaluate/0.0.1440.900@0.0.1440.900" timestamp="1598968060015" />
-    <state x="0" y="23" width="1203" height="797" key="CommitChangelistDialog2" timestamp="1601293130742">
+    <state x="0" y="23" width="1203" height="797" key="CommitChangelistDialog2" timestamp="1601297462330">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="0" y="23" width="1203" height="797" key="CommitChangelistDialog2/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1601293130742" />
+    <state x="0" y="23" width="1203" height="797" key="CommitChangelistDialog2/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1601297462330" />
     <state x="0" y="0" key="CommitChangelistDialog2/0.0.1440.900@0.0.1440.900" timestamp="1598439469183" />
     <state x="100" y="100" width="1240" height="700" key="DiffContextDialog" timestamp="1600169247857">
       <screen x="0" y="0" width="1440" height="900" />
@@ -734,10 +739,10 @@
     </state>
     <state x="598" y="370" width="325" height="247" key="VCS.EditChangelistDialog/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1600944507927" />
     <state x="598" y="370" key="VCS.EditChangelistDialog/0.0.1440.900@0.0.1440.900" timestamp="1598443168293" />
-    <state x="320" y="186" key="Vcs.Push.Dialog.v2" timestamp="1601293132330">
+    <state x="320" y="186" key="Vcs.Push.Dialog.v2" timestamp="1601297464064">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="320" y="186" key="Vcs.Push.Dialog.v2/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1601293132330" />
+    <state x="320" y="186" key="Vcs.Push.Dialog.v2/0.0.1440.900/-245.-1080.1920.1080@0.0.1440.900" timestamp="1601297464064" />
     <state x="320" y="186" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1598439391559" />
     <state x="463" y="109" key="VcsDiffUtil.ChangesDialog" timestamp="1598441672102">
       <screen x="0" y="0" width="1440" height="900" />
